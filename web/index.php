@@ -171,4 +171,33 @@ $app->get('/mostPopular', function (){
     return $returnMessage;
 });
 
+//=========================Highest Bandwidth Usage H_B_Usage.php
+$app->get('/highestBandwithUsage', function (){
+    $returnMessage= "FFFFFFF.....";
+            $connect = mysqli_connect('localhost', 'root', 'cozacu', 'test1');
+            if (!$connect){
+                die('Connection failed, mate.' . mysql_error());
+            }else{
+    $returnMessage = 'Connection established !' . '<br>';
+            }
+                $sqlQuery3 = 'SELECT id, SUBSTR(CONCAT(domain,".",main_page),1,10) Domain_MainPage,
+            CASE
+            WHEN (Round(cs / Pow(1024, 4), 2)> 1) THEN CONCAT(Round(cs / Pow(1024, 4), 2)," ","TB")
+            WHEN (Round(cs / Pow(1024, 3), 2)> 1) THEN CONCAT(Round(cs / Pow(1024, 3), 2)," ","GB")
+            WHEN (Round(cs / Pow(1024, 2), 2)> 1) THEN CONCAT(Round(cs / Pow(1024, 2), 2)," ","MB")
+            ELSE NULL
+            END AS SIZE
+            FROM
+            (SELECT id,domain,main_page,Sum(clicks * size) AS CS 
+            FROM wikidata GROUP BY main_page) AS W
+            ORDER BY CS DESC limit 20';
+            
+            $result3= $connect->query($sqlQuery3);
+    $returnMessage .= '<br>' . 'ID'. ' Page'. ' Size' . '<br>';
+            while($row = $result3->fetch_assoc()){
+    $returnMessage .= $row['id'] . " " . $row['Domain_MainPage'] . " " . $row['SIZE'] . " " . "<br>";
+            }
+            return $returnMessage;
+});
+
 $app->run();
