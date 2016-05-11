@@ -110,4 +110,39 @@ $app->get('/countyCityImport', function (){
         }
     return $returnMessage;
 });
+
+//WikiFile import importWiki.php
+$app->get('/wikiImport', function (){
+    //CONNECTING TO DB
+    $connect = mysqli_connect('localhost', 'root', 'cozacu','test1');
+    $returnMessage = "FFFFFFF.......";
+        if (!$connect) {
+            die('Connection failed!' . mysql_error());
+        }
+    $returnMessage = 'Connection was succesful!' . '<br>';
+    
+    //GETTING FILE CONTENT (TO BE IMPORTED) AND SEPARATING LINES
+        $myfile =  fopen("test", "r") or die("Sorry mate, can't open your file.");
+        $count = 0;
+        while(null != ($line = fgets($myfile)) && $count <= 30) {
+                $count++; 
+                //echo fgets($myfile) . "<br>";
+                $element = explode(" ", $line);
+                
+    $returnMessage .= $element[1] . "<br>";
+                $sql = 'INSERT INTO wikidata (domain, main_page, clicks, size) VALUES (
+                \'' . $element[0] . '\',
+                \'' . $element[1] . '\',
+                \'' . $element[2] . '\',
+                \'' . $element[3] . '\')';
+                
+            if (mysqli_query($connect, $sql) === TRUE) {
+    $returnMessage .= "Wiki info updated to DB" . "<br>";
+            }
+        }
+    return $returnMessage;
+    });
+
+
+
 $app->run();
