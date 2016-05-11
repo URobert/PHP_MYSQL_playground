@@ -4,17 +4,19 @@ require_once __DIR__.'/../vendor/autoload.php';
 
 $app = new Silex\Application();
 
-//MAIN PAGE
+//====================================MAIN PAGE
 $app->get('/',function (){
     return "OK.";}
     );
 
-//TEST
+
+//=====================================TEST
 $app->get('/test',function (){
     return "WhAT?";}
     );
 
-//SQL CONNECT
+    
+//=================================SQL CONNECT
 $app->get('/sqlConnect', function (){
     $link = mysqli_connect('localhost', 'root', 'cozacu','mysql');
         if (!$link) {
@@ -25,7 +27,8 @@ $app->get('/sqlConnect', function (){
     return $returnMessage;
     });
 
-//SQL Simple county import
+
+//==================================SQL Simple county import
 $app->get('/addCounties', function (){
     $link = mysqli_connect('localhost', 'root', 'cozacu','test1');
     $returnMessage = "FFFFFFF.......";
@@ -52,7 +55,8 @@ $app->get('/addCounties', function (){
         return $returnMessage;
 });
 
-//SQL FILTERED County-City import (v2)
+
+//=============================SQL FILTERED County-City import (v2)
 $app->get('/countyCityImport', function (){
     //CONNECTING TO DB
     $returnMessage = "FFFFFFF.......";
@@ -111,7 +115,8 @@ $app->get('/countyCityImport', function (){
     return $returnMessage;
 });
 
-//WikiFile import importWiki.php
+
+//==============================WIKIFILE IMPORT importWiki.php
 $app->get('/wikiImport', function (){
     //CONNECTING TO DB
     $connect = mysqli_connect('localhost', 'root', 'cozacu','test1');
@@ -144,5 +149,26 @@ $app->get('/wikiImport', function (){
     });
 
 
+//=========================MOST POPULAR PAGE/DOMAIN mostPopularBeta.php
+$app->get('/mostPopular', function (){
+    $connect = mysqli_connect('localhost','root','cozacu','test1');
+    $returnMessage = "FFFFFFF.......";
+        if (!$connect){
+            die('Failed to connect.' . mysql_error());
+        };
+    $returnMessage = 'Connection established!' . '<br>';
+
+    $sqlDomains ='SELECT domain,main_page, clicks
+    FROM (SELECT * FROM wikidata ORDER by clicks DESC) AS T
+    GROUP BY domain
+    LIMIT 10';
+    
+    $result  = $connect->query($sqlDomains);
+
+    while($endResult = $result->fetch_assoc()) {
+         $returnMessage .=  $endResult['domain'] . " " .$endResult['main_page']. " " . $endResult['clicks'] . "<br>"; 
+    }
+    return $returnMessage;
+});
 
 $app->run();
