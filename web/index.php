@@ -6,14 +6,26 @@ $app = new Silex\Application();
 
 //====================================MAIN PAGE
 $app->get('/',function (){
-    return "OK.";}
-    );
+    $numberArray = [];
+    for ($i = 1; $i <= 100; $i++){
+        $numberArray[] = [$i,rand(1,100)];
+    }
 
+    return templating('template1', ['nrArray' => $numberArray, 'x' => 2]);
+    });
+
+function templating ($path, $arguments) {
+    ob_start();
+    extract($arguments);
+    require sprintf('../views/%s.php',$path);
+    $res = ob_get_clean();
+    return $res;
+}
 
 //=====================================TEST
 $app->get('/test',function (){
-    return "WhAT?";}
-    );
+    return "WhAT?";
+    });
 
     
 //=================================SQL CONNECT
