@@ -220,7 +220,6 @@ $app->get('/temperature', function (){
     
         $result = $connect->query($temperatureQuery);
         while($endResult = $result->fetch_assoc()){
-        #var_dump($endResult);
         $returnMessage .= 'City ID: '. $endResult["city_id"] . '<br>' . 
                           'County ID: '. $endResult["countyID"] . '<br>' .
                           'County Name: ' . $endResult["nameCounty"] . '<br>' .
@@ -232,4 +231,59 @@ $app->get('/temperature', function (){
     return $returnMessage;
     });
 
+//==============================Counties and Cities - multiple queries
+$app->get('/counties-and-cities', function (){
+    $returnMessage = "FFFFFF....";    
+    
+        $connect = mysqli_connect('localhost', 'root', 'cozacu', 'test1');
+        if (!$connect){
+                die('Connection failed, mate.' . mysql_error());
+        }else{
+    $returnMessage = 'Connection established !' . '<br>';
+    
+    $returnMessage = 'Numar orase per judet:' . '<br>';
+        $citiesInCounties = 'SELECT county.id, county.name countyName, COUNT(*) nrCities
+                            FROM county
+                            INNER JOIN city ON county.id=city.county_id
+                            GROUP BY county.name';
+         
+         
+        $citiesWithNoCounty = 'SELECT city.id, city.name, county.name countyNAME
+        FROM county RIGHT JOIN city ON county.id=city.county_id WHERE city.county_id IS NULL';
+        
+        $countiesWithNoCities = 'SELECT county.id, county.name countyNAME, city.name
+        FROM county LEFT JOIN city ON county.id=city.county_id WHERE city.name IS NULL';
+        
+        $countiesWithMoreThanTwoCities = 'SELECT county.id, county.name countyName, COUNT(*) nrCities
+        FROM county RIGHT JOIN city ON county.id=city.county_id
+        GROUP BY county.name HAVING COUNT(*) >= 2 AND countyName IS NOT NULL';
+        
+         $result = $connect->query($citiesInCounties);
+         while ($endResult = $result->fetch_assoc()){
+         $returnMessage .= $endResult["countyName"]. " " . $endResult["nrCities"] . "<br>";
+         }
+         
+         $returnMessage .= '<br>' . 'Orase fara judete asignate: ' . '<br>';
+         $result = $connect->query($citiesWithNoCounty);
+         while ($endResult = $result->fetch_assoc()){
+         $returnMessage .= $endResult["id"]. " " . $endResult["name"] . "<br>";
+         }
+         
+         $returnMessage .= '<br>' . 'Judete fara orase asignate: ' . '<br>';
+         $result = $connect->query($countiesWithNoCities);
+         while ($endResult = $result->fetch_assoc()){
+         $returnMessage .= $endResult["id"]. " " . $endResult["countyNAME"] . "<br>";
+         }
+         
+         $returnMessage .= '<br>' . 'Judete cu doua sau mai multe orase: ' . '<br>';
+          $result = $connect->query($countiesWithMoreThanTwoCities);
+         while ($endResult = $result->fetch_assoc()){
+         $returnMessage .= $endResult["countyName"]. " " . $endResult["nrCities"] . "<br>";
+         }
+         
+        }
+        
+        return $returnMessage;
+    });
+    
 $app->run();
