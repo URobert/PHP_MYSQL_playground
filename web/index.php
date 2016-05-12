@@ -4,6 +4,13 @@ require_once __DIR__.'/../vendor/autoload.php';
 
 $app = new Silex\Application();
 
+$connect = mysqli_connect('localhost','root','cozacu','test1');
+
+if (!$connect){
+    die('Failed to connect.' . mysql_error());
+};
+$returnMessage = 'Connection established!' . '<br>';
+
 //====================================MAIN PAGE
 $app->get('/',function (){
     $numberArray = [];
@@ -171,26 +178,26 @@ $app->get('/wikiImport', function (){
 
 
 //=========================MOST POPULAR PAGE/DOMAIN mostPopularBeta.php
-$app->get('/mostPopular', function (){
-    $connect = mysqli_connect('localhost','root','cozacu','test1');
-    $returnMessage = "FFFFFFF.......";
-        if (!$connect){
-            die('Failed to connect.' . mysql_error());
-        };
-    $returnMessage = 'Connection established!' . '<br>';
+$app->get('/mostPopular', function () use($connect){
 
     $sqlDomains ='SELECT domain,main_page, clicks
     FROM (SELECT * FROM wikidata ORDER by clicks DESC) AS T
     GROUP BY domain
-    LIMIT 10';
+    ORDER BY clicks DESC LIMIT 10';
     
     $result  = $connect->query($sqlDomains);
+    
+    return templatingMostPopular('mpPageTemplate', ['domains' => $result]);
 
-    while($endResult = $result->fetch_assoc()) {
-         $returnMessage .=  $endResult['domain'] . " " .$endResult['main_page']. " " . $endResult['clicks'] . "<br>"; 
-    }
-    return $returnMessage;
-});
+    });
+
+    function templatingMostPopular ($path, $arguments) {
+        ob_start();
+        extract($arguments);
+        require sprintf('../views/%s.php',$path);
+        $res = ob_get_clean();
+        return $res;               
+        }
 
 //=========================Highest Bandwidth Usage H_B_Usage.php
 $app->get('/highestBandwithUsage', function (){
