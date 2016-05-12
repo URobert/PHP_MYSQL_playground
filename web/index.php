@@ -11,7 +11,7 @@ $app->get('/',function (){
         $numberArray[] = [$i,rand(1,100)];
     }
 
-    return templating('template1', ['nrArray' => $numberArray, 'x' => 2]);
+    return templating('template1', ['nrArray' => $numberArray]);
     });
 
 function templating ($path, $arguments) {
@@ -23,9 +23,18 @@ function templating ($path, $arguments) {
 }
 
 //=====================================TEST
-$app->get('/test',function (){
-    return "WhAT?";
+$app->get('/testing',function (){
+    $what = 'WHAT?';
+    return templating ('what',['whatKey' => $what]);
     });
+
+    function templatingWhat ($path, $arguments) {
+        ob_start();
+        extract($arguments);
+        require sprintf('..views/%s.php',$path);
+        $res = ob_get_clean();
+        return $res;               
+        }
 
     
 //=================================SQL CONNECT

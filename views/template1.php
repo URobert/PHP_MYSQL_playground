@@ -1,6 +1,6 @@
 <table>
     <thead>
-        <th>Number <?php echo $x ?></th>
+        <th>Number</th>
         <th>Random Nr.</th>
     </thead>
    
