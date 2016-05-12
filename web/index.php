@@ -200,4 +200,36 @@ $app->get('/highestBandwithUsage', function (){
             return $returnMessage;
 });
 
+//=========================Display MAX temperature by County and City
+$app->get('/temperature', function (){
+    $returnMessage = "FFFFFF....";
+    
+    $connect = mysqli_connect('localhost', 'root', 'cozacu', 'test1');
+        if (!$connect){
+                die('Connection failed, mate.' . mysql_error());
+        }else{
+    $returnMessage = 'Connection established !' . '<br>';
+    
+        $temperatureQuery = 'Select * FROM
+                (SELECT temperature.city_id, county.id AS countyID, county.name AS nameCounty, city.name, temperature.date, temperature.value
+                FROM temperature, city, county
+                WHERE temperature.city_id=city.id
+                AND city.county_id=county.id
+                ORDER BY value DESC) AS T
+                GROUP BY countyID';
+    
+        $result = $connect->query($temperatureQuery);
+        while($endResult = $result->fetch_assoc()){
+        #var_dump($endResult);
+        $returnMessage .= 'City ID: '. $endResult["city_id"] . '<br>' . 
+                          'County ID: '. $endResult["countyID"] . '<br>' .
+                          'County Name: ' . $endResult["nameCounty"] . '<br>' .
+                          'City: ' . $endResult["name"] . '<br>' .
+                          'Date: ' . $endResult["date"] . '<br>' .
+                          '<strong>Temperature: ' . $endResult["value"]. '</strong><br>';
+        }            
+        }
+    return $returnMessage;
+    });
+
 $app->run();
