@@ -45,23 +45,20 @@ $app->get('/testing',function (){
 
     
 //=================================SQL CONNECT
-$app->get('/sqlConnect', function (){
-    $link = mysqli_connect('localhost', 'root', 'cozacu','mysql');
-        if (!$link) {
-        die('Failed to connect: ' . mysql_error());
-        }
-    $returnMessage = 'Connection succesful!';
-    #mysql_close($link); object given in /var/www/html/TestProject/web/index.php
+$app->get('/sqlConnect', function () use($connect){
+if (!$connect){
+   die('Failed to connect.' . mysql_error());
+};
+$returnMessage = 'Connection established!' . '<br>';
     return $returnMessage;
     });
 
 
 //==================================SQL Simple county import
-$app->get('/addCounties', function (){
-    $link = mysqli_connect('localhost', 'root', 'cozacu','test1');
+$app->get('/addCounties', function () use($connect){
     $returnMessage = "FFFFFFF.......";
     
-    if (mysqli_connect_errno()) {
+    if (mysqli_connect_error()) {
         printf("Connect failed: %s\n", mysqli_connect_error());
         exit();
     }
@@ -73,7 +70,6 @@ $app->get('/addCounties', function (){
             $sql = 'INSERT INTO county (name) VALUES (\'' . $elements[1] . '\')';
             echo "<br>";
             echo $sql;
-            
     
             if (mysqli_query($link, $sql) === TRUE) {
                 #printf("County added!\n");
@@ -191,7 +187,7 @@ $app->get('/mostPopular', function () use($connect){
 
     });
 
-    function templatingMostPopular ($path, $arguments) {
+    function templatingMostPopular($path, $arguments) {
         ob_start();
         extract($arguments);
         require sprintf('../views/%s.php',$path);
@@ -200,15 +196,10 @@ $app->get('/mostPopular', function () use($connect){
         }
 
 //=========================Highest Bandwidth Usage H_B_Usage.php
-$app->get('/highestBandwithUsage', function (){
-    $returnMessage= "FFFFFFF.....";
-            $connect = mysqli_connect('localhost', 'root', 'cozacu', 'test1');
-            if (!$connect){
-                die('Connection failed, mate.' . mysql_error());
-            }else{
+$app->get('/highestBandwithUsage', function () use ($connect){
     $returnMessage = 'Connection established !' . '<br>';
-            }
-                $sqlQuery3 = 'SELECT id, SUBSTR(CONCAT(domain,".",main_page),1,10) Domain_MainPage,
+ 
+    $sqlQuery3 = 'SELECT id, SUBSTR(CONCAT(domain,".",main_page),1,10) Domain_MainPage,
             CASE
             WHEN (Round(cs / Pow(1024, 4), 2)> 1) THEN CONCAT(Round(cs / Pow(1024, 4), 2)," ","TB")
             WHEN (Round(cs / Pow(1024, 3), 2)> 1) THEN CONCAT(Round(cs / Pow(1024, 3), 2)," ","GB")
@@ -220,13 +211,24 @@ $app->get('/highestBandwithUsage', function (){
             FROM wikidata GROUP BY main_page) AS W
             ORDER BY CS DESC limit 20';
             
-            $result3= $connect->query($sqlQuery3);
+    $result3= $connect->query($sqlQuery3);
+    return templatingBandwidthUsage('highestUsageB', ['fullContent' => $result3]);
+});
+    /*
     $returnMessage .= '<br>' . 'ID'. ' Page'. ' Size' . '<br>';
             while($row = $result3->fetch_assoc()){
     $returnMessage .= $row['id'] . " " . $row['Domain_MainPage'] . " " . $row['SIZE'] . " " . "<br>";
             }
             return $returnMessage;
-});
+     */   
+    function templatingBandwidthUsage($path,$arguments){
+        ob_start();
+        extract($arguments);
+        require sprintf('../views/%s.php', $path);
+        $res = ob_get_clean();
+        return $res;
+    }
+
 
 //=========================Display MAX temperature by County and City
 $app->get('/temperature', function (){
