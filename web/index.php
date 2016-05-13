@@ -198,7 +198,7 @@ $app->get('/mostPopular', function () use($connect){
 //=========================Highest Bandwidth Usage H_B_Usage.php
 $app->get('/highestBandwithUsage', function () use ($connect){
     $returnMessage = 'Connection established !' . '<br>';
- 
+    
     $sqlQuery3 = 'SELECT id, SUBSTR(CONCAT(domain,".",main_page),1,10) Domain_MainPage,
             CASE
             WHEN (Round(cs / Pow(1024, 4), 2)> 1) THEN CONCAT(Round(cs / Pow(1024, 4), 2)," ","TB")
@@ -213,14 +213,8 @@ $app->get('/highestBandwithUsage', function () use ($connect){
             
     $result3= $connect->query($sqlQuery3);
     return templatingBandwidthUsage('highestUsageB', ['fullContent' => $result3]);
-});
-    /*
-    $returnMessage .= '<br>' . 'ID'. ' Page'. ' Size' . '<br>';
-            while($row = $result3->fetch_assoc()){
-    $returnMessage .= $row['id'] . " " . $row['Domain_MainPage'] . " " . $row['SIZE'] . " " . "<br>";
-            }
-            return $returnMessage;
-     */   
+    });
+    
     function templatingBandwidthUsage($path,$arguments){
         ob_start();
         extract($arguments);
@@ -231,45 +225,28 @@ $app->get('/highestBandwithUsage', function () use ($connect){
 
 
 //=========================Display MAX temperature by County and City
-$app->get('/temperature', function (){
-    $returnMessage = "FFFFFF....";
-    
-    $connect = mysqli_connect('localhost', 'root', 'cozacu', 'test1');
-        if (!$connect){
-                die('Connection failed, mate.' . mysql_error());
-        }else{
-    $returnMessage = 'Connection established !' . '<br>';
-    
-        $temperatureQuery = 'Select * FROM
-                (SELECT temperature.city_id, county.id AS countyID, county.name AS nameCounty, city.name, temperature.date, temperature.value
-                FROM temperature, city, county
-                WHERE temperature.city_id=city.id
-                AND city.county_id=county.id
-                ORDER BY value DESC) AS T
-                GROUP BY countyID';
-    
-        $result = $connect->query($temperatureQuery);
-        while($endResult = $result->fetch_assoc()){
-        $returnMessage .= 'City ID: '. $endResult["city_id"] . '<br>' . 
-                          'County ID: '. $endResult["countyID"] . '<br>' .
-                          'County Name: ' . $endResult["nameCounty"] . '<br>' .
-                          'City: ' . $endResult["name"] . '<br>' .
-                          'Date: ' . $endResult["date"] . '<br>' .
-                          '<strong>Temperature: ' . $endResult["value"]. '</strong><br>';
-        }            
-        }
-    return $returnMessage;
+$app->get('/temperature', function () use ($connect) {
+       $temperatureQuery = 'Select * FROM
+               (SELECT temperature.city_id, county.id AS countyID, county.name AS nameCounty, city.name, temperature.date, temperature.value
+               FROM temperature, city, county
+               WHERE temperature.city_id=city.id
+               AND city.county_id=county.id
+               ORDER BY value DESC) AS T
+               GROUP BY countyID';       
+        
+    return templatingMaxTemperature('temperatureTemplate',['fullConent' => $connect->query($temperatureQuery)]);
     });
 
+    function templatingMaxTemperature($path, $argument){
+        ob_start();
+        extract($argument);
+        require sprintf('../views/%s.php', $path);
+        $res = ob_get_clean();
+        return $res;
+    }
+
 //==============================Counties and Cities - multiple queries
-$app->get('/counties-and-cities', function (){
-    $returnMessage = "FFFFFF....";    
-    
-        $connect = mysqli_connect('localhost', 'root', 'cozacu', 'test1');
-        if (!$connect){
-                die('Connection failed, mate.' . mysql_error());
-        }else{
-    $returnMessage = 'Connection established !' . '<br>';
+$app->get('/counties-and-cities', function () use ($connect){
     
     $returnMessage = 'Numar orase per judet:' . '<br>';
         $citiesInCounties = 'SELECT county.id, county.name countyName, COUNT(*) nrCities
@@ -288,7 +265,7 @@ $app->get('/counties-and-cities', function (){
         FROM county RIGHT JOIN city ON county.id=city.county_id
         GROUP BY county.name HAVING COUNT(*) >= 2 AND countyName IS NOT NULL';
         
-         $result = $connect->query($citiesInCounties);
+         /*$result = $connect->query($citiesInCounties);
          while ($endResult = $result->fetch_assoc()){
          $returnMessage .= $endResult["countyName"]. " " . $endResult["nrCities"] . "<br>";
          }
@@ -309,11 +286,17 @@ $app->get('/counties-and-cities', function (){
           $result = $connect->query($countiesWithMoreThanTwoCities);
          while ($endResult = $result->fetch_assoc()){
          $returnMessage .= $endResult["countyName"]. " " . $endResult["nrCities"] . "<br>";
-         }
-         
-        }
+         }*/
         
-        return $returnMessage;
+        return countyTemplate('countyTemplate', ['citiesInCouties' => $connect->query($citiesInCounties)]);
     });
+
+    function countyTemplate ($path, $arguments){
+        ob_start();
+        extract($arguments);
+        require sprintf('../views/%s.php', $path);
+        $res = ob_get_clean();
+        return $res;
+    }
     
 $app->run();
