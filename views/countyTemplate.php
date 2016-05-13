@@ -70,9 +70,12 @@
 </html>
 
 
+<button type="button" class="btn btn-success">Bootstrap Button</button>
+
 <style>
     .counties{
       text-align: center;
       min-width: 200px;
     }
+    
 </style>
