@@ -34,15 +34,6 @@ $app->get('/testing',function (){
     $what = 'WHAT?';
     return templating ('what',['whatKey' => $what]);
     });
-
-    function templatingWhat ($path, $arguments) {
-        ob_start();
-        extract($arguments);
-        require sprintf('..views/%s.php',$path);
-        $res = ob_get_clean();
-        return $res;               
-        }
-
     
 //=================================SQL CONNECT
 $app->get('/sqlConnect', function () use($connect){
@@ -182,18 +173,9 @@ $app->get('/mostPopular', function () use($connect){
     ORDER BY clicks DESC LIMIT 10';
     
     $result  = $connect->query($sqlDomains);
-    
-    return templatingMostPopular('mpPageTemplate', ['domains' => $result]);
+    return templating('mpPageTemplate', ['domains' => $result]);
 
     });
-
-    function templatingMostPopular($path, $arguments) {
-        ob_start();
-        extract($arguments);
-        require sprintf('../views/%s.php',$path);
-        $res = ob_get_clean();
-        return $res;               
-        }
 
 //=========================Highest Bandwidth Usage H_B_Usage.php
 $app->get('/highestBandwithUsage', function () use ($connect){
@@ -212,17 +194,8 @@ $app->get('/highestBandwithUsage', function () use ($connect){
             ORDER BY CS DESC limit 20';
             
     $result3= $connect->query($sqlQuery3);
-    return templatingBandwidthUsage('highestUsageB', ['fullContent' => $result3]);
+    return templating('highestUsageB', ['fullContent' => $result3]);
     });
-    
-    function templatingBandwidthUsage($path,$arguments){
-        ob_start();
-        extract($arguments);
-        require sprintf('../views/%s.php', $path);
-        $res = ob_get_clean();
-        return $res;
-    }
-
 
 //=========================Display MAX temperature by County and City
 $app->get('/temperature', function () use ($connect) {
@@ -234,16 +207,8 @@ $app->get('/temperature', function () use ($connect) {
                ORDER BY value DESC) AS T
                GROUP BY countyID';       
         
-    return templatingMaxTemperature('temperatureTemplate',['fullConent' => $connect->query($temperatureQuery)]);
+    return templating('temperatureTemplate',['fullConent' => $connect->query($temperatureQuery)]);
     });
-
-    function templatingMaxTemperature($path, $argument){
-        ob_start();
-        extract($argument);
-        require sprintf('../views/%s.php', $path);
-        $res = ob_get_clean();
-        return $res;
-    }
 
 //==============================Counties and Cities - multiple queries
 $app->get('/counties-and-cities', function () use ($connect){
@@ -265,38 +230,11 @@ $app->get('/counties-and-cities', function () use ($connect){
         FROM county RIGHT JOIN city ON county.id=city.county_id
         GROUP BY county.name HAVING COUNT(*) >= 2 AND countyName IS NOT NULL';
         
-         /*$result = $connect->query($citiesInCounties);
-         while ($endResult = $result->fetch_assoc()){
-         $returnMessage .= $endResult["countyName"]. " " . $endResult["nrCities"] . "<br>";
-         }
-         
-         $returnMessage .= '<br>' . 'Orase fara judete asignate: ' . '<br>';
-         $result = $connect->query($citiesWithNoCounty);
-         while ($endResult = $result->fetch_assoc()){
-         $returnMessage .= $endResult["id"]. " " . $endResult["name"] . "<br>";
-         }
-         
-         $returnMessage .= '<br>' . 'Judete fara orase asignate: ' . '<br>';
-         $result = $connect->query($countiesWithNoCities);
-         while ($endResult = $result->fetch_assoc()){
-         $returnMessage .= $endResult["id"]. " " . $endResult["countyNAME"] . "<br>";
-         }
-         
-         $returnMessage .= '<br>' . 'Judete cu doua sau mai multe orase: ' . '<br>';
-          $result = $connect->query($countiesWithMoreThanTwoCities);
-         while ($endResult = $result->fetch_assoc()){
-         $returnMessage .= $endResult["countyName"]. " " . $endResult["nrCities"] . "<br>";
-         }*/
-        
-        return countyTemplate('countyTemplate', ['citiesInCouties' => $connect->query($citiesInCounties)]);
+        return templating('countyTemplate',
+                              ['citiesInCouties' => $connect->query($citiesInCounties),
+                               'citiesWithNoCounty'=> $connect->query($citiesWithNoCounty),
+                               'countiesWithNoCities'=> $connect->query($countiesWithNoCities),
+                               'countiesWithMoreThanTwoCities' =>$connect->query($countiesWithMoreThanTwoCities)]);
     });
 
-    function countyTemplate ($path, $arguments){
-        ob_start();
-        extract($arguments);
-        require sprintf('../views/%s.php', $path);
-        $res = ob_get_clean();
-        return $res;
-    }
-    
 $app->run();
