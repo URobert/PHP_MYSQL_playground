@@ -1,0 +1,75 @@
+Select * FROM
+(SELECT T.city_id, C.name, T.date, T.value
+FROM temperature T, city C
+WHERE T.city_id=C.id
+ORDER BY value DESC) AS T
+GROUP BY name;
+
+V2.0 (No alias)
+Select * FROM
+(SELECT temperature.city_id, city.name, temperature.date, temperature.value
+FROM temperature, city
+WHERE temperature.city_id=city.id
+ORDER BY value DESC) AS T
+GROUP BY name;
+
+V3.0 JOINING COUNTY, CITY AND TEMPERATURE
+Select * FROM
+(SELECT temperature.city_id, county.id AS countyID, county.name AS nameCounty, city.name, temperature.date, temperature.value
+FROM temperature, city, county
+WHERE temperature.city_id=city.id
+AND city.county_id=county.id
+ORDER BY value DESC) AS T
+GROUP BY countyID;
+
+// FOR BOTH MIN AND MAX:
+
+V4.0
+#Nr Cities per County:
+SELECT county.id, county.name countyName, COUNT(*) nrCities
+FROM county
+INNER JOIN city ON county.id=city.county_id
+GROUP BY county.name;
+
+#Cities with no counties assigned:
+SELECT city.id, city.name, county.name countyNAME
+FROM county RIGHT JOIN city ON county.id=city.county_id WHERE city.county_id IS NULL;
+
+#Counties with no cities assgined:
+SELECT county.id, county.name countyNAME, city.name
+FROM county LEFT JOIN city ON county.id=city.county_id;
+
+#Counties with more than two cities:
+SELECT county.id, county.name countyName, COUNT(*) nrCities
+FROM county RIGHT JOIN city ON county.id=city.county_id
+GROUP BY county.name HAVING COUNT(*) >= 2 AND countyName IS NOT NULL;
+
+
+V5.0 GROUP BY with different behaviour 
+
+SELECT * FROM (SELECT *,MAX(T.TEMP) AS MAX_TEMP FROM (SELECT county.name AS County, city.name AS CITY,temperature.date AS DATE,temperature.value AS TEMP FROM city, county, temperature WHERE city.id = temperature.city_id AND county.id = city.county_id ORDER BY temperature.value DESC) AS T GROUP BY T.County,T.CITY,T.DATE,T.TEMP ORDER BY T.TEMP DESC) AS TT GROUP BY TT.County;
+
+MY SOLUTION
+SELECT * 
+FROM   (SELECT *, 
+               Max(T.temp) AS MAX_TEMP 
+        FROM   (SELECT county.NAME       AS County, 
+                       city.NAME         AS CITY, 
+                       temperature.date  AS DATE, 
+                       temperature.value AS TEMP 
+                FROM   city, 
+                       county, 
+                       temperature 
+                WHERE  city.id = temperature.city_id 
+                       AND county.id = city.county_id 
+                ORDER  BY temperature.value DESC) AS T 
+        GROUP  BY T.county, 
+                  T.city, 
+                  T.date, 
+                  T.temp 
+        ORDER  BY T.temp DESC) AS TT 
+GROUP  BY TT.county; 
+
+
+MAX SOLUTION:
+select t1.*, t2.* from temperature as t1 inner join (select county_id, max(value) as max_value from temperature group by county_id) as t2 on t1.county_id = t2.county_id where t1.value = t2.max_value;
