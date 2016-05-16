@@ -73,3 +73,5 @@ GROUP  BY TT.county;
 
 MAX SOLUTION:
 select t1.*, t2.* from temperature as t1 inner join (select county_id, max(value) as max_value from temperature group by county_id) as t2 on t1.county_id = t2.county_id where t1.value = t2.max_value;
+
+Something new
