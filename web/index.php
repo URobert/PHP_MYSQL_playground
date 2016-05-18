@@ -7,6 +7,8 @@ require_once __DIR__.'/../vendor/autoload.php';
 
 $app = new Silex\Application();
 
+$app['debug'] = true;
+
 $connect = mysqli_connect('localhost','root','cozacu','test1');
 
 if (!$connect){
@@ -14,7 +16,7 @@ if (!$connect){
 };
 $returnMessage = 'Connection established!' . '<br>';
 
-//====================================MAIN PAGE
+//==================================== 1. MAIN PAGE (random NR.)
 $app->get('/',function (){
     $numberArray = [];
     for ($i = 1; $i <= 100; $i++){
@@ -32,13 +34,13 @@ function templating ($path, $arguments) {
     return $res;
 }
 
-//=====================================TEST
+//=====================================2. TEST (what)
 $app->get('/testing',function (){
     $what = 'WHAT?';
     return templating ('what',['whatKey' => $what]);
     });
     
-//=================================SQL CONNECT
+//=================================3.SQL CONNECT (simple connect)
 $app->get('/sqlConnect', function () use($connect){
 if (!$connect){
    die('Failed to connect.' . mysql_error());
@@ -48,7 +50,7 @@ $returnMessage = 'Connection established!' . '<br>';
     });
 
 
-//==================================SQL Simple county import
+//==================================4. SQL Simple county import (county import)
 $app->get('/addCounties', function () use($connect){
     $returnMessage = "FFFFFFF.......";
     
@@ -65,7 +67,7 @@ $app->get('/addCounties', function () use($connect){
             echo "<br>";
             echo $sql;
     
-            if (mysqli_query($link, $sql) === TRUE) {
+            if (mysqli_query($connect, $sql) === TRUE) {
                 #printf("County added!\n");
                 $returnMessage = "<br>"."Counties added to DB!" . "<br>";
             }       
@@ -74,8 +76,8 @@ $app->get('/addCounties', function () use($connect){
 });
 
 
-//=============================SQL FILTERED County-City import (v2)
-$app->get('/countyCityImport', function (){
+//============================= 5. SQL FILTERED County-City import (v2)
+$app->get('/countyCityImport', function () use($connect){
     //CONNECTING TO DB
     $returnMessage = "FFFFFFF.......";
     $connect = mysqli_connect('localhost', 'root', 'cozacu','test1');
@@ -134,10 +136,9 @@ $app->get('/countyCityImport', function (){
 });
 
 
-//==============================WIKIFILE IMPORT importWiki.php
-$app->get('/wikiImport', function (){
+//==============================6. WIKIFILE IMPORT (importWiki.php)
+$app->get('/wikiImport', function () use($connect){
     //CONNECTING TO DB
-    $connect = mysqli_connect('localhost', 'root', 'cozacu','test1');
     $returnMessage = "FFFFFFF.......";
         if (!$connect) {
             die('Connection failed!' . mysql_error());
@@ -167,7 +168,7 @@ $app->get('/wikiImport', function (){
     });
 
 
-//=========================MOST POPULAR PAGE/DOMAIN mostPopularBeta.php
+//=========================7. MOST POPULAR PAGE/DOMAIN mostPopularBeta.php
 $app->get('/mostPopular', function () use($connect){
 
     $sqlDomains ='SELECT domain,main_page, clicks
@@ -180,7 +181,7 @@ $app->get('/mostPopular', function () use($connect){
 
     });
 
-//=========================Highest Bandwidth Usage H_B_Usage.php
+//=========================8. Highest Bandwidth Usage H_B_Usage.php
 $app->get('/highestBandwithUsage', function () use ($connect){
     $returnMessage = 'Connection established !' . '<br>';
     
@@ -200,20 +201,39 @@ $app->get('/highestBandwithUsage', function () use ($connect){
     return templating('highestUsageB', ['fullContent' => $result3]);
     });
 
-//=========================Display MAX temperature by County and City
+//=========================9. Display MAX temperature by County and City
 $app->get('/temperature', function () use ($connect) {
-       $temperatureQuery = 'Select * FROM
+       /*$temperatureQuery = 'Select * FROM
                (SELECT temperature.city_id, county.id AS countyID, county.name AS nameCounty, city.name, temperature.date, temperature.value
                FROM temperature, city, county
                WHERE temperature.city_id=city.id
                AND city.county_id=county.id
                ORDER BY value DESC) AS T
-               GROUP BY countyID';       
+               GROUP BY countyID';*/       
         
+        $temperatureQuery ='SELECT * 
+                            FROM   (SELECT *, 
+                                           ROUND(Max(T.temp),2) AS MAX_TEMP 
+                                    FROM   (SELECT county.NAME       AS County, 
+                                                   city.NAME         AS CITY, 
+                                                   temperature.date  AS DATE, 
+                                                   temperature.value AS TEMP 
+                                            FROM   city, 
+                                                   county, 
+                                                   temperature 
+                                            WHERE  city.id = temperature.city_id 
+                                                   AND county.id = city.county_id 
+                                            ORDER  BY temperature.value DESC) AS T 
+                                    GROUP  BY T.county, 
+                                              T.city, 
+                                              T.date, 
+                                              T.temp 
+                                    ORDER  BY T.temp DESC) AS TT 
+                            GROUP  BY TT.county';
     return templating('temperatureTemplate',['fullConent' => $connect->query($temperatureQuery)]);
     });
 
-//==============================Counties and Cities - multiple queries
+//==============================10. Counties and Cities - multiple queries
 $app->get('/counties-and-cities', function () use ($connect){
     
     $returnMessage = 'Numar orase per judet:' . '<br>';
