@@ -12,8 +12,11 @@ $app['debug'] = true;
 $connect = mysqli_connect('localhost','root','cozacu','test1');
 
 if (!$connect){
-    die('Failed to connect.' . mysql_error());
+    throw new Exception('Failed to connect.' . mysql_error());
 };
+
+$app['connect'] = $connect;
+
 $returnMessage = 'Connection established!' . '<br>';
 
 //==================================== 1. MAIN PAGE (random NR.)
@@ -34,10 +37,12 @@ function templating ($path, $arguments) {
     return $res;
 }
 
+$app['templating'] = 'templating';
+
 //=====================================2. TEST (what)
-$app->get('/testing',function (){
+$app->get('/testing',function () use($app){
     $what = 'WHAT?';
-    return templating ('what',['whatKey' => $what]);
+    return $app['templating']('what',['whatKey' => $what]);
     });
     
 //=================================3.SQL CONNECT (simple connect)
@@ -51,29 +56,7 @@ $returnMessage = 'Connection established!' . '<br>';
 
 
 //==================================4. SQL Simple county import (county import)
-$app->get('/addCounties', function () use($connect){
-    $returnMessage = "FFFFFFF.......";
-    
-    if (mysqli_connect_error()) {
-        printf("Connect failed: %s\n", mysqli_connect_error());
-        exit();
-    }
-       $fileContent = file_get_contents("judete.csv");
-       $lines = explode("\n", $fileContent);
-       
-        for ($i=1; $i < count($lines) -1; $i++){
-            $elements = explode(",", $lines[$i]);
-            $sql = 'INSERT INTO county (name) VALUES (\'' . $elements[1] . '\')';
-            echo "<br>";
-            echo $sql;
-    
-            if (mysqli_query($connect, $sql) === TRUE) {
-                #printf("County added!\n");
-                $returnMessage = "<br>"."Counties added to DB!" . "<br>";
-            }       
-        }
-        return $returnMessage;
-});
+$app->get('/addCounties', array(new TestProject\Controller\Import\Location($app), 'action'));
 
 
 //============================= 5. SQL FILTERED County-City import (v2)
