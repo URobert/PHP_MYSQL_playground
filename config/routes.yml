@@ -1,20 +1,29 @@
 - url: /
-  controller: TestProject\Controller\LandingPage\RandomIntro
+  controller: LandingPage\RandomIntro
+  
 - url: /testing
-  controller: TestProject\Controller\Test\Testing
+  controller: Test\Testing
+  
 - url: /sqlConnect
-  controller: TestProject\Controller\mySQLConnect\Connect
+  controller: mySQLConnect\Connect
+  
 - url: /addCounties 
-  controller: TestProject\Controller\Import\Location
+  controller: Import\Location
+  
 - url: /countyCityImport
-  controller: TestProject\Controller\Import\CountyAndCityImport
+  controller: Import\CountyAndCityImport
+  
 - url: /wikiImport  
-  controller: TestProject\Controller\Import\WikiImport
+  controller: Import\WikiImport
+  
 - url: /mostPopular
-  controller: TestProject\Controller\Statistics\MostPopularPage
+  controller: Statistics\MostPopularPage
+  
 - url: /highestBandwithUsage
-  controller: TestProject\Controller\Statistics\HighestBWUsage
+  controller: Statistics\HighestBWUsage
+  
 - url: /temperature
-  controller: TestProject\Controller\Statistics\MaxTemperature
+  controller: Statistics\MaxTemperature
+  
 - url: /counties-and-cities
-  controller: TestProject\Controller\Statistics\County_City_Stats
+  controller: Statistics\County_City_Stats

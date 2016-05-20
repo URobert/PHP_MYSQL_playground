@@ -29,7 +29,7 @@ $routes = $parser->parse(file_get_contents(__DIR__.'/../config/routes.yml'));
 #var_dump($routes);
 
 foreach ($routes as $route){
-    $reflection = new ReflectionClass($route["controller"]);
+    $reflection = new ReflectionClass("TestProject\\Controller\\" . $route["controller"]);
     $myObj = $reflection->newInstance($app);
     $app->get($route["url"], array($myObj,"action"));
 }
