@@ -24,34 +24,14 @@ function templating ($path, $arguments) {
     return $res;
 }
 
-//==================================1. MAIN PAGE (random NR.)
-$app->get('/', array(new TestProject\Controller\LandingPage\RandomIntro($app), 'action'));
+$parser = new Symfony\Component\Yaml\Parser();
+$routes = $parser->parse(file_get_contents(__DIR__.'/../config/routes.yml'));
+#var_dump($routes);
 
-//==================================2. TEST (what)
-$app->get('testing', array(new TestProject\Controller\Test\Testing($app), 'action'));
-    
-//==================================3.SQL CONNECT (simple connect)
-$app->get('/sqlConnect', array(new TestProject\Controller\mySQLConnect\Connect($app), 'action'));
-
-//==================================4. SQL Simple county import (county import)
-$app->get('/addCounties', array(new TestProject\Controller\Import\Location($app), 'action'));
-
-//==================================5. SQL FILTERED County-City import (v2)
-$app->get('/countyCityImport', array(new TestProject\Controller\Import\CountyAndCityImport($app), 'action'));
-
-//==================================6. WIKIFILE IMPORT (importWiki.php)
-$app->get('/wikiImport', array(new TestProject\Controller\Import\WikiImport($app), 'action'));
-
-//==================================7. MOST POPULAR PAGE/DOMAIN mostPopularBeta.php
-$app->get('/mostPopular', array(new TestProject\Controller\Statistics\MostPopularPage($app), 'action'));
-
-//==================================8. Highest Bandwidth Usage H_B_Usage.php
-$app->get('/highestBandwithUsage', array(new TestProject\Controller\Statistics\HighestBWUsage($app), 'action'));
-
-//==================================9. Display MAX temperature by County and City
-$app->get('/temperature',array(new TestProject\Controller\Statistics\MaxTemperature($app), 'action'));
-
-//=================================10. Counties and Cities - multiple queries
-$app->get('/counties-and-cities', array(new TestProject\Controller\Statistics\County_City_Stats($app), 'action'));
+foreach ($routes as $route){
+    $reflection = new ReflectionClass($route["controller"]);
+    $myObj = $reflection->newInstance($app);
+    $app->get($route["url"], array($myObj,"action"));
+}
 
 $app->run();
