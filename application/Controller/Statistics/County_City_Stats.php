@@ -2,7 +2,7 @@
 
 namespace TestProject\Controller\Statistics;
 
-class County_City_Stats {
+class County_City_Stats implements \TestProject\Controller\ControllerInterface {
     
     public function __construct($app){
         $this->connect = $app['connect'];

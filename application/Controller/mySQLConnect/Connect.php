@@ -2,7 +2,7 @@
 
 namespace TestProject\Controller\mySQLConnect;
 
-class Connect{
+class Connect implements \TestProject\Controller\ControllerInterface {
     protected $connect;
 
     public function __construct($app){
@@ -13,4 +13,4 @@ class Connect{
         $message = "Connection was established!";
         return $message;
     }
-}
+} 

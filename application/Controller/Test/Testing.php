@@ -2,7 +2,7 @@
 
 namespace TestProject\Controller\Test;
 
-class Testing {
+class Testing implements \TestProject\Controller\ControllerInterface {
     
     public function __construct($app){
         #$this->what = $app['WHAT?'];

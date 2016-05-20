@@ -3,7 +3,7 @@
 namespace TestProject\Controller\Import;
 
 
-class Location {
+class Location implements \TestProject\Controller\ControllerInterface {
     
     protected $connect;
     protected $source_file = "judete.csv";

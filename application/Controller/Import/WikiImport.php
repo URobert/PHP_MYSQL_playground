@@ -2,7 +2,7 @@
 
 namespace TestProject\Controller\Import;
 
-class WikiImport {
+class WikiImport implements \TestProject\Controller\ControllerInterface {
     
     protected $connect;
     protected $source_file = 'test';

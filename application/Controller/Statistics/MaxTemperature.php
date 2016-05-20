@@ -4,7 +4,7 @@ namespace TestProject\Controller\Statistics;
 
 
 
-class MaxTemperature{
+class MaxTemperature implements \TestProject\Controller\ControllerInterface {
     public function __construct($app){
         $this->connect = $app['connect'];
         $this->templating = $app['templating'];

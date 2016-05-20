@@ -2,7 +2,7 @@
 
 namespace TestProject\Controller\LandingPage;
 
-class RandomIntro {
+class RandomIntro implements \TestProject\Controller\ControllerInterface {
 
 
     public function __construct($app) {

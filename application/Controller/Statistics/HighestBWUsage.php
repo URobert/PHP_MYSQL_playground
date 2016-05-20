@@ -2,7 +2,7 @@
 
 namespace TestProject\Controller\Statistics;
 
-class HighestBWUsage {
+class HighestBWUsage implements \TestProject\Controller\ControllerInterface {
     
     public function __construct($app) {
     $this->connect = $app['connect'];

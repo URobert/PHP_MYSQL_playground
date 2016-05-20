@@ -2,7 +2,7 @@
 
 namespace TestProject\Controller\Import;
 
-class CountyAndCityImport {
+class CountyAndCityImport implements \TestProject\Controller\ControllerInterface {
     
     protected $connect;
     protected $source_file = "orase_judete.csv";
