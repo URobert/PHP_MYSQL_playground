@@ -1,6 +1,6 @@
 <html>
     <body>
-        <form action="action_page.php" method="post">
+        <form action="/counties/add" method="post">
           County:
           <input type="text" name="county"> 
         

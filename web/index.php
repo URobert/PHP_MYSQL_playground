@@ -4,6 +4,7 @@
 <?php
 // web/index.php
 require_once __DIR__.'/../vendor/autoload.php';
+use Symfony\Component\HttpFoundation\Request;
 
 $connect = mysqli_connect('localhost','root','cozacu','test1');
 
@@ -29,11 +30,11 @@ $routes = $parser->parse(file_get_contents(__DIR__.'/../config/routes.yml'));
 #var_dump($routes);
 
 foreach ($routes as $route){
-    $app->get($route["url"], function() use($route, $app) {
+    $app->{$route["method"]}($route["url"], function(Request $request) use($route, $app) {
         $reflection = new ReflectionClass("TestProject\\Controller\\" . $route["controller"]);
         $instance = $reflection->newInstance($app);
         
-        return $instance->action();
+        return $instance->action($request);
     });
 }
 

@@ -1,38 +1,51 @@
 - url: /
+  method: get
   controller: LandingPage\RandomIntro
   
 - url: /testing
+  method: get
   controller: Test\Testing
   
 - url: /sqlConnect
+  method: get
   controller: mySQLConnect\Connect
   
-- url: /addCounties 
+- url: /addCounties
+  method: get
   controller: Import\Location
   
 - url: /countyCityImport
+  method: get
   controller: Import\CountyAndCityImport
   
-- url: /wikiImport  
+- url: /wikiImport
+  method: get
   controller: Import\WikiImport
   
 - url: /mostPopular
+  method: get
   controller: Statistics\MostPopularPage
   
 - url: /highestBandwithUsage
+  method: get
   controller: Statistics\HighestBWUsage
   
 - url: /temperature
+  method: get
   controller: Statistics\MaxTemperature
   
 - url: /counties-and-cities
+  method: get
   controller: Statistics\County_City_Stats
 
 - url: /counties/add
+  method: get
   controller: Counties\Add
   
-- url: /counties/action_page
-  controller: Counties\action_page.php
+- url: /counties/add
+  method: post
+  controller: Counties\Add
 
 - url: /counties/delete
+  method: get
   controller: Counties\Delete

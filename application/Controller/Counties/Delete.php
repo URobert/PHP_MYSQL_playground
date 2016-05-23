@@ -10,11 +10,11 @@ class Delete {
     
     
     public function action () {
-        $sqlQuery = 
+        $sqlQuery = "Select * From city";
         
         $templating = $this->templating;
         
-        return $templating('manualCountyAdd', [null]);         
+        return $templating('manualCountyDelete', ['fullConent' => $this->connect->query($sqlQuery)]);         
     }
 }
 
