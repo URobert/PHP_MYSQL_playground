@@ -27,3 +27,9 @@
   
 - url: /counties-and-cities
   controller: Statistics\County_City_Stats
+
+- url: /counties/add
+  controller: Counties\Add
+
+- url: /counties/delete
+  controller: Counties\Delete

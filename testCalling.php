@@ -17,8 +17,19 @@
 //$f = array(new A, 'B');
 //$f();
 
-$a = trim("lorem    ");
-$a = call_user_func('trim', 'lorem    ');
-$a = call_user_func_array('trim', array('lorem   '));
-$a = array('trim');
-$a('lorem   ');
+//$a = trim("lorem    ");
+//$a = call_user_func('trim', 'lorem    ');
+//$a = call_user_func_array('trim', array('lorem   '));
+//$a = array('trim');
+//$a('lorem   ');
+
+
+class T {
+    public function methodA($x) {
+        var_dump($x);
+    }
+}
+
+$t = new T;
+$f = array($t, 'methodA');
+$f(1);
