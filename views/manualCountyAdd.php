@@ -1,41 +1,32 @@
 <html>
     <body>
         <form action="/counties/add" method="post">
-          
-        <!-- get county list from DB -->
-        <?php
-        include_once 'Add.php';
-        $requestCountyList = "SELECT * FROM county";
-        $returedList = $this->connect->query($requestCountyList);
-        var_dump($returedList);    
-              
-        ?>  
+           <!--<?php print_r($fullCountyList) ?>--> 
           County:
-          <select name='countyid'>
-            <option value='0'>-select county-</option>
-            <option value='1'>Bihor</option>
-            <option value='1'>Bihor</option>
-            <option value='1'>Bihor</option>
-            <option value='1'>Bihor</option>
+          <select name='countyid' id='countyid'>
+            <option value='0'>-add new-</option>
+            <?php for($i = 0; $i < count($fullCountyList); $i+=1): ?>
+            <option value='<?php echo $fullCountyList[$i] ?>'><?php echo $fullCountyList[$i] ?></option>
+            <?php endfor ?>
+            <option value='-1'>Other</option>
           </select>
-        
-         <input type="text" name="county" id="county">
+            <div class="countyField"> 
+            <input type="text" name="county" id="county">
+            </div>
           City:
           <input type="text" name="city" id="city">
           <input type="submit" value="Add">
         </form>
         
-    </body>
-</html>
-
-
-
 <style>
     form{
         text-align: center;
         margin-top:50px;
     }
 </style>
+
+    </body>
+</html>
 
 <!--<script language=javascript>
     console.log($("#county").val());
@@ -45,3 +36,14 @@
         console.log("script goes on");
     }
 </script>-->
+
+<script language=javascript>
+    $(".countyField").hide();
+    
+    $("#countyid").change(function (){
+        console.log($("#countyid option:selected").text());
+        if ( $("#countyid option:selected").text() == "Other" ){
+            $(".countyField").fadeIn("show");
+        }
+    });
+</script>
