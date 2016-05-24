@@ -12,7 +12,7 @@
                 <tr>
                     <td><?= $entry['id'] ?></td>
                     <td><?= $entry['name'] ?></td>
-                    <td><button>Delete</button></td>
+                    <td><button class='btn btn-primary'>Delete</button></td>
                 </tr>
                 <?php endwhile; ?>
 
