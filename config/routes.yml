@@ -49,3 +49,7 @@
 - url: /counties/delete
   method: get
   controller: Counties\Delete
+  
+- url: /cities/delete
+  method: get
+  controller: Counties\Delete

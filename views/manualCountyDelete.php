@@ -1,3 +1,4 @@
+<?php namespace TestProject\Controller\Counties; ?>
 <html>
 
 <div class="wrapper">    
@@ -9,11 +10,10 @@
             </thead>
                 <?php $buttonID= "";  ?>
                 <?php while ($entry = $fullConent->fetch_assoc()): ?>
-                <?php $buttonID = $entry['name'] ?>
                 <tr>
                     <td><?= $entry['id'] ?></td>
                     <td><?= $entry['name'] ?></td>
-                    <td><button class='btn btn-danger deleteButton' id='<?php echo $buttonID?>'>Delete</button></td>
+                    <td><button class='btn btn-danger deleteButton' data-id='<?= $entry['id'] ?>'>Delete</button></td>
                 </tr>
                 <?php endwhile; ?>
         
@@ -32,3 +32,22 @@
 
 </style>
               	
+<script language=javascript>
+    $('.deletebutton').click(function() {
+       var deleteRow = $(this).attr('data-id');
+       //console.log(deleteRow + " was deleted");
+       
+        $.ajax({
+          type: "POST",
+          url: "/county/delete" ,
+          data: { id:deleteRow },
+          success : function() { 
+                     //location.reload();
+                     console.log(deleteRow + " was deleted");                           
+  
+          },
+          error       : function() { console.log("Service call failed")}
+        });           
+       return false;
+    });
+</script>

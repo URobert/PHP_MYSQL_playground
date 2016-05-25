@@ -13,8 +13,15 @@ class Delete {
         $sqlQuery = "Select * From city";
         
         $templating = $this->templating;
+        $deleteQuery = "DELETE FROM city WHERE id=" . var_dump($_POST['id']);
+        echo $deleteQuery;
         
         return $templating('manualCountyDelete', ['fullConent' => $this->connect->query($sqlQuery)]);         
     }
+    
+    public function delRow(){
+        #$deleteQuery = "DELETE FROM city WHERE id=" . $_POST['id'];
+        #echo $deleteQuery;
+    }
+    
 }
-
