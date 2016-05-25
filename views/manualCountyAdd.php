@@ -1,18 +1,16 @@
 <html>
     <body>
         <form action="/counties/add" method="post">
-           <!--<?php print_r($fullCountyList) ?>--> 
+          <!--  <?php var_dump($counties) ?> --> 
           County:
           <select name='countyid' id='countyid'>
             <option value='0'>-add new-</option>
-            <?php for($i = 0; $i < count($fullCountyList); $i+=1): ?>
-            <option value='<?php echo $fullCountyList[$i] ?>'><?php echo $fullCountyList[$i] ?></option>
-            <?php endfor ?>
+            <?php foreach($counties as $county): ?>
+            <option value='<?= $county['id'] ?>'><?= $county['name'] ?></option>
+            <?php endforeach ?>
             <option value='-1'>Other</option>
           </select>
-            <div class="countyField"> 
-            <input type="text" name="county" id="county">
-            </div>
+            <input type="text" name="county" id="county" class="countyField">
           City:
           <input type="text" name="city" id="city">
           <input type="submit" value="Add">
@@ -41,9 +39,11 @@
     $(".countyField").hide();
     
     $("#countyid").change(function (){
-        console.log($("#countyid option:selected").text());
-        if ( $("#countyid option:selected").text() == "Other" ){
+        console.log($(this).val());
+        if ( $(this).val() == -1 ){
             $(".countyField").fadeIn("show");
+        } else {
+            $(".countyField").hide();
         }
     });
 </script>
