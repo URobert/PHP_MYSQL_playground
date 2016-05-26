@@ -34,7 +34,8 @@ foreach ($routes as $route){
         $reflection = new ReflectionClass("TestProject\\Controller\\" . $route["controller"]);
         $instance = $reflection->newInstance($app);
         
-        return $instance->action($request);
+        $action =  isset($route['function']) ? $route['function'] : 'action';
+        return $instance->{$action}($request);
     });
 }
 

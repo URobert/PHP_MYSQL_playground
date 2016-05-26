@@ -2,9 +2,15 @@
   method: get
   controller: County\Home
   
-- url: /counties/edit/
+- url: /counties/edit/{id}
   method: get
   controller: County\Edit
+  function: cow
+  
+- url: /counties/edit/{id}
+  method: post
+  controller: County\Edit
+  function: cow
   
 - url: /randomNr
   method: get

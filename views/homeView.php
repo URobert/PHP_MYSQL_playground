@@ -9,9 +9,9 @@
             </thead>
             <?php foreach ($countylist as $county): ?>
                 <tr>
-                    <td><a href="/counties/edit/?id=<?= $county['id'] ?>" id='<?php $county['id']?>'><?= $county['name']?></a></td>
-                    <td><a href="/cities/index/?id=<?= $county['id'] ?>" id='<?php $county['id']?>'>cities</a></td>
-                    <td><a href="/counties/delete/?id=<?= $county['id'] ?>" id='<?php $county['id']?>'>X</a></td>
+                    <td><a href="/counties/edit/<?= $county['id'] ?>" id='<?php $county['id']?>'><?= $county['name']?></a></td>
+                    <td><a href="/cities/index/<?= $county['id'] ?>" id='<?php $county['id']?>'>cities</a></td>
+                    <td><a href="/counties/delete/<?= $county['id'] ?>" id='<?php $county['id']?>'>X</a></td>
 
                 </tr>
             <?php endforeach ?>            

@@ -1,32 +1,39 @@
 <?php
 namespace TestProject\Controller\County;
-
+use Symfony\Component\HttpFoundation\Request;
 class Edit {
     public function __construct($app){
         $this->connect = $app['connect'];
-        $this->templating = $app['templating'];    
+        $this->templating = $app['templating'];
     }
     
-    public function action(){
+    public function cow(Request $request){
+        $id = $request->get('id');
         #print_r(count($_GET));
-        $countySelected ="";
         $templating = $this->templating;
-        if (count($_GET) === 1){
-            $countySelected = $this->getCounty();
-        return $templating('editView', ['county'  =>  $this->getCounty() ] );
+        if ($request->getMethod() == "GET"){
+            return $templating('editView', ['county'  =>  $this->getCounty($id) ] );
         } else {
-             if  ( !$this->checkFields() )  {
-                #echo "Filed can not be empty";
-             } else {
-                echo "County successfully updated.";
-             }
-        return $templating('editView', ['county'  =>  $countySelected ] );   
-        }
-          
+            $countyid = $request->get("countyid");
+            $name = $request->get("name");
+            $sqlUpdate = 'UPDATE county SET id='. $countyid .',name="' . $name .'"WHERE id=' . $id;
+            if ($this->connect->query($sqlUpdate) === TRUE) {
+                echo "County successfully updated." . "<br>";
+                echo "New ID: " . $countyid . "<br>";
+                echo "New name: " . $name . "<br>";
+                echo "<a href='/../../home'>Go back</a>";
+                exit;
+            } else {
+                echo "Error updating record: " . $this->connect->error;
+            }
+
+                #return $templating('editView', ['county'  =>  $this->getCounty() ] );   
+        }   
     }
     
-    function getCounty(){
-        $sqlRequest = "SELECT * FROM county WHERE id=" . $_GET['id'];
+    
+    public function getCounty($id){
+        $sqlRequest = "SELECT * FROM county WHERE id=" . $id;
         $result = $this->connect->query($sqlRequest);
         #$row = $result->fetch_row();
         #var_dump($row);
@@ -34,19 +41,6 @@ class Edit {
             $county [] = array('id'=> $element['id'], 'name'=> $element['name']);
         }
         return $county;
-    }
-
-    function checkFields(){
-    
-    if (empty($_GET['countyid'])){
-         return false;
-     }
-     
-     if (empty($_GET['name'])  ){
-        return false;
-     }
-     
-    return true;
     }
 }//end of Edit Class
 
