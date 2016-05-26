@@ -1,6 +1,6 @@
 <?php
 
-namespace TestProject\Controller\Counties;
+namespace TestProject\Controller\County;
 use Symfony\Component\HttpFoundation\Request;
 
 class Add {

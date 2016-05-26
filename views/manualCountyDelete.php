@@ -35,8 +35,7 @@
 <script language=javascript>
     $('.deletebutton').click(function() {
        var deleteRow = $(this).attr('data-id');
-       //console.log(deleteRow + " was deleted");
-       
+       //console.log(deleteRow + " was deleted");       
         $.ajax({
           type: "POST",
           url: "/county/delete" ,

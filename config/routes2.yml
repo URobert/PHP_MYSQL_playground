@@ -1,4 +1,4 @@
-- url: /randomNr
+- url: /
   method: get
   controller: LandingPage\RandomIntro
   
@@ -40,27 +40,33 @@
 
 - url: /counties/add
   method: get
-  controller: County\Add
+  controller: Counties\Add
   
 - url: /counties/add
   method: post
-  controller: County\Add
+  controller: Counties\Add
 
 - url: /counties/delete
   method: get
-  controller: County\Delete
+  controller: Counties\Delete
   
 - url: /cities/delete
   method: get
-  controller: County\Delete
+  controller: Counties\Delete
   
-- url: /home
+- url: /counties/list
   method: get
-  controller: County\Index
+  controller: Counties\CountyList
   
-- url: /counties/edit/
+  
+- url: /aa/aa
   method: get
-  controller: County\Edit
-
+  controler: Aa\Test
+  call:one
+  
+- url: /aa/bb
+  method: get
+  controler: Aa\Test
+  call:two
   
   
