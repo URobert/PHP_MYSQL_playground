@@ -8,35 +8,46 @@ class Edit {
     }
     
     public function action(){
-        print_r($_GET);
+        #print_r(count($_GET));
+        $countySelected ="";
         $templating = $this->templating;
-        
-        return $templating('countyListView', ['countylist'  =>  $this->getCountyList() ] );
-    }
-    
-    function getCountyList(){
-        $counties = array();
-        $requestCountyList = "SELECT * FROM county";
-        $returedList = $this->connect->query($requestCountyList);
-        #var_dump($returedList);
-        foreach ($returedList as $county){
-            $counties [] = array('id'=> $county['id'], 'name'=> $county['name']);
+        if (count($_GET) === 1){
+            $countySelected = $this->getCounty();
+        return $templating('editView', ['county'  =>  $this->getCounty() ] );
+        } else {
+             if  ( !$this->checkFields() )  {
+                #echo "Filed can not be empty";
+             } else {
+                echo "County successfully updated.";
+             }
+        return $templating('editView', ['county'  =>  $countySelected ] );   
         }
-        return $counties;
+          
     }
     
-    function displayCityList($county){
-        
-    } 
+    function getCounty(){
+        $sqlRequest = "SELECT * FROM county WHERE id=" . $_GET['id'];
+        $result = $this->connect->query($sqlRequest);
+        #$row = $result->fetch_row();
+        #var_dump($row);
+        foreach ($result as $element){
+            $county [] = array('id'=> $element['id'], 'name'=> $element['name']);
+        }
+        return $county;
+    }
+
+    function checkFields(){
     
-}//end of countyList class
-
-
-
-
-
-
-
-
+    if (empty($_GET['countyid'])){
+         return false;
+     }
+     
+     if (empty($_GET['name'])  ){
+        return false;
+     }
+     
+    return true;
+    }
+}//end of Edit Class
 
 ?>

@@ -1,3 +1,11 @@
+- url: /home
+  method: get
+  controller: County\Home
+  
+- url: /counties/edit/
+  method: get
+  controller: County\Edit
+  
 - url: /randomNr
   method: get
   controller: LandingPage\RandomIntro
@@ -53,14 +61,15 @@
 - url: /cities/delete
   method: get
   controller: County\Delete
-  
-- url: /home
+
+- url: /counties/AddCounty
   method: get
-  controller: County\Index
+  controller: County\AddCounty
   
-- url: /counties/edit/
-  method: get
-  controller: County\Edit
+- url: /counties/AddCounty
+  method: post
+  controller: County\AddCounty
+  
 
   
   

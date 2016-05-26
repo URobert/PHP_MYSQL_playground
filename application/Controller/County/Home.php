@@ -1,7 +1,7 @@
 <?php
 namespace TestProject\Controller\County;
 
-class Index {
+class Home {
     public function __construct($app){
         $this->connect = $app['connect'];
         $this->templating = $app['templating'];    
@@ -10,7 +10,7 @@ class Index {
     public function action(){
         $templating = $this->templating;
         
-        return $templating('countyListView', ['countylist'  =>  $this->getCountyList() ] );
+        return $templating('homeView', ['countylist'  =>  $this->getCountyList() ] );
     }
     
     function getCountyList(){

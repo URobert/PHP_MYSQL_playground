@@ -1,7 +1,7 @@
 <html>
     <body>
         
-    <a href="/counties/add/">Add new county</a>
+    <a href="/counties/AddCounty" id="addCounty">Add new county</a>
 
         <table class="counties"  width="250px" border=1>
             <thead>
@@ -21,7 +21,14 @@
 
 <style>
     .counties{
-        margin-left: 45%;
+        margin-top: 10%;
+        margin-left: 40%;
+    }
+    
+    #addCounty{
+        color:red;
+        font-weight: bold;
+        
     }
 </style>
 
