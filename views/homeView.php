@@ -10,7 +10,7 @@
             <?php foreach ($countylist as $county): ?>
                 <tr>
                     <td><a href="/counties/edit/<?= $county['id'] ?>" id='<?php $county['id']?>'><?= $county['name']?></a></td>
-                    <td><a href="/cities" id='<?php $county['id']?>'>cities</a></td>
+                    <td><a href="/cities/<?= $county['id'] ?>" id='<?php $city['id']?>'>cities</a></td>
                     <td><a href="/counties/delete/<?= $county['id'] ?>" id='<?php $county['id']?>'>X</a></td>
 
                 </tr>

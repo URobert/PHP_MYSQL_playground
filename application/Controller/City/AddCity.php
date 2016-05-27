@@ -10,6 +10,7 @@ class AddCity {
     }
     
     public function action (Request $request) {
+        $id = $request->get('id');
         $templating = $this->templating;
         if ($request->getMethod() === "POST"){
             
@@ -20,17 +21,17 @@ class AddCity {
                 echo '</script>'; 
              } else {
                 // REFACTOR INSERT QUERIES`
-                $checkCity = "SELECT * FROM city WHERE name=". "'" . $_POST['city']. "'" . " limit 1";
+                $checkCity = 'SELECT * FROM city WHERE name="' . $_POST['city'] . '" AND county_id='.
+                $id . ' limit 1';
                 $result = $this->connect->query($checkCity);
                 if ($result->num_rows){
                     foreach ($result as $city){
                         $cityId = $city['id'];                                                          
                     }
-                    echo "City ". $city['name'] . " already exists in DB.";
+                    echo "City ". $city['name'] . " already exists in this county.";
                 }else{                        
-                    echo $_POST['city'] . "City NOT FOUND." . "<br>";
-                    $addNewCity = 'INSERT INTO city (name) VALUES ('
-                     ."'"  . $_POST['city'] . "'" .')';
+                    $addNewCity = 'INSERT INTO city (name,county_id)
+                                   VALUES ("' . $_POST['city'] . '",' . $id .')';
                     if ($this->connect->query($addNewCity) === TRUE) {
                         echo "City sucessfuly added:" . $_POST['city'] . "<br>";
                         $cityId = mysqli_insert_id($this->connect);
@@ -39,23 +40,37 @@ class AddCity {
                 
              }
         }//end of POST method check
-        return $templating('addCityView', [ 'cities' => $this->getCityList() ]);         
+        return $templating('addCityView', [ 'cities' => $this->getCity($id),
+                                            'countyId' => $id,
+                                            'countyName' => $this->getCounty($id)]);         
     }
     
-    function checkFields(){         
+    public function checkFields(){         
          if ( empty($_POST['city']) ){
             return false;
          }
         return true;
     }
     
-    function getCityList(){
+    public function getCity($id){
         $cities = array();
-        $requestCityList = "SELECT * FROM city";
+        $requestCityList = "SELECT * FROM city WHERE county_id=" . $id;
         $returedList = $this->connect->query($requestCityList);
         foreach ($returedList as $city){
             $cities [] = array('id'=> $city['id'], 'name'=> $city['name']);
         }
         return $cities;
     }
+    
+    public function getCounty($id){
+        $countyName = array();
+        $requesCounty = "SELECT name FROM county WHERE id=" . $id;
+        $return = $this->connect->query($requesCounty);
+        foreach ($return as $county){
+            $countyName [] = array('name'=> $county['name']);
+        }
+        return $countyName;
+    }    
+    
 } //end of class
+

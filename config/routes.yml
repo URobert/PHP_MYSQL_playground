@@ -5,26 +5,26 @@
 - url: /counties/edit/{id}
   method: get
   controller: County\Edit
-  function: cow
+  function: execute
   
 - url: /counties/edit/{id}
   method: post
   controller: County\Edit
-  function: cow
+  function: execute
 
-- url: /cities
+- url: /cities/{id}
   method: post
   controller: City\CityList
   
-- url: /cities
+- url: /cities/{id}
   method: get
   controller: City\CityList  
   
-- url: /cities/AddCity
+- url: /cities/{id}/AddCity
   method: get
   controller: City\AddCity
 
-- url: /cities/AddCity
+- url: /cities/{id}/AddCity
   method: post
   controller: City\AddCity
   

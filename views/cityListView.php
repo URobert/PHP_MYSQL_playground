@@ -1,7 +1,7 @@
 <html>
     <body>
         
-    <a href="/cities/AddCity" id="addCity">Add new city</a>
+    <a href="/cities/<?=$countyId?>/AddCity" id="addCity">Add new city</a>
 
         <table class="counties"  width="250px" border=1>
             <thead>
@@ -10,9 +10,9 @@
             <?php foreach ($cityList as $city): ?>
                 <tr>
                     <td><?= $city['name']?></td>
-                    <td><a href="/counties/delete/<?= $city['id'] ?>" id='<?php $city['id']?>'>X</a></td>
+                    <td><a href="/cities/delete/<?= $city['id'] ?>" id='<?php $city['id']?>'>X</a></td>
                 </tr>
-            <?php endforeach ?>            
+            <?php endforeach ?>
         </table>
     </body>
 </html>
@@ -23,8 +23,8 @@
         margin-left: 40%;
     }
     
-    #addCounty{
-        color:red;
+    #addCity{
+        color:blue;
         font-weight: bold;
         
     }

@@ -1,5 +1,6 @@
 <?php
 namespace TestProject\Controller\City;
+use Symfony\Component\HttpFoundation\Request;
 
 class CityList {
     public function __construct($app){
@@ -7,16 +8,17 @@ class CityList {
         $this->templating = $app['templating'];    
     }
     
-    public function action(){
+    public function action(Request $request){
+        $id = $request->get('id');
         $templating = $this->templating; 
-        return $templating('cityView', ['cityList'  =>  $this->getCityList() ] );
+        return $templating('cityListView', ['cityList'  =>  $this->getCityList($id) ,
+                                            'countyId' => $id ] );
     }
     
-    function getCityList(){
+    function getCityList($id){
         $cities = array();
-        $requestCityList = "SELECT * FROM city";
+        $requestCityList = "SELECT * FROM city WHERE county_id=" . $id;
         $returedList = $this->connect->query($requestCityList);
-        #var_dump($returedList);
         foreach ($returedList as $city){
             $cities [] = array('id'=> $city['id'], 'name'=> $city['name']);
         }

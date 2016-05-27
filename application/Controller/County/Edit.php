@@ -7,7 +7,7 @@ class Edit {
         $this->templating = $app['templating'];
     }
     
-    public function cow(Request $request){
+    public function execute(Request $request){
         $id = $request->get('id');
         #print_r(count($_GET));
         $templating = $this->templating;
