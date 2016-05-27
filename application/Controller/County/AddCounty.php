@@ -30,7 +30,6 @@ class AddCounty {
                     }
                     echo "County ". $county['name'] . " already exists in DB.";
                 }else{                        
-                    echo $_POST['county'] . "County NOT FOUND." . "<br>";
                     $addNewCounty = 'INSERT INTO county (name) VALUES ('
                      ."'"  . $_POST['county'] . "'" .')';
                     if ($this->connect->query($addNewCounty) === TRUE) {

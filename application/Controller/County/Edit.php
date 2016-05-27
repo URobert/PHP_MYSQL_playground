@@ -16,10 +16,9 @@ class Edit {
         } else {
             $countyid = $request->get("countyid");
             $name = $request->get("name");
-            $sqlUpdate = 'UPDATE county SET id='. $countyid .',name="' . $name .'"WHERE id=' . $id;
+            $sqlUpdate = 'UPDATE county SET name="' . $name .'"WHERE id=' . $id;
             if ($this->connect->query($sqlUpdate) === TRUE) {
                 echo "County successfully updated." . "<br>";
-                echo "New ID: " . $countyid . "<br>";
                 echo "New name: " . $name . "<br>";
                 echo "<a href='/../../home'>Go back</a>";
                 exit;

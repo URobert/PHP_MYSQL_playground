@@ -4,10 +4,10 @@
         <h2>Edit County information</h2>
         <!--<form class=topform action="/counties/edit/?id='<?=$county[0]['id']?>'" method="get" > -->
         <form id="target" method="post">
-            Current CountyID: <input class="intro" type="text" name="id" value='<?=$county[0]['id']?>' id='<?=$county[0]['id']?>' readonly><br><br>
-            Set new CountyID: <input type="text" name="countyid" id="countyid"><br><br>
             Rename County: <input type="text" name="name" id="rename"><br><br>
-            <input type="submit" value="Submit changes"> 
+            <input type="submit" value="Submit changes">
+            <input class="intro" type="hidden" name="id" value='<?=$county[0]['id']?>' id='<?=$county[0]['id']?>' readonly><br><br>
+            <input type="hidden" name="countyid" id="countyid"><br><br>
         </form>
     </body>
 </html>
@@ -25,9 +25,8 @@
 
 <script language=javascript>
 $( "#target" ).submit(function( event ) {
-     var countyid = $( " #countyid" ).val();
      var rename = $( " #rename" ).val();
-     if (countyid == "" || rename == "") {
+     if (rename == "") {
         alert( "None of the fields can be empty." );
         event.preventDefault();
      }

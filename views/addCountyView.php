@@ -11,7 +11,8 @@
         <form action="/counties/AddCounty" method="post">
         <p>Add new county:</p>
         <input type="text" name="county" id="county" class="countyField">
-        <input type="submit" value="Add">
+        <input type="submit" value="Add"><br>
+        <a href="/home" class="button">Back</a>
         </form>
         
 <style>
