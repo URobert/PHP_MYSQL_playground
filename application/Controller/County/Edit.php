@@ -31,7 +31,6 @@ class Edit {
         }   
     }
     
-    
     public function getCounty($id){
         $sqlRequest = "SELECT * FROM county WHERE id=" . $id;
         $result = $this->connect->query($sqlRequest);
