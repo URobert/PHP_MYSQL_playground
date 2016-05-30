@@ -28,6 +28,14 @@
   method: post
   controller: City\AddCity
   
+- url: /counties/delete/{id}
+  method: post
+  controller: County\DeleteCounty
+  
+- url: /counties/delete/{id}
+  method: get
+  controller: County\DeleteCounty  
+    
 - url: /randomNr
   method: get
   controller: LandingPage\RandomIntro
