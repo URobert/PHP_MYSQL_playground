@@ -1,3 +1,43 @@
+- url: /home2
+  method: get
+  controller: Location\County
+  function: home
+
+- url: /counties/AddCounty
+  method: get
+  controller: Location\County
+  function: addCounty
+
+- url: /counties/edit/{id}
+  method: get
+  controller: Location\County
+  function: editCounty
+  
+- url: /counties/edit/{id}
+  method: post
+  controller: Location\County
+  function: editCounty  
+  
+- url: counties/delete/{id}
+  method: get
+  controller: Location\County
+  function: deleteCounty
+  
+- url: cities/{id}   
+  method: get
+  controller: Location\City
+  function: action  
+  
+- url: /cities/{id}/AddCity
+  method: post
+  controller: Location\City
+  function: addCity
+
+
+
+
+
+
 - url: /home
   method: get
   controller: County\Home
