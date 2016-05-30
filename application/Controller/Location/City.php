@@ -5,17 +5,17 @@ use Symfony\Component\HttpFoundation\Request;
 class City {
     public function __construct($app){
         $this->connect = $app['connect'];
-        $this->templating = $app['templating'];    
+        $this->template = $app['template'];   
     }
     
-    public function action(Request $request){
+    public function cityListAction(Request $request){
         $id = $request->get('id');
-        $templating = $this->templating; 
-        return $templating('cityListView', ['cityList'  =>  $this->getCityList($id) ,
+        $template = $this->template; 
+        return $template('cityList', ['cityList'  =>  $this->getCityList($id) ,
                                             'countyId' => $id ] );
     }
     
-    function getCityList($id){
+    public function getCityList($id){
         $cities = array();
         $requestCityList = "SELECT * FROM city WHERE county_id=" . $id;
         $returedList = $this->connect->query($requestCityList);
@@ -52,9 +52,9 @@ class City {
         return $countyName;
     }      
     
-    public function addCity ($request) {
+    public function addCityAction ($request) {
         $id = $request->get('id');
-        $templating = $this->templating;
+        $template = $this->template;
         if ($request->getMethod() === "POST"){
             
             // TEST FIELDS FOR NON-EMPTY AND LENGTH
@@ -83,7 +83,7 @@ class City {
                 
              }
         }//end of POST method check
-        return $templating('addCityView', [ 'cities' => $this->getCity($id),
+        return $template('addCity', [ 'cities' => $this->getCity($id),
                                             'countyId' => $id,
                                             'countyName' => $this->getCounty($id)]);         
     }

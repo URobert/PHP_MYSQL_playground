@@ -7,6 +7,11 @@
   method: get
   controller: Location\County
   function: addCounty
+  
+- url: /counties/AddCounty
+  method: post
+  controller: Location\County
+  function: addCounty
 
 - url: /counties/edit/{id}
   method: get
@@ -26,10 +31,15 @@
 - url: cities/{id}   
   method: get
   controller: Location\City
-  function: action  
+  function: cityList
   
 - url: /cities/{id}/AddCity
   method: post
+  controller: Location\City
+  function: addCity
+  
+- url: /cities/{id}/AddCity
+  method: get
   controller: Location\City
   function: addCity
 
@@ -38,43 +48,7 @@
 
 
 
-- url: /home
-  method: get
-  controller: County\Home
-  
-- url: /counties/edit/{id}
-  method: get
-  controller: County\Edit
-  function: execute
-  
-- url: /counties/edit/{id}
-  method: post
-  controller: County\Edit
-  function: execute
-
-- url: /cities/{id}
-  method: post
-  controller: City\CityList
-  
-- url: /cities/{id}
-  method: get
-  controller: City\CityList  
-  
-- url: /cities/{id}/AddCity
-  method: get
-  controller: City\AddCity
-
-- url: /cities/{id}/AddCity
-  method: post
-  controller: City\AddCity
-  
-- url: /counties/delete/{id}
-  method: post
-  controller: County\DeleteCounty
-  
-- url: /counties/delete/{id}
-  method: get
-  controller: County\DeleteCounty  
+ 
     
 - url: /randomNr
   method: get
@@ -116,30 +90,7 @@
   method: get
   controller: Statistics\County_City_Stats
 
-- url: /counties/add
-  method: get
-  controller: County\Add
-  
-- url: /counties/add
-  method: post
-  controller: County\Add
 
-- url: /counties/delete
-  method: get
-  controller: County\Delete
-  
-- url: /cities/delete
-  method: get
-  controller: County\Delete
-
-- url: /counties/AddCounty
-  method: get
-  controller: County\AddCounty
-  
-- url: /counties/AddCounty
-  method: post
-  controller: County\AddCounty
-  
 
   
   

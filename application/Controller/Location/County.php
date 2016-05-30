@@ -115,8 +115,8 @@ class County {
                 }
             }
         
-        $templating = $this->templating;        
-        return $templating('deleteCountyV', ['id' => $id, 'countyName' => $cName]);         
+        $template = $this->template;        
+        return $template('deleteCounty', ['id' => $id, 'countyName' => $cName]);         
     }       
     
     

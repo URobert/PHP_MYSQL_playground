@@ -1,4 +1,82 @@
-- url: /
+- url: /home2
+  method: get
+  controller: Location\County
+  function: home
+
+- url: /counties/AddCounty
+  method: get
+  controller: Location\County
+  function: addCounty
+
+- url: /counties/edit/{id}
+  method: get
+  controller: Location\County
+  function: editCounty
+  
+- url: /counties/edit/{id}
+  method: post
+  controller: Location\County
+  function: editCounty  
+  
+- url: counties/delete/{id}
+  method: get
+  controller: Location\County
+  function: deleteCounty
+  
+- url: cities/{id}   
+  method: get
+  controller: Location\City
+  function: cityList
+  
+- url: /cities/{id}/AddCity
+  method: post
+  controller: Location\City
+  function: addCity
+
+
+
+
+
+
+- url: /home
+  method: get
+  controller: County\Home
+  
+- url: /counties/edit/{id}
+  method: get
+  controller: County\Edit
+  function: execute
+  
+- url: /counties/edit/{id}
+  method: post
+  controller: County\Edit
+  function: execute
+
+- url: /cities/{id}
+  method: post
+  controller: City\CityList
+  
+- url: /cities/{id}
+  method: get
+  controller: City\CityList  
+  
+- url: /cities/{id}/AddCity
+  method: get
+  controller: City\AddCity
+
+- url: /cities/{id}/AddCity
+  method: post
+  controller: City\AddCity
+  
+- url: /counties/delete/{id}
+  method: post
+  controller: County\DeleteCounty
+  
+- url: /counties/delete/{id}
+  method: get
+  controller: County\DeleteCounty  
+    
+- url: /randomNr
   method: get
   controller: LandingPage\RandomIntro
   
@@ -40,33 +118,28 @@
 
 - url: /counties/add
   method: get
-  controller: Counties\Add
+  controller: County\Add
   
 - url: /counties/add
   method: post
-  controller: Counties\Add
+  controller: County\Add
 
 - url: /counties/delete
   method: get
-  controller: Counties\Delete
+  controller: County\Delete
   
 - url: /cities/delete
   method: get
-  controller: Counties\Delete
-  
-- url: /counties/list
+  controller: County\Delete
+
+- url: /counties/AddCounty
   method: get
-  controller: Counties\CountyList
+  controller: County\AddCounty
   
+- url: /counties/AddCounty
+  method: post
+  controller: County\AddCounty
   
-- url: /aa/aa
-  method: get
-  controler: Aa\Test
-  call:one
-  
-- url: /aa/bb
-  method: get
-  controler: Aa\Test
-  call:two
+
   
   

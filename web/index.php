@@ -18,19 +18,25 @@ $app['connect'] = $connect;
 $app['templating'] = 'templating';
 $app['template'] = 'template';
 
-function templating ($path, $arguments) {
-    ob_start();
-    extract($arguments);
-    require sprintf('../views/%s.php',$path);
-    $res = ob_get_clean();
-    return $res;
-}
+//function templating ($path, $arguments) {
+//    ob_start();
+//    extract($arguments);
+//    require sprintf('../views/%s.php',$path);
+//    $res = ob_get_clean();
+//    return $res;
+//}
 
-//Almost Mirror to templating. Used for the restructure of all the templates
+//Almost Mirror to templating. Used for restructoring all the templates
 function template ($path, $arguments) {
     ob_start();
     extract($arguments);
-    require sprintf('../application/Controller/Location/View/County/%s.php',$path);
+    #echo debug_backtrace()[1]['function'];
+    #echo debug_backtrace()[1]['class'];
+    $object = debug_backtrace()[1]['class'];
+    $reflect = new ReflectionClass($object);
+    $dirName = $reflect->getShortName();
+    #require sprintf('../application/Controller/Location/View/County/%s.php',$path);
+    require sprintf('../application/Controller/Location/View/%s/%s.php',$dirName,$path);
     $res = ob_get_clean();
     return $res;
 }
