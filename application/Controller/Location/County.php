@@ -5,13 +5,13 @@ use Symfony\Component\HttpFoundation\Request;
 class County {
     public function __construct($app){
         $this->connect = $app['connect'];
-        $this->templating = $app['templating'];    
+        $this->template = $app['template'];    
     }
     
     public function homeAction(){
-        $templating = $this->templating;
+        $template = $this->template;
         
-        return $templating('homeView', ['countylist'  =>  $this->getCountyList() ] );
+        return $template('home', ['countylist'  =>  $this->getCountyList() ] );
     }
     
     public function getCountyList(){
@@ -45,7 +45,7 @@ class County {
     }    
     
     public function addCountyAction ($request) {
-    $templating = $this->templating;
+    $template = $this->template;
     if ($request->getMethod() === "POST"){
         
         // TEST FIELDS FOR NON-EMPTY AND LENGTH
@@ -73,15 +73,15 @@ class County {
             
          }
     }//end of POST method check
-    return $templating('addCountyView', [ 'counties' => $this->getCountyList() ]);         
+    return $template('addCounty', [ 'counties' => $this->getCountyList() ]);         
 }
 
     public function editCountyAction($request){
         $id = $request->get('id');
         #print_r(count($_GET));
-        $templating = $this->templating;
+        $template = $this->template;
         if ($request->getMethod() == "GET"){
-            return $templating('editView', ['county'  =>  $this->getCounty($id) ] );
+            return $template('editCounty', ['county'  =>  $this->getCounty($id) ] );
         } else {
             $countyid = $request->get("countyid");
             $name = $request->get("name");
@@ -93,9 +93,8 @@ class County {
                 exit;
             } else {
                 echo "Error updating record: " . $this->connect->error;
+                exit();
             }
-
-                #return $templating('editView', ['county'  =>  $this->getCounty() ] );   
         }   
     }    
 

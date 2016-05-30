@@ -16,11 +16,21 @@ $app = new Silex\Application();
 $app['debug'] = true;
 $app['connect'] = $connect;
 $app['templating'] = 'templating';
+$app['template'] = 'template';
 
 function templating ($path, $arguments) {
     ob_start();
     extract($arguments);
     require sprintf('../views/%s.php',$path);
+    $res = ob_get_clean();
+    return $res;
+}
+
+//Almost Mirror to templating. Used for the restructure of all the templates
+function template ($path, $arguments) {
+    ob_start();
+    extract($arguments);
+    require sprintf('../application/Controller/Location/View/County/%s.php',$path);
     $res = ob_get_clean();
     return $res;
 }
