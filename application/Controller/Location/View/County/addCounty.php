@@ -12,7 +12,7 @@
         <p>Add new county:</p>
         <input type="text" name="county" id="county" class="countyField">
         <input type="submit" value="Add"><br>
-        <a href="/home" class="button">Back</a>
+        <a href="/home2" class="button">Back</a>
         </form>
         
 <style>

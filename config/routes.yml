@@ -43,6 +43,13 @@
   controller: Location\City
   function: addCity
     
+- url: /cities/delete/{id}    
+  method: get
+  controller: Location\City
+  function: deleteCity
+    
+    
+    
 - url: /randomNr
   method: get
   controller: LandingPage\RandomIntro

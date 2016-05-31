@@ -88,7 +88,26 @@ class City {
                                             'countyName' => $this->getCounty($id)]);         
     }
     
-  
+    public function deleteCityAction ($request) {
+        $id = $request->get('id');
+        $cities =  'DELETE FROM city WHERE id='. $id;
+        $result = $this->connect->query($cities);
+        
+        //$cityName = mysqli_fetch_row($result)[0];
+        //$citiesResult = $this->connect->query($cities);
+        //
+        //    if (mysqli_fetch_row($citiesResult)[1]){
+        //        echo $cityName . " could not be deteled. Only empty (without registred cities) counties can be deleted. ";
+        //    }else{
+        //        $deleteQuery = 'DELETE FROM county WHERE id=' . $id;
+        //        if ($this->connect->query($deleteQuery) === TRUE){
+        //            echo $cityName . " was deleted !";   
+        //        }
+        //    }
+        
+        $template = $this->template;        
+        return $template( ['id' => $id ]);        
+    }    
     
     
     

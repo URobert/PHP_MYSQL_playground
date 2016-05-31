@@ -7,7 +7,7 @@
         <input type="text" name="city" id="city" class="cityField">
         <input type="hidden" name="county_id" value="<?=$countyId?>">
         <input type="submit" value="Add"><br><br>
-        <a href="/home" class="button">Back</a>
+        <a href="/home2" class="button">Back</a>
         </form>
 
 <style>
