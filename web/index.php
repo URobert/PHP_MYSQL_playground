@@ -27,16 +27,10 @@ $app['template'] = 'template';
 /* Note: for this version to work properly, a naming standard must be kept.
  * All templates must have the same name (excepting the Action ending) as the function that triggers them.
  * */
-function template ($arguments) {
+function template ($view_name, $dirName, $arguments) {
     ob_start();
     extract($arguments);
-    $path = debug_backtrace()[1]['function'];
-    $path = str_replace('Action', '', $path);
-    #echo $path;
-    $object = debug_backtrace()[1]['class'];
-    $reflect = new ReflectionClass($object);
-    $dirName = $reflect->getShortName();
-    require sprintf('../application/Controller/Location/View/%s/%s.php',$dirName,$path); 
+    require sprintf('../application/Controller/Location/View/%s/%s.php', $dirName, $view_name); 
     $res = ob_get_clean();
     return $res;
 }
@@ -50,6 +44,7 @@ foreach ($routes as $route){
         $reflection = new ReflectionClass("TestProject\\Controller\\" . $route["controller"]);
         $instance = $reflection->newInstance($app);
         
+        $instance->setRouteInformation($route);
         $action =  isset($route['function']) ? $route['function'] . 'Action' : 'action';
         return $instance->{$action}($request);
     });

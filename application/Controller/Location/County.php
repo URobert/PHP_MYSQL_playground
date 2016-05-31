@@ -2,15 +2,16 @@
 namespace TestProject\Controller\Location;
 use Symfony\Component\HttpFoundation\Request;
 
-class County {
-    public function __construct($app){
-        $this->connect = $app['connect'];
-        $this->template = $app['template'];    
+class County extends \TestProject\Controller\BaseController {
+    
+    public function __construct($app) {
+        parent::__construct($app);
+        
+        $this->connect = $app['connect'];    
     }
     
     public function homeAction(){
-        $template = $this->template;
-        return $template(   ['countylist'  =>  $this->getCountyList() ] );
+        return $this->render(['countylist'  =>  $this->getCountyList()]);
     }
     
     public function getCountyList(){
@@ -75,7 +76,7 @@ class County {
             
          }
     }//end of POST method check
-    return $template([ 'counties' => $this->getCountyList() ]);         
+    return $this->render([ 'counties' => $this->getCountyList() ]);         
 }
 
     public function editCountyAction($request){
