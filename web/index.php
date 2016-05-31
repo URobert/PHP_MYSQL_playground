@@ -27,6 +27,9 @@ $app['template'] = 'template';
 //}
 
 //Almost Mirror to templating. Used for restructoring all the templates
+/* Note: for this version to work properly, a naming standard must be kept.
+ * All templates must have the same name (excepting the Action ending) as the function that triggers them.
+ * */
 function template ($arguments) {
     ob_start();
     extract($arguments);
@@ -36,8 +39,7 @@ function template ($arguments) {
     $object = debug_backtrace()[1]['class'];
     $reflect = new ReflectionClass($object);
     $dirName = $reflect->getShortName();
-    require sprintf('../application/Controller/Location/View/%s/%s.php',$dirName,$path);
-    #require sprintf('../application/Controller/Location/View/%s/%s.php',$dirName,$path);    
+    require sprintf('../application/Controller/Location/View/%s/%s.php',$dirName,$path); 
     $res = ob_get_clean();
     return $res;
 }
