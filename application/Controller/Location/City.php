@@ -11,7 +11,7 @@ class City {
     public function cityListAction(Request $request){
         $id = $request->get('id');
         $template = $this->template; 
-        return $template('cityList', ['cityList'  =>  $this->getCityList($id) ,
+        return $template( ['cityList'  =>  $this->getCityList($id) ,
                                             'countyId' => $id ] );
     }
     
@@ -83,7 +83,7 @@ class City {
                 
              }
         }//end of POST method check
-        return $template('addCity', [ 'cities' => $this->getCity($id),
+        return $template([ 'cities' => $this->getCity($id),
                                             'countyId' => $id,
                                             'countyName' => $this->getCounty($id)]);         
     }

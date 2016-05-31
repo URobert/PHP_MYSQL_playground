@@ -27,16 +27,17 @@ $app['template'] = 'template';
 //}
 
 //Almost Mirror to templating. Used for restructoring all the templates
-function template ($path, $arguments) {
+function template ($arguments) {
     ob_start();
     extract($arguments);
-    #echo debug_backtrace()[1]['function'];
-    #echo debug_backtrace()[1]['class'];
+    $path = debug_backtrace()[1]['function'];
+    $path = str_replace('Action', '', $path);
+    #echo $path;
     $object = debug_backtrace()[1]['class'];
     $reflect = new ReflectionClass($object);
     $dirName = $reflect->getShortName();
-    #require sprintf('../application/Controller/Location/View/County/%s.php',$path);
     require sprintf('../application/Controller/Location/View/%s/%s.php',$dirName,$path);
+    #require sprintf('../application/Controller/Location/View/%s/%s.php',$dirName,$path);    
     $res = ob_get_clean();
     return $res;
 }

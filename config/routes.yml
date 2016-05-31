@@ -42,13 +42,6 @@
   method: get
   controller: Location\City
   function: addCity
-
-
-
-
-
-
- 
     
 - url: /randomNr
   method: get

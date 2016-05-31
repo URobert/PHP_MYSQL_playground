@@ -11,7 +11,7 @@ class County {
     public function homeAction(){
         $template = $this->template;
         
-        return $template('home', ['countylist'  =>  $this->getCountyList() ] );
+        return $template(   ['countylist'  =>  $this->getCountyList() ] );
     }
     
     public function getCountyList(){
@@ -73,7 +73,7 @@ class County {
             
          }
     }//end of POST method check
-    return $template('addCounty', [ 'counties' => $this->getCountyList() ]);         
+    return $template([ 'counties' => $this->getCountyList() ]);         
 }
 
     public function editCountyAction($request){
@@ -81,7 +81,7 @@ class County {
         #print_r(count($_GET));
         $template = $this->template;
         if ($request->getMethod() == "GET"){
-            return $template('editCounty', ['county'  =>  $this->getCounty($id) ] );
+            return $template( ['county'  =>  $this->getCounty($id) ] );
         } else {
             $countyid = $request->get("countyid");
             $name = $request->get("name");
@@ -116,7 +116,7 @@ class County {
             }
         
         $template = $this->template;        
-        return $template('deleteCounty', ['id' => $id, 'countyName' => $cName]);         
+        return $template( ['id' => $id, 'countyName' => $cName]);         
     }       
     
     
