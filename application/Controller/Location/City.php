@@ -71,12 +71,19 @@ class City {
                     foreach ($result as $city){
                         $cityId = $city['id'];                                                          
                     }
-                    echo "City ". $city['name'] . " already exists in this county.";
+                    #echo "City ". $city['name'] . " already exists in this county.";
+                    echo "<script>
+                           alert('This city already exists in this county.');
+                          </script>";
                 }else{                        
                     $addNewCity = 'INSERT INTO city (name,county_id)
                                    VALUES ("' . $_POST['city'] . '",' . $id .')';
                     if ($this->connect->query($addNewCity) === TRUE) {
-                        echo "City sucessfuly added:" . $_POST['city'] . "<br>";
+                    #echo "City sucessfuly added:" . $_POST['city'] . "<br>";
+                    
+                    echo "<script>
+                           alert('City sucessfuly added.');
+                          </script>";
                         $cityId = mysqli_insert_id($this->connect);
                     }
                 }
@@ -92,8 +99,12 @@ class City {
         $id = $request->get('id');
         $cities =  'DELETE FROM city WHERE id='. $id;
         $result = $this->connect->query($cities);
-        $template = $this->template;        
-        return $template( ['id' => $id ]);        
+        $template = $this->template;
+        echo "<script>
+               alert('City deleted');
+               window.location.href='/home2';
+             </script>";
+        return $template( ['id' => $id ]);
     }    
     
     

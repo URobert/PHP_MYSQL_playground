@@ -10,7 +10,6 @@ class County {
     
     public function homeAction(){
         $template = $this->template;
-        
         return $template(   ['countylist'  =>  $this->getCountyList() ] );
     }
     
@@ -36,8 +35,6 @@ class County {
     public function getCounty($id){
         $sqlRequest = "SELECT * FROM county WHERE id=" . $id;
         $result = $this->connect->query($sqlRequest);
-        #$row = $result->fetch_row();
-        #var_dump($row);
         foreach ($result as $element){
             $county [] = array('id'=> $element['id'], 'name'=> $element['name']);
         }
@@ -61,12 +58,17 @@ class County {
                 foreach ($resultCounty as $county){
                     $countyId = $county['id'];                                                          
                 }
-                echo "County ". $county['name'] . " already exists in DB.";
+                #echo "County ". $county['name'] . " already exists in DB.";
+                echo "<script>alert('County already exists in DB.')</script>";
             }else{                        
-                $addNewCounty = 'INSERT INTO county (name) VALUES ('
+                $addNewCounty = 'INSERT INTO county (name) VALUES ('    
                  ."'"  . $_POST['county'] . "'" .')';
                 if ($this->connect->query($addNewCounty) === TRUE) {
-                    echo "County sucessfuly added:" . $_POST['county'] . "<br>";
+                    #echo "County sucessfuly added:" . $_POST['county'] . "<br>";
+                    echo "<script>
+                          window.location.href='/home2';
+                          popup.postMessage('hello there!', '/home2'); 
+                          </script>";
                     $countyId = mysqli_insert_id($this->connect);
                 }
             }
@@ -87,10 +89,14 @@ class County {
             $name = $request->get("name");
             $sqlUpdate = 'UPDATE county SET name="' . $name .'"WHERE id=' . $id;
             if ($this->connect->query($sqlUpdate) === TRUE) {
-                echo "County successfully updated." . "<br>";
-                echo "New name: " . $name . "<br>";
-                echo "<a href='/../../home'>Go back</a>";
-                exit;
+                //echo "County successfully updated." . "<br>";
+                //echo "New name: " . $name . "<br>";
+                //echo "<a href='/../../home'>Go back</a>";
+                //exit();
+                echo "<script>
+                 alert('County successfully updated.');
+                 window.location.href='/home2';
+                 </script>";
             } else {
                 echo "Error updating record: " . $this->connect->error;
                 exit();
@@ -107,11 +113,18 @@ class County {
         $citiesResult = $this->connect->query($cities);
     
             if (mysqli_fetch_row($citiesResult)[1]){
-                echo $cName . " could not be deteled. Only empty (without registred cities) counties can be deleted. ";
+                #echo $cName . " could not be deteled. Only empty (without registred cities) counties can be deleted. ";
+                echo "<script>
+                 alert('That county can not be deteled. Only empty (without registred cities) counties can be deleted.');
+                 window.location.href='/home2';
+                 </script>";
             }else{
                 $deleteQuery = 'DELETE FROM county WHERE id=' . $id;
                 if ($this->connect->query($deleteQuery) === TRUE){
-                    echo $cName . " was deleted !";   
+                echo "<script>
+                 alert('County deleted.');
+                 window.location.href='/home2';
+                 </script>";  
                 }
             }
         

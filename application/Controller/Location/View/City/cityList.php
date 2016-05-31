@@ -13,6 +13,7 @@
                 </tr>
             <?php endforeach ?>
         </table>
+        <a href="/home2" style="margin:auto; text-align:center; display:block;">BACK</a>
     </body>
 </html>
 

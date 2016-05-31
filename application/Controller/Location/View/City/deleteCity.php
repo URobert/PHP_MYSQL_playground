@@ -1,7 +1,6 @@
-<?php namespace TestProject\Controller\City; ?>
 <html>
 			<body>
-					<a href="/home2" class="button">Back</a><br><br>
+					<?="<a href=\"javascript:history.go(-1)\">GO BACK</a>"; ?>
 			</body>
 </html>
 
