@@ -107,8 +107,22 @@ class City extends \TestProject\Controller\BaseController{
     }    
     
     public function mapCityAction ($request) {
-        return $this->render ([NULL]);
-    }    
-    
+        $listofCities [] = ['Oradea','Salonta','Marghita','Sacueni','Beius', 'Alesd', 'Vascau', 'Nucet'];
+        $appId = "01ffc2b8227e5302ffa7f8555ba7738e";
+        $cityAndTemp = array ();
+        
+            foreach ($listofCities[0] as $city){
+                $response =  file_get_contents('http://api.openweathermap.org/data/2.5/weather?q=' . $city . '&APPID='.$appId.'&units=metric');
+                $response = json_decode($response);
+                $cityAndTemp [] = ['city'=>$response->name, 'temp'=>$response->main->temp];
+                #echo $response->name . " ";
+                #echo $response->main->temp . "<br>";
+                $sqlInsertCities = "INSERT INTO city_map (name, source_id) VALUES ('" . $response->name ."', 1)";
+                if ($this->connect->query($sqlInsertCities) === TRUE){
+                    #echo 'Cities successfully imported!';
+                }
+            }
+        return $this->render (['cityAndTemp' => $cityAndTemp]);        
+    } 
     
 }//end of City class

@@ -17,8 +17,8 @@
                 <div class="col-md-2">
                     <a href="/counties/AddCounty" id="addCounty" class="btn btn-primary">Add new county</a>
                 </div>
-                <div class="col-md-1">
-                    <a href="/cities/map" id="mapCounty" class="btn btn-success">Go to map</a>
+                <div class="col-md-2">
+                    <a href="/cities/map" id="mapCounty" class="btn btn-success">Import and go to map</a>
                 </div>                
             </div>
             <div class="row">
