@@ -39,7 +39,6 @@ $parser = new Symfony\Component\Yaml\Parser();
 $routes = $parser->parse(file_get_contents(__DIR__.'/../config/routes.yml'));
 
 foreach ($routes as $route){
-    //var_dump($route);
     $app->{$route["method"]}($route["url"], function(Request $request) use($route, $app) {
         $reflection = new ReflectionClass("TestProject\\Controller\\" . $route["controller"]);
         $instance = $reflection->newInstance($app);

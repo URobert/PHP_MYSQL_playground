@@ -2,16 +2,17 @@
 namespace TestProject\Controller\Location;
 use Symfony\Component\HttpFoundation\Request;
 
-class City {
+class City extends \TestProject\Controller\BaseController{
+    
     public function __construct($app){
+        parent::__construct($app);
+        
         $this->connect = $app['connect'];
-        $this->template = $app['template'];   
     }
     
     public function cityListAction(Request $request){
         $id = $request->get('id');
-        $template = $this->template; 
-        return $template( ['cityList'  =>  $this->getCityList($id) ,
+        return $this->render( ['cityList'  =>  $this->getCityList($id) ,
                                             'countyId' => $id ] );
     }
     
@@ -54,7 +55,6 @@ class City {
     
     public function addCityAction ($request) {
         $id = $request->get('id');
-        $template = $this->template;
         if ($request->getMethod() === "POST"){
             
             // TEST FIELDS FOR NON-EMPTY AND LENGTH
@@ -90,7 +90,7 @@ class City {
                 
              }
         }//end of POST method check
-        return $template([ 'cities' => $this->getCity($id),
+        return $this->render([ 'cities' => $this->getCity($id),
                                             'countyId' => $id,
                                             'countyName' => $this->getCounty($id)]);         
     }
@@ -99,12 +99,11 @@ class City {
         $id = $request->get('id');
         $cities =  'DELETE FROM city WHERE id='. $id;
         $result = $this->connect->query($cities);
-        $template = $this->template;
         echo "<script>
                alert('City deleted');
                window.location.href='/home2';
              </script>";
-        return $template( ['id' => $id ]);
+        return $this->render( ['id' => $id ]);
     }    
     
     

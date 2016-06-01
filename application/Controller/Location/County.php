@@ -43,7 +43,6 @@ class County extends \TestProject\Controller\BaseController {
     }    
     
     public function addCountyAction ($request) {
-    $template = $this->template;
     if ($request->getMethod() === "POST"){
         
         // TEST FIELDS FOR NON-EMPTY AND LENGTH
@@ -82,9 +81,8 @@ class County extends \TestProject\Controller\BaseController {
     public function editCountyAction($request){
         $id = $request->get('id');
         #print_r(count($_GET));
-        $template = $this->template;
         if ($request->getMethod() == "GET"){
-            return $template( ['county'  =>  $this->getCounty($id) ] );
+            return $this->render( ['county'  =>  $this->getCounty($id) ] );
         } else {
             $countyid = $request->get("countyid");
             $name = $request->get("name");
@@ -127,10 +125,8 @@ class County extends \TestProject\Controller\BaseController {
                  window.location.href='/home2';
                  </script>";  
                 }
-            }
-        
-        $template = $this->template;        
-        return $template( ['id' => $id, 'countyName' => $cName]);         
+            }       
+        return $this->render( ['id' => $id, 'countyName' => $cName]);         
     }       
     
     
