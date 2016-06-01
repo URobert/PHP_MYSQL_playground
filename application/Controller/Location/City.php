@@ -106,7 +106,9 @@ class City extends \TestProject\Controller\BaseController{
         return $this->render( ['id' => $id ]);
     }    
     
-    
+    public function mapCityAction ($request) {
+        return $this->render ([NULL]);
+    }    
     
     
 }//end of City class

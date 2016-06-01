@@ -64,11 +64,11 @@ class County extends \TestProject\Controller\BaseController {
                 $addNewCounty = 'INSERT INTO county (name) VALUES ('    
                  ."'"  . $_POST['county'] . "'" .')';
                 if ($this->connect->query($addNewCounty) === TRUE) {
-                    #echo "County sucessfuly added:" . $_POST['county'] . "<br>";
+                    #echo "County successfully added:" . $_POST['county'] . "<br>";
                     echo "<script>
                           window.location.href='/home2';
-                          popup.postMessage('hello there!', '/home2'); 
                           </script>";
+                    $_SESSION['message'] = "County successfully added."; 
                     $countyId = mysqli_insert_id($this->connect);
                 }
             }
@@ -127,8 +127,7 @@ class County extends \TestProject\Controller\BaseController {
                 }
             }       
         return $this->render( ['id' => $id, 'countyName' => $cName]);         
-    }       
-    
+    }
     
 }//end of countyList class
 

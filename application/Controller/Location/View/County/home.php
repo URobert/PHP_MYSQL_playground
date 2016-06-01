@@ -1,3 +1,7 @@
+<?php if(isset($_SESSION['message'])) echo $_SESSION['message']; ?>
+
+
+
 <html>
     <head>
         <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -10,9 +14,12 @@
 
         <div class ="container">
             <div class="row">
-                <div class="col-md-8">
+                <div class="col-md-2">
                     <a href="/counties/AddCounty" id="addCounty" class="btn btn-primary">Add new county</a>
                 </div>
+                <div class="col-md-1">
+                    <a href="/cities/map" id="mapCounty" class="btn btn-success">Go to map</a>
+                </div>                
             </div>
             <div class="row">
                 <div class="col-md-8">

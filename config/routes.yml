@@ -28,6 +28,16 @@
   controller: Location\County
   function: deleteCounty
   
+- url: cities/map
+  method: get
+  controller: Location\City
+  function: mapCity
+  
+- url: cities/map
+  method: post
+  controller: Location\City
+  function: mapCity 
+  
 - url: cities/{id}   
   method: get
   controller: Location\City
@@ -47,6 +57,7 @@
   method: get
   controller: Location\City
   function: deleteCity
+  
     
     
     
