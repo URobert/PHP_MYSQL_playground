@@ -125,17 +125,17 @@ class City extends \TestProject\Controller\BaseController{
             }
         }
         
-        $completeList = "SELECT name FROM city_map";
+        $completeList = "SELECT * FROM city_map";
         $result = $this->connect->query($completeList);
         foreach ($result as $city){
-            $allCities [] = $city['name'];
+            $allCities [] = ['name' => $city['name'], 'source_id' => $city['source_id'], 'city_id' => $city['city_id']];
         }        
         
+        #var_dump($allCities);
         foreach ($allCities as $city){
-            $response =  file_get_contents('http://api.openweathermap.org/data/2.5/weather?q=' . $city . '&APPID='.$appId.'&units=metric');
+            $response =  file_get_contents('http://api.openweathermap.org/data/2.5/weather?q=' . $city['name'] . '&APPID='.$appId.'&units=metric');
             $response = json_decode($response);
-            $cityAndTemp [] = ['city'=>$response->name, 'temp'=>$response->main->temp];
-            
+            $cityAndTemp [] = ['city'=>$response->name, 'temp'=>$response->main->temp, 'source_id'=> $city['source_id'], 'city_id'=> $city['city_id']]; 
         }        
         return $this->render (['cityAndTemp' => $cityAndTemp]);        
     } 
