@@ -128,14 +128,14 @@ class City extends \TestProject\Controller\BaseController{
         $completeList = "SELECT * FROM city_map";
         $result = $this->connect->query($completeList);
         foreach ($result as $city){
-            $allCities [] = ['name' => $city['name'], 'source_id' => $city['source_id'], 'city_id' => $city['city_id']];
+            $allCities [] = ['name' => $city['name'], 'source_id' => $city['source_id'], 'id' => $city['id']];
         }        
         
         #var_dump($allCities);
         foreach ($allCities as $city){
             $response =  file_get_contents('http://api.openweathermap.org/data/2.5/weather?q=' . $city['name'] . '&APPID='.$appId.'&units=metric');
             $response = json_decode($response);
-            $cityAndTemp [] = ['city'=>$response->name, 'temp'=>$response->main->temp, 'source_id'=> $city['source_id'], 'city_id'=> $city['city_id']]; 
+            $cityAndTemp [] = ['city'=>$response->name, 'temp'=>$response->main->temp, 'source_id'=> $city['source_id'], 'id'=> $city['id']]; 
         }        
         return $this->render (['cityAndTemp' => $cityAndTemp]);        
     }
@@ -151,17 +151,17 @@ class City extends \TestProject\Controller\BaseController{
             while ($row = $query->fetch_assoc()) {
                 #$data[] = $row['name'];
                 $data[] = ['label' => $row['name'], 'value' => $row['id']];
-            }
-            
+            }       
             //return json data
-            
             $dbCityList  = json_encode($data);
-   
            return $dbCityList;
          }else{
            return $this->render();
          }
-
     }
+    
+    public function searchCity2Action($request){
+        return $this->render(['mapid' => $request->get('mapid')]);
+    }    
     
 }//end of City class

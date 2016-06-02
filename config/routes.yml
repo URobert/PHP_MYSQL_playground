@@ -47,6 +47,26 @@
   method: post
   controller: Location\City
   function: searchCity
+
+- url: cities/map/search2
+  method: get
+  controller: Location\City
+  function: searchCity2
+
+- url: cities/map/search2
+  method: post
+  controller: Location\City
+  function: searchCity2
+  
+- url: /cities/map/search2?{id}
+  method: get
+  controller: Location\City
+  function: searchCity2
+  
+- url: /cities/map/search2?{id}
+  method: post
+  controller: Location\City
+  function: searchCity2
   
 - url: cities/{id}   
   method: get
