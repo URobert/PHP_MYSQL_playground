@@ -107,7 +107,7 @@ class City extends \TestProject\Controller\BaseController{
     }    
     
     public function mapCityAction ($request) {
-        $listofCities [] = ['Oradea','Salonta','Marghita','Sacueni','Beius', 'Alesd', 'Vascau', 'Nucet','Brasov','Bucuresti'];
+        $listofCities [] = ['Oradea','Beius', 'Alesd', 'Nucet','Brasov','Bucuresti'];
         $appId = "01ffc2b8227e5302ffa7f8555ba7738e";
         $cityAndTemp = array ();
         
@@ -138,6 +138,30 @@ class City extends \TestProject\Controller\BaseController{
             $cityAndTemp [] = ['city'=>$response->name, 'temp'=>$response->main->temp, 'source_id'=> $city['source_id'], 'city_id'=> $city['city_id']]; 
         }        
         return $this->render (['cityAndTemp' => $cityAndTemp]);        
-    } 
+    }
+    
+    public function searchCityAction($request){
+        
+        //get search term
+         if (isset($_GET['term'])) {
+            $searchTerm = $_GET['term'];         
+            //get matched data from skills table
+            $data = array();
+            $query = $this->connect->query("SELECT * FROM city WHERE name LIKE '".$searchTerm."%' ORDER BY name ASC");
+            while ($row = $query->fetch_assoc()) {
+                #$data[] = $row['name'];
+                $data[] = ['label' => $row['name'], 'value' => $row['id']];
+            }
+            
+            //return json data
+            
+            $dbCityList  = json_encode($data);
+   
+           return $dbCityList;
+         }else{
+           return $this->render();
+         }
+
+    }
     
 }//end of City class

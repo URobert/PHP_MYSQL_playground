@@ -12,7 +12,7 @@ class BaseController {
         $this->template = $app['template'];
     }
     
-    final public function render($arguments) {
+    final public function render($arguments = array()) {
         $template = $this->template;
         
         return $template(
