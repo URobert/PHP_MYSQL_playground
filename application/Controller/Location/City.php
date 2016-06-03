@@ -107,9 +107,10 @@ class City extends \TestProject\Controller\BaseController{
     }    
     
     public function mapCityAction ($request) {
-        $listofCities [] = ['Oradea','Beius', 'Alesd', 'Nucet','Brasov','Bucuresti'];
+        $listofCities [] = ['Oradea','Beius', 'Alesd', 'Nucet','Brasov','Bucuresti','London'];
         $appId = "01ffc2b8227e5302ffa7f8555ba7738e";
         $cityAndTemp = array ();
+        
         
         //Getting DB cities and obtaining differences between request and db cities
         $citiesInDB = 'Select name FROM city_map';
@@ -125,17 +126,17 @@ class City extends \TestProject\Controller\BaseController{
             }
         }
         
-        $completeList = "SELECT * FROM city_map";
+        $completeList = "SELECT * FROM city_map ORDER BY name";
         $result = $this->connect->query($completeList);
         foreach ($result as $city){
-            $allCities [] = ['name' => $city['name'], 'source_id' => $city['source_id'], 'id' => $city['id']];
+            $allCities [] = ['name' => $city['name'], 'source_id' => $city['source_id'], 'id' => $city['id'] ,'city_id' => $city['city_id']];
         }        
         
         #var_dump($allCities);
         foreach ($allCities as $city){
             $response =  file_get_contents('http://api.openweathermap.org/data/2.5/weather?q=' . $city['name'] . '&APPID='.$appId.'&units=metric');
             $response = json_decode($response);
-            $cityAndTemp [] = ['city'=>$response->name, 'temp'=>$response->main->temp, 'source_id'=> $city['source_id'], 'id'=> $city['id']]; 
+            $cityAndTemp [] = ['city'=>$response->name, 'temp'=>$response->main->temp, 'source_id'=> $city['source_id'], 'id'=> $city['id'] ,'city_id' => $city['city_id']]; 
         }        
         return $this->render (['cityAndTemp' => $cityAndTemp]);        
     }
@@ -161,7 +162,27 @@ class City extends \TestProject\Controller\BaseController{
     }
     
     public function searchCity2Action($request){
-        return $this->render(['mapid' => $request->get('mapid')]);
+        $listInDB = array();
+        if ( !null == $request->get('userSearch')){
+            $realCities = "Select * FROM city WHERE name LIKE '" . $request->get('userSearch') . "%'";
+            $result = $this->connect->query($realCities);
+            foreach ($result as $city){
+                $listInDB [] = ['id'=>$city['id'], 'name'=>$city['name']];
+            }
+        }
+        return $this->render(['mapid' => $request->get('mapid'), 'realCityList' => $listInDB]);
     }    
     
+    public function mapNewCityAction($request){
+        $mapid = $request->get('mapid');
+        $targetid = $request->get('targetid');
+        //echo "mapid=" . $mapid . "<br>  ".
+        //     "targetid=" .  $targetid;
+        //echo "UPDATE city_map SET city_id=". $targetid . " WHERE id=" . $mapid;
+        $updateDB = $this->connect->query("UPDATE city_map SET city_id=". $targetid . " WHERE id=" . $mapid);
+        header("Location: http://example.local/cities/map");
+        exit;
+        #return $this->render();
+
+    }
 }//end of City class

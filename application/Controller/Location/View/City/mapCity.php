@@ -15,7 +15,7 @@
                 border-color:black;
             }
             
-            .id, .source_id{
+            .city_id, .source_id{
                 max-width:100px;
                 background:gray;
             }
@@ -37,7 +37,7 @@
                             <td class="col-md-1"><?= $i ?></td>
                             <td class="col-md-2"><a href="/cities/map/search2?mapid=<?= $entry['id']?>"><?= $entry['city'] ?></a></td>
                             <td class="col-md-2"><?= $entry['temp'] ?>°C</td>
-                            <td class="col-md-1"><input type='text' value='<?= $entry['id']?>' class='id' readonly></td>
+                            <td class="col-md-1"><input type='text' value='<?= $entry['city_id']?>' class='city_id' readonly></td>
                             <td class="col-md-1"><input type='text' value='<?= $entry['source_id']?>' class='source_id' readonly></td>
                         </tr>
                     <?php $i++; ?>

@@ -68,6 +68,11 @@
   controller: Location\City
   function: searchCity2
   
+- url: /cities/map/success
+  method: get
+  controller: Location\City
+  function: mapNewCity
+  
 - url: cities/{id}   
   method: get
   controller: Location\City
