@@ -176,13 +176,20 @@ class City extends \TestProject\Controller\BaseController{
     public function mapNewCityAction($request){
         $mapid = $request->get('mapid');
         $targetid = $request->get('targetid');
-        //echo "mapid=" . $mapid . "<br>  ".
-        //     "targetid=" .  $targetid;
-        //echo "UPDATE city_map SET city_id=". $targetid . " WHERE id=" . $mapid;
         $updateDB = $this->connect->query("UPDATE city_map SET city_id=". $targetid . " WHERE id=" . $mapid);
         header("Location: http://example.local/cities/map");
         exit;
         #return $this->render();
-
     }
+    
+    public function weatherForecastAction($request){
+        //GET LIST OF CITIES FOR WEATHER REPORT
+        $result = $this->connect->query("SELECT * FROM city_map");
+        foreach ($result as $city){
+              $cities [] = ['id'=>$city['id'], 'name'=>$city['name']];
+          }
+        return $this->render(['cities'=>$cities]);
+    }
+    
+    
 }//end of City class

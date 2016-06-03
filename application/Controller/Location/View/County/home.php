@@ -19,7 +19,10 @@
                 </div>
                 <div class="col-md-2">
                     <a href="/cities/map" id="mapCounty" class="btn btn-success">Import and go to map</a>
-                </div>                
+                </div>
+                <div class="col-md-2">
+                    <a href="/cities/weather" id="weather" class="btn btn-warning">See weather forecast</a>
+                </div>                   
             </div>
             <div class="row">
                 <div class="col-md-8">

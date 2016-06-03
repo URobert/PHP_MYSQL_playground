@@ -20,30 +20,34 @@
                 background:gray;
             }
         </style>
-        
+
          <div class ="container">
                 <div class="col-md-4">
                     <table class="table table-striped">
-                        <caption>List of imported cities</caption>
+                        <caption>Show Weather Report</caption>
                         <thead>
                             <th class="col-md-1">#</th>
                             <th class="col-md-2">City</th>
-<!--                            <th class="col-md-2">Temperature</th>-->
-                            <th class="col-md-1">city_ID</th>
-<!--                            <th class="col-md-1">source_ID</th>-->
+                            <th class="col-md-2">Date</th>
+                            <th class="col-md-1">Temp</th>
+                            <th class="col-md-1">Min-Temp</th>
+                            <th class="col-md-1">Max-Temp</th>
+                            <th class="col-md-1">Humidity</th>
+                            <th class="col-md-1">Wind</th>                            
                         </thead>
-                    <?php $i = 1; foreach ($cityAndTemp as $entry): ?>
+                    <?php $i = 1; foreach ($cities as $entry): ?>
                         <tr>
                             <td class="col-md-1"><?= $i ?></td>
-                            <td class="col-md-2"><a href="/cities/map/search2?mapid=<?= $entry['id'] ?>"</a><?= $entry['city'] ?></td>
-<!--                            <td class="col-md-2"><?= $entry['temp'] ?>°C</td>-->
-                            <td class="col-md-1"><input type='text' value='<?= $entry['city_id']?>' class='city_id' readonly></td>
-<!--                            <td class="col-md-1"><input type='text' value='<?= $entry['source_id']?>' class='source_id' readonly></td>-->
+                            <td class="col-md-2"><?= $entry['name'] ?></td>
+<!--                            <td class="col-md-2"><?= $entry['date'] ?></td>
+                            <td class="col-md-2"><?= $entry['temp'] ?>°C</td>
+                            <td class="col-md-2"><?= $entry['min_temp'] ?>°C</td>
+                            <td class="col-md-2"><?= $entry['max_temp'] ?>°C</td>
+                            <td class="col-md-2"><?= $entry['humidity'] ?>°C</td>
+                            <td class="col-md-2"><?= $entry['Wind'] ?>°C</td>    -->        
                         </tr>
                     <?php $i++; ?>
                     <?php endforeach ?>
                     </table>
                 </div>
          </div> <!-- end of container -->
-         
-    </body>
