@@ -21,7 +21,7 @@
                     <a href="/cities/map" id="mapCounty" class="btn btn-success">Import and go to map</a>
                 </div>
                 <div class="col-md-2">
-                    <a href="/cities/weather" id="weather" class="btn btn-warning">See weather forecast</a>
+                    <a href="/cities/weatherImport" id="weather" class="btn btn-warning">Import Weather Forecast</a>
                 </div>                   
             </div>
             <div class="row">

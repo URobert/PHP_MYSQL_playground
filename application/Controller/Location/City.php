@@ -131,8 +131,6 @@ class City extends \TestProject\Controller\BaseController{
         foreach ($result as $city){
             $allCities [] = ['name' => $city['name'], 'source_id' => $city['source_id'], 'id' => $city['id'] ,'city_id' => $city['city_id']];
         }        
-        
-        #var_dump($allCities);
         foreach ($allCities as $city){
             $response =  file_get_contents('http://api.openweathermap.org/data/2.5/weather?q=' . $city['name'] . '&APPID='.$appId.'&units=metric');
             $response = json_decode($response);
@@ -142,7 +140,6 @@ class City extends \TestProject\Controller\BaseController{
     }
     
     public function searchCityAction($request){
-        
         //get search term
          if (isset($_GET['term'])) {
             $searchTerm = $_GET['term'];         
@@ -150,7 +147,6 @@ class City extends \TestProject\Controller\BaseController{
             $data = array();
             $query = $this->connect->query("SELECT * FROM city WHERE name LIKE '".$searchTerm."%' ORDER BY name ASC");
             while ($row = $query->fetch_assoc()) {
-                #$data[] = $row['name'];
                 $data[] = ['label' => $row['name'], 'value' => $row['id']];
             }       
             //return json data
@@ -182,13 +178,33 @@ class City extends \TestProject\Controller\BaseController{
         #return $this->render();
     }
     
-    public function weatherForecastAction($request){
+    public function weatherForecastImportAction($request){
         //GET LIST OF CITIES FOR WEATHER REPORT
         $result = $this->connect->query("SELECT * FROM city_map");
         foreach ($result as $city){
-              $cities [] = ['id'=>$city['id'], 'name'=>$city['name']];
+              $cities [] = ['city_id'=>$city['city_id'], 'name'=>$city['name']];
           }
-        return $this->render(['cities'=>$cities]);
+        //CALLING API
+        $appId = "01ffc2b8227e5302ffa7f8555ba7738e";
+        $cityWeatherInfo = array ();
+
+        foreach ($cities as $city){
+            $response =  file_get_contents('http://api.openweathermap.org/data/2.5/forecast/daily?q=' . $city['name'] . '&mode=json&units=metric&cnt=7' .'&APPID='.$appId.'&units=metric');
+            $response = json_decode($response,true);
+            echo "<pre>";
+            print_r ($response['list']);
+            echo "</pre>";
+
+            //echo "<pre>";
+            //print_r ( $response['list'][0]);
+            //echo "</pre>";
+            //$cityWeatherInfo [] = ['city'=>$city['city_id'], 'temp'=> $response->list->temp->day, 'min_temp'=>$response->list->temp->min,
+            //                       'max_temp'=>$response->list->temp->max];
+            //var_dump($cityWeatherInfo);
+            #$cityAndTemp [] = ['city'=>$response->name, 'temp'=>$response->main->temp, 'source_id'=> $city['source_id'], 'id'=> $city['id'] ,'city_id' => $city['city_id']]; 
+        }         
+          
+       return $this->render(['cityWeatherInfo'=>$cityWeatherInfo]);
     }
     
     

@@ -9,7 +9,7 @@
     <body>
         <style>
             thead{
-                background:crimson;
+                background:orange;
                 font-weight:500;
                 border-bottom:solid;
                 border-color:black;
@@ -22,7 +22,7 @@
         </style>
 
          <div class ="container">
-                <div class="col-md-4">
+                <div class="col-md-8">
                     <table class="table table-striped">
                         <caption>Show Weather Report</caption>
                         <thead>
@@ -35,16 +35,16 @@
                             <th class="col-md-1">Humidity</th>
                             <th class="col-md-1">Wind</th>                            
                         </thead>
-                    <?php $i = 1; foreach ($cities as $entry): ?>
+                    <?php $i = 1; foreach ($cityWeatherInfo as $entry): ?>
                         <tr>
                             <td class="col-md-1"><?= $i ?></td>
-                            <td class="col-md-2"><?= $entry['name'] ?></td>
-<!--                            <td class="col-md-2"><?= $entry['date'] ?></td>
-                            <td class="col-md-2"><?= $entry['temp'] ?>°C</td>
+                            <td class="col-md-2"><?= $entry['city_id'] ?></td>
+<!--                            <td class="col-md-2"><?= $entry['date'] ?></td> -->  
+<!--                            <td class="col-md-2"><?= $entry['temp'] ?>°C</td>
                             <td class="col-md-2"><?= $entry['min_temp'] ?>°C</td>
-                            <td class="col-md-2"><?= $entry['max_temp'] ?>°C</td>
-                            <td class="col-md-2"><?= $entry['humidity'] ?>°C</td>
-                            <td class="col-md-2"><?= $entry['Wind'] ?>°C</td>    -->        
+                            <td class="col-md-2"><?= $entry['max_temp'] ?>°C</td>-->
+<!--                            <td class="col-md-2"><?= $entry['humidity'] ?>°C</td>
+                            <td class="col-md-2"><?= $entry['Wind'] ?>°C</td>   -->       
                         </tr>
                     <?php $i++; ?>
                     <?php endforeach ?>
