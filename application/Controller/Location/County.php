@@ -4,9 +4,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 class County extends \TestProject\Controller\BaseController {
     
-    public function __construct($app) {
-        parent::__construct($app);
-        
+    public function __construct($app) {        
         $this->connect = $app['connect'];    
     }
     

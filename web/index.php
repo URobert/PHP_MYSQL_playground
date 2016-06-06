@@ -13,28 +13,6 @@ $connect = mysqli_connect('localhost','root','cozacu','test1');
 $app = new Silex\Application();
 $app['debug'] = true;
 $app['connect'] = $connect;
-$app['templating'] = 'templating';
-$app['template'] = 'template';
-
-//function templating ($path, $arguments) {
-//    ob_start();
-//    extract($arguments);
-//    require sprintf('../views/%s.php',$path);
-//    $res = ob_get_clean();
-//    return $res;
-//}
-
-//Almost Mirror to templating. Used for restructoring all the templates
-/* Note: for this version to work properly, a naming standard must be kept.
- * All templates must have the same name (excepting the Action ending) as the function that triggers them.
- * */
-function template ($view_name, $dirName, $arguments) {
-    ob_start();
-    extract($arguments);
-    require sprintf('../application/Controller/Location/View/%s/%s.php', $dirName, $view_name); 
-    $res = ob_get_clean();
-    return $res;
-}
 
 $parser = new Symfony\Component\Yaml\Parser();
 $routes = $parser->parse(file_get_contents(__DIR__.'/../config/routes.yml'));
