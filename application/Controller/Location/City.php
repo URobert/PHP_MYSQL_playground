@@ -145,9 +145,9 @@ class City extends \TestProject\Controller\BaseController{
             $searchTerm = $_GET['term'];         
             //get matched data from skills table
             $data = array();
-            $query = $this->connect->query("SELECT * FROM city WHERE name LIKE '".$searchTerm."%' ORDER BY name ASC");
+            $query = $this->connect->query("SELECT name as label, id as value FROM city WHERE name LIKE '".$searchTerm."%' ORDER BY name ASC");
             while ($row = $query->fetch_assoc()) {
-                $data[] = ['label' => $row['name'], 'value' => $row['id']];
+                $data[] = $row;
             }       
             //return json data
             $dbCityList  = json_encode($data);
@@ -160,10 +160,10 @@ class City extends \TestProject\Controller\BaseController{
     public function searchCity2Action($request){
         $listInDB = array();
         if ( !null == $request->get('userSearch')){
-            $realCities = "Select * FROM city WHERE name LIKE '" . $request->get('userSearch') . "%'";
+            $realCities = "Select id, name FROM city WHERE name LIKE '" . $request->get('userSearch') . "%'";
             $result = $this->connect->query($realCities);
             foreach ($result as $city){
-                $listInDB [] = ['id'=>$city['id'], 'name'=>$city['name']];
+                $listInDB [] = $city;
             }
         }
         return $this->render(['mapid' => $request->get('mapid'), 'realCityList' => $listInDB]);
@@ -220,9 +220,7 @@ class City extends \TestProject\Controller\BaseController{
                                             FROM weather JOIN city_map ON city_map.city_id = weather.city_id');
         
         while ($row = $sqlReturn->fetch_assoc()) {
-            $cityWeatherInfo[] = ['id' => $row['id'], 'city_name' => $row['name'], 'date' => $row['date'],
-                                 'temp' => $row['temp'], 'min_temp'=> $row['min_temp'], 'max_temp' =>$row['max_temp'],
-                                 'humidity' => $row['humidity'], 'wind' =>$row['wind']];
+            $cityWeatherInfo[] = $row;
         }
 
         return $this->render(['cityWeatherInfo'=>$cityWeatherInfo]);

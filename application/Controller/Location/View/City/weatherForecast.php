@@ -38,7 +38,7 @@
                     <?php $i = 1; foreach ($cityWeatherInfo as $entry): ?>
                         <tr>
                             <td class="col-md-1"><?= $i ?></td>
-                            <td class="col-md-2"><?= $entry['city_name'] ?></td>
+                            <td class="col-md-2"><?= $entry['name'] ?></td>
                             <td class="col-md-2"><?= $entry['date'] ?></td> 
                             <td class="col-md-2"><?= $entry['temp'] ?>°C</td>
                             <td class="col-md-2"><?= $entry['min_temp'] ?>°C</td>
