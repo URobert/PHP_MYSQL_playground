@@ -22,7 +22,7 @@
         </style>
 
          <div class ="container">
-                <div class="col-md-8">
+                <div class="col-md-10">
                     <table class="table table-striped">
                         <caption>Show Weather Report</caption>
                         <thead>
@@ -38,16 +38,17 @@
                     <?php $i = 1; foreach ($cityWeatherInfo as $entry): ?>
                         <tr>
                             <td class="col-md-1"><?= $i ?></td>
-                            <td class="col-md-2"><?= $entry['city_id'] ?></td>
-<!--                            <td class="col-md-2"><?= $entry['date'] ?></td> -->  
-<!--                            <td class="col-md-2"><?= $entry['temp'] ?>°C</td>
+                            <td class="col-md-2"><?= $entry['city_name'] ?></td>
+                            <td class="col-md-2"><?= $entry['date'] ?></td> 
+                            <td class="col-md-2"><?= $entry['temp'] ?>°C</td>
                             <td class="col-md-2"><?= $entry['min_temp'] ?>°C</td>
-                            <td class="col-md-2"><?= $entry['max_temp'] ?>°C</td>-->
-<!--                            <td class="col-md-2"><?= $entry['humidity'] ?>°C</td>
-                            <td class="col-md-2"><?= $entry['Wind'] ?>°C</td>   -->       
+                            <td class="col-md-2"><?= $entry['max_temp'] ?>°C</td>
+                            <td class="col-md-2"><?= $entry['humidity'] ?></td>
+                            <td class="col-md-2"><?= $entry['wind'] ?></td>          
                         </tr>
                     <?php $i++; ?>
                     <?php endforeach ?>
                     </table>
                 </div>
          </div> <!-- end of container -->
+         <a href="/home2" class="button">RETURN TO MAIN PAGE</a>

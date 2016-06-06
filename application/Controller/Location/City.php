@@ -180,31 +180,52 @@ class City extends \TestProject\Controller\BaseController{
     
     public function weatherForecastImportAction($request){
         //GET LIST OF CITIES FOR WEATHER REPORT
+        
         $result = $this->connect->query("SELECT * FROM city_map");
         foreach ($result as $city){
               $cities [] = ['city_id'=>$city['city_id'], 'name'=>$city['name']];
-          }
+        }
+          
         //CALLING API
         $appId = "01ffc2b8227e5302ffa7f8555ba7738e";
         $cityWeatherInfo = array ();
-
+        
         foreach ($cities as $city){
             $response =  file_get_contents('http://api.openweathermap.org/data/2.5/forecast/daily?q=' . $city['name'] . '&mode=json&units=metric&cnt=7' .'&APPID='.$appId.'&units=metric');
             $response = json_decode($response,true);
-            echo "<pre>";
-            print_r ($response['list']);
-            echo "</pre>";
-
             //echo "<pre>";
-            //print_r ( $response['list'][0]);
+            //print_r ($response['list']);
             //echo "</pre>";
-            //$cityWeatherInfo [] = ['city'=>$city['city_id'], 'temp'=> $response->list->temp->day, 'min_temp'=>$response->list->temp->min,
-            //                       'max_temp'=>$response->list->temp->max];
-            //var_dump($cityWeatherInfo);
-            #$cityAndTemp [] = ['city'=>$response->name, 'temp'=>$response->main->temp, 'source_id'=> $city['source_id'], 'id'=> $city['id'] ,'city_id' => $city['city_id']]; 
-        }         
-          
-       return $this->render(['cityWeatherInfo'=>$cityWeatherInfo]);
+            for ($i = 0; $i < 7; $i++){
+            $sqlRequest  = "INSERT INTO weather
+            (city_id,date,temp,min_temp,max_temp,humidity,wind)
+            VALUES (" 
+            . $city['city_id'] . 
+            ",FROM_UNIXTIME("
+            . $response['list'][$i]['dt'] ."),"
+            . $response['list'][$i]['temp']['day'] . ","
+            . $response['list'][$i]['temp']['min'] . ","
+            . $response['list'][$i]['temp']['max'] . ","
+            . $response['list'][$i]['humidity']. ","
+            . $response['list'][$i]['speed'] . ")";
+            $this->connect->query($sqlRequest);
+            }
+        }               
+       return $this->render();
+    }
+    
+    public function weatherForecastAction ($request) {
+        $cityWeatherInfo = array ();
+        $sqlReturn = $this->connect->query('SELECT weather.id, city_map.name, weather.date, weather.temp, weather.min_temp, weather.max_temp, weather.humidity, weather.wind
+                                            FROM weather JOIN city_map ON city_map.city_id = weather.city_id');
+        
+        while ($row = $sqlReturn->fetch_assoc()) {
+            $cityWeatherInfo[] = ['id' => $row['id'], 'city_name' => $row['name'], 'date' => $row['date'],
+                                 'temp' => $row['temp'], 'min_temp'=> $row['min_temp'], 'max_temp' =>$row['max_temp'],
+                                 'humidity' => $row['humidity'], 'wind' =>$row['wind']];
+        }
+
+        return $this->render(['cityWeatherInfo'=>$cityWeatherInfo]);
     }
     
     
