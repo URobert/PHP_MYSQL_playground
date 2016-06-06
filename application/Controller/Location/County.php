@@ -25,14 +25,6 @@ class County extends \TestProject\Controller\BaseController {
         return $counties;
     }
     
-    public function checkFields(){         
-         if ( empty($_POST['county']) ){
-            return false;
-         }
-         
-        return true;
-    }
-    
     public function getCounty($id){
         $sqlRequest = "SELECT * FROM county WHERE id=" . $id;
         $result = $this->connect->query($sqlRequest);
@@ -45,14 +37,15 @@ class County extends \TestProject\Controller\BaseController {
     public function addCountyAction ($request) {
     if ($request->getMethod() === "POST"){
         
+        $county = $request->get('county');
         // TEST FIELDS FOR NON-EMPTY AND LENGTH
-         if  ( !$this->checkFields() )  { 
+         if  ( !$county )  { 
             echo '<script language="javascript">';
             echo 'alert("County filed can not be empty.")';
             echo '</script>'; 
          } else {
             // REFACTOR INSERT QUERIES
-            $checkCounty = "SELECT * FROM county WHERE name=". "'" . $_POST['county']. "'" . " limit 1";
+            $checkCounty = "SELECT * FROM county WHERE name=". "'" . $county. "'" . " limit 1";
             $resultCounty = $this->connect->query($checkCounty);
             if ($resultCounty->num_rows){
                 foreach ($resultCounty as $county){

@@ -26,13 +26,6 @@ class City extends \TestProject\Controller\BaseController{
         return $cities;
     }
     
-    public function checkFields(){         
-         if ( empty($_POST['city']) ){
-            return false;
-         }
-        return true;
-    }
-    
     public function getCity($id){
         $cities = array();
         $requestCityList = "SELECT * FROM city WHERE county_id=" . $id;
@@ -55,10 +48,12 @@ class City extends \TestProject\Controller\BaseController{
     
     public function addCityAction ($request) {
         $id = $request->get('id');
+        
         if ($request->getMethod() === "POST"){
             
             // TEST FIELDS FOR NON-EMPTY AND LENGTH
-             if  ( !$this->checkFields() )  { 
+            $city = $request->get('city');
+             if  ( !$city )  { 
                 echo '<script language="javascript">';
                 echo 'alert("City filed can not be empty.")';
                 echo '</script>'; 
@@ -77,7 +72,7 @@ class City extends \TestProject\Controller\BaseController{
                           </script>";
                 }else{                        
                     $addNewCity = 'INSERT INTO city (name,county_id)
-                                   VALUES ("' . $_POST['city'] . '",' . $id .')';
+                                   VALUES ("' . $request->get('city') . '",' . $id .')';
                     if ($this->connect->query($addNewCity) === TRUE) {
                     #echo "City sucessfuly added:" . $_POST['city'] . "<br>";
                     
@@ -140,9 +135,8 @@ class City extends \TestProject\Controller\BaseController{
     }
     
     public function searchCityAction($request){
-        //get search term
-         if (isset($_GET['term'])) {
-            $searchTerm = $_GET['term'];         
+        $searchTerm = $request->get('term');
+         if ($searchTerm) {
             //get matched data from skills table
             $data = array();
             $query = $this->connect->query("SELECT name as label, id as value FROM city WHERE name LIKE '".$searchTerm."%' ORDER BY name ASC");
