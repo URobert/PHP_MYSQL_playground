@@ -103,48 +103,6 @@
   controller: Location\City
   function: deleteCity
   
-    
-    
-    
-- url: /randomNr
-  method: get
-  controller: LandingPage\RandomIntro
-  
-- url: /testing
-  method: get
-  controller: Test\Testing
-  
-- url: /sqlConnect
-  method: get
-  controller: mySQLConnect\Connect
-  
-- url: /addCounties
-  method: get
-  controller: Import\Location
-  
-- url: /countyCityImport
-  method: get
-  controller: Import\CountyAndCityImport
-  
-- url: /wikiImport
-  method: get
-  controller: Import\WikiImport
-  
-- url: /mostPopular
-  method: get
-  controller: Statistics\MostPopularPage
-  
-- url: /highestBandwithUsage
-  method: get
-  controller: Statistics\HighestBWUsage
-  
-- url: /temperature
-  method: get
-  controller: Statistics\MaxTemperature
-  
-- url: /counties-and-cities
-  method: get
-  controller: Statistics\County_City_Stats
 
 
 
