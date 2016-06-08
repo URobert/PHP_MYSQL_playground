@@ -15,12 +15,12 @@ class BaseController {
             array_pop(explode("\\", get_class($this))),
             $this->route_entry['function']
         );
-        return ob_get_clean();
+        $content = ob_get_clean();
         
-        //ob_start();
-        //require('layout');
-        //$layout = ob_get_clean();
-        //return str_replace('MAIN_CONTENT', $content, $layout);
+        ob_start();
+        require('../application/layout.php');
+        $layout = ob_get_clean();
+        return str_replace('MAIN_CONTENT', $content, $layout);
         //
     }
     

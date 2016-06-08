@@ -1,8 +1,4 @@
-<html>
-			<body>
-					<?="<a href=\"javascript:history.go(-1)\">GO BACK</a>"; ?>
-			</body>
-</html>
+<?="<a href=\"javascript:history.go(-1)\">GO BACK</a>"; ?>
 
 <style>
 .wrapper{

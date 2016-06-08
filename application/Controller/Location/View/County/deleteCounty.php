@@ -1,21 +1,3 @@
-<?php namespace TestProject\Controller\City; ?>
-<html>
-			<body>
-					<a href="/home2" class="button">Back</a><br><br>
-			</body>
-</html>
-
-<style>
-.wrapper{
-    margin-left: 45%;
-}
-
-.btn-danger, btn {
-    padding: 5px;
-}
-
-</style>
-              	
 <!--<script language=javascript>
     $('.deletebutton').click(function() {
        var deleteRow = $(this).attr('data-id');
