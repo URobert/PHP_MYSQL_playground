@@ -120,6 +120,69 @@ class County extends \TestProject\Controller\BaseController {
         return $this->render( ['id' => $id, 'countyName' => $cName]);         
     }
     
+    public function searchLocationAction($request){
+        if ($request->getMethod() == "POST"){
+            $searchField = $request->get('userSearch');
+            if ($request->get('SearchBy') == "County"){
+                $category = "County";
+                return $this->searchHelp($searchField, $category);
+            //    $countiesAndCities = [];
+            //    $sqlReq = "SELECT * FROM
+            //              (SELECT county.name AS County, city.name AS City,county.id FROM county JOIN city WHERE county.id =city.county_id ORDER BY county.name) AS C
+            //               WHERE County='" . $searchField . "';";
+            //    $result = $this->connect->query($sqlReq);
+            //    if ($result->num_rows == 0){
+            //        echo "No county was found under that name.";
+            //    }
+            //    foreach ($result as $row){
+            //    $countiesAndCities [] = $row;
+            //    }
+            //return $this->render(['countiesAndCities' => $countiesAndCities]);
+            }else{
+                //Searching by city
+                if ($request->get('SearchBy') == "City"){
+                $category = "City";
+                return $this->searchHelp($searchField, $category);
+            //        $countiesAndCities = [];
+            //        $sqlReq = "SELECT * FROM
+            //                  (SELECT county.name AS County, city.name AS City,county.id FROM county JOIN city WHERE county.id =city.county_id ORDER BY county.name) AS C
+            //                   WHERE City='" . $searchField . "';";
+            //        $result = $this->connect->query($sqlReq);
+            //        if ($result->num_rows == 0){
+            //            echo "No city was found under that name.";
+            //        }
+            //        foreach ($result as $row){
+            //        $countiesAndCities [] = $row;
+            //        }
+            //        return $this->render(['countiesAndCities' => $countiesAndCities]);
+                }
+            }
+        }else{
+            $listQuery = "SELECT county.name AS County, city.name AS City,county.id
+                          FROM county JOIN city WHERE county.id =   city.county_id ORDER BY county.name;";
+            $result = $this->connect->query($listQuery);
+            $countiesAndCities = array();
+            foreach ($result as $row){
+            $countiesAndCities [] = $row;
+            }
+            return $this->render(['countiesAndCities' => $countiesAndCities]); 
+        }
+    }
+    public function searchHelp($searchTerm, $category){
+            $countiesAndCities = [];
+            $sqlReq = "SELECT * FROM
+                      (SELECT county.name AS County, city.name AS City,county.id FROM county JOIN city WHERE county.id =city.county_id ORDER BY county.name) AS C
+                       WHERE " . $category . "='" . $searchTerm . "';";
+            $result = $this->connect->query($sqlReq);
+            if ($result->num_rows == 0){
+                echo "No result was found.";
+            }
+            foreach ($result as $row){
+            $countiesAndCities [] = $row;
+            }
+        return $this->render(['countiesAndCities' => $countiesAndCities]);
+    }
+    
 }//end of countyList class
 
 ?>

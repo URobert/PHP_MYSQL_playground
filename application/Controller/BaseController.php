@@ -16,6 +16,12 @@ class BaseController {
             $this->route_entry['function']
         );
         return ob_get_clean();
+        
+        //ob_start();
+        //require('layout');
+        //$layout = ob_get_clean();
+        //return str_replace('MAIN_CONTENT', $content, $layout);
+        //
     }
     
     

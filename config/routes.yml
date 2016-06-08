@@ -102,6 +102,16 @@
   method: get
   controller: Location\City
   function: deleteCity
+
+- url: /home2/search
+  method: get
+  controller: Location\County
+  function: searchLocation
+
+- url: /home2/search
+  method: post
+  controller: Location\County
+  function: searchLocation
   
 
 

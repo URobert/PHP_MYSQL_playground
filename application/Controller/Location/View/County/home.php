@@ -46,17 +46,18 @@
         }
         
         body{
-            background:#a8a8a8;
+            background:white;
         }
         
         a{
             color:black;
+            font: 400 20px/1.3 'Bree Serif', Georgia, serif;
         }
         
         .inner{
            max-height: 5px;
         }
-        
+             
     </style>
 
     <!-- Building the navbar -->    
@@ -83,27 +84,19 @@
               <li><div class ="btn-group">
                 <a href="/cities/weatherImport" id="weather" class="navTop">Import Weather Forecast</a></div>
               </li>
+              <li><div class ="btn-group">
+                <a href="/home2/search" id="weather" class="navTop">Search Location</a></div>
+              </li>              
             </ul>
           </div>
       </nav>
        </div> <!-- end of first container | end of navbar-->
 
 
-
+        MAIN_CONTENT
         <div class ="container container1">
-<!--            <div class="row btn-group">
-                <div class="col-md-3">
-                    <a href="/counties/AddCounty" id="addCounty" class="btn btn-primary">Add new county</a>
-                </div>
-                <div class="col-md-4">
-                    <a href="/cities/map" id="mapCounty" class="btn btn-success">Import and go to map</a>
-                </div>
-                <div class="col-md-4">
-                    <a href="/cities/weatherImport" id="weather" class="btn btn-warning">Import Weather Forecast</a>
-                </div>                   
-            </div>-->
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-6 col-md-offset-3">
                     <table class="table table-bordered">
                     <?php foreach ($countylist as $county): ?>
                         <tr>
