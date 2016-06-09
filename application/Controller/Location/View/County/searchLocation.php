@@ -29,7 +29,7 @@
                 <?php if(isset($_POST['submit'])) 
                 $selected_val = $_POST['Search'];
                 ?>
-                <input type="text" name="userSearch" id="userSearch"/>
+                <input type="text" name="userSearch" id="userSearch" value="<?php if (isset($_POST['userSearch'])) echo $_POST['userSearch']; ?>"/>
                 <input type="submit" value="Search"/></span>
             </form>                    
             <table class="table table-bordered">

@@ -135,7 +135,7 @@ class County extends \TestProject\Controller\BaseController {
             }
         }else{
             $listQuery = "SELECT county.name AS County, city.name AS City,county.id
-                          FROM county JOIN city WHERE county.id =   city.county_id ORDER BY county.name;";
+                          FROM county JOIN city WHERE county.id = city.county_id ORDER BY county.name;";
             $result = $this->connect->query($listQuery);
             $countiesAndCities = array();
             foreach ($result as $row){
