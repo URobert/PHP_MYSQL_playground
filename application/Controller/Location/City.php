@@ -213,7 +213,6 @@ class City extends \TestProject\Controller\BaseController{
         }
         
         if ($request->getMethod() === "POST"){ 
- echo "Filter is now active" . "<br>";
             $cityWeatherInfo = [];
             $county = $request->get('county');
             $city = $request->get('city');
@@ -241,21 +240,24 @@ class City extends \TestProject\Controller\BaseController{
     
     public function weatherSearchFilter ($county, $city, $from, $to) {
         $cityWeatherInfo = [];
+        //WHEN FULL SEARCH DETAILS ARE PROVIDED
         if ( !empty($county) && !empty($city) && !empty($from) && !empty($to) ||
              !empty($city) && !empty($from) && !empty($to)){
-            //WHEN FULL SEARCH DETAILS ARE PROVIDED
-            $checkCountyID = "SELECT id FROM county WHERE name = '" . $county . "'";
-            $check1 = $this->connect->query($checkCountyID);
-            $checkCity = "SELECT county_id FROM city_map WHERE name='" . $city . "'";
-            $check2 = $this->connect->query($checkCity);
-                //CHECK IF THE CITY IS IN THAT COUNTY
-                if ($check1 == $check2){
-                    continue;
-                }else{
-                    echo "No such city in that county.";
-                    $cityWeatherInfo = [NULL];
-                    return $cityWeatherInfo;
-                }
+            //CHECK IF THE CITY IS IN THAT COUNTY
+            //$checkCountyID = "SELECT id FROM county WHERE name = '" . $county . "'";
+            //$check1 = $this->connect->query($checkCountyID);
+            //$checkCity = "SELECT county_id FROM city WHERE id = (SELECT city_id FROM city_map WHERE name= '" . $city . "')";
+            //$check2 = $this->connect->query($checkCity);
+            //print_r( $check1->fetch_assoc()['id']); print_r($check2->fetch_assoc()['county_id']);
+            //
+            //if ($check1->fetch_assoc()['id'] === $check2->fetch_assoc()['county_id']){
+            //    #continue;
+            //}else{
+            //    exit;
+            //    echo "No such city in that county.";
+            //    $cityWeatherInfo = [NULL];
+            //    return $cityWeatherInfo;
+            //}
             $sqlQuery = "SELECT weather.id, city_map.name, weather.date, weather.temp, weather.min_temp, weather.max_temp, weather.humidity, weather.wind
                          FROM weather
                          JOIN city_map ON city_map.city_id = weather.city_id
@@ -264,7 +266,7 @@ class City extends \TestProject\Controller\BaseController{
                          AND weather.date <= '" . $to. "';";
             $sqlReturn = $this->connect->query($sqlQuery);
             while ($row = $sqlReturn->fetch_assoc()) {
-            $cityWeatherInfo[] = $row;
+                $cityWeatherInfo[] = $row;
             }
             return $cityWeatherInfo;
         }else{
@@ -277,7 +279,7 @@ class City extends \TestProject\Controller\BaseController{
                 $sqlReturn = $this->connect->query($sqlQuery);
                 if ($sqlReturn){
                     while ($row = $sqlReturn->fetch_assoc()) {
-                    $cityWeatherInfo[] = $row;
+                        $cityWeatherInfo[] = $row;
                     }
                 }       
                 return $cityWeatherInfo;
@@ -291,7 +293,7 @@ class City extends \TestProject\Controller\BaseController{
                              AND weather.date >= '" . $from . "'";
                 $sqlReturn = $this->connect->query($sqlQuery);
                 while ($row = $sqlReturn->fetch_assoc()) {
-                $cityWeatherInfo[] = $row;
+                    $cityWeatherInfo[] = $row;
                 }
                 return $cityWeatherInfo;
             }
@@ -304,7 +306,7 @@ class City extends \TestProject\Controller\BaseController{
                              AND weather.date <= '" . $to. "';";
                 $sqlReturn = $this->connect->query($sqlQuery);
                 while ($row = $sqlReturn->fetch_assoc()) {
-                $cityWeatherInfo[] = $row;
+                    $cityWeatherInfo[] = $row;
                 }
                 return $cityWeatherInfo;
             }  

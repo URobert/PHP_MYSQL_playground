@@ -102,21 +102,21 @@ class County extends \TestProject\Controller\BaseController {
         $cName = mysqli_fetch_row($result)[0];
         $citiesResult = $this->connect->query($cities);
     
-            if (mysqli_fetch_row($citiesResult)[1]){
-                #echo $cName . " could not be deteled. Only empty (without registred cities) counties can be deleted. ";
-                echo "<script>
-                 alert('That county can not be deteled. Only empty (without registred cities) counties can be deleted.');
-                 window.location.href='/home2';
-                 </script>";
-            }else{
-                $deleteQuery = 'DELETE FROM county WHERE id=' . $id;
-                if ($this->connect->query($deleteQuery) === TRUE){
-                echo "<script>
-                 alert('County deleted.');
-                 window.location.href='/home2';
-                 </script>";  
-                }
-            }       
+        if (mysqli_fetch_row($citiesResult)[1]){
+            #echo $cName . " could not be deteled. Only empty (without registred cities) counties can be deleted. ";
+            echo "<script>
+             alert('That county can not be deteled. Only empty (without registred cities) counties can be deleted.');
+             window.location.href='/home2';
+             </script>";
+        }else{
+            $deleteQuery = 'DELETE FROM county WHERE id=' . $id;
+            if ($this->connect->query($deleteQuery) === TRUE){
+            echo "<script>
+             alert('County deleted.');
+             window.location.href='/home2';
+             </script>";  
+            }
+        }       
         return $this->render( ['id' => $id, 'countyName' => $cName]);         
     }
     
@@ -129,8 +129,8 @@ class County extends \TestProject\Controller\BaseController {
             }else{
                 //Searching by city
                 if ($request->get('SearchBy') == "City"){
-                $category = "City";
-                return $this->searchHelp($searchField, $category);
+                    $category = "City";
+                    return $this->searchHelp($searchField, $category);
                 }
             }
         }else{
@@ -139,23 +139,23 @@ class County extends \TestProject\Controller\BaseController {
             $result = $this->connect->query($listQuery);
             $countiesAndCities = array();
             foreach ($result as $row){
-            $countiesAndCities [] = $row;
+                $countiesAndCities [] = $row;
             }
             return $this->render(['countiesAndCities' => $countiesAndCities]); 
         }
     }
     public function searchHelp($searchTerm, $category){
-            $countiesAndCities = [];
-            $sqlReq = "SELECT * FROM
-                      (SELECT county.name AS County, city.name AS City,county.id FROM county JOIN city WHERE county.id =city.county_id ORDER BY county.name) AS C
-                       WHERE " . $category . "='" . $searchTerm . "';";
-            $result = $this->connect->query($sqlReq);
-            if ($result->num_rows == 0){
-                echo "No result was found.";
-            }
-            foreach ($result as $row){
+        $countiesAndCities = [];
+        $sqlReq = "SELECT * FROM
+                  (SELECT county.name AS County, city.name AS City,county.id FROM county JOIN city WHERE county.id =city.county_id ORDER BY county.name) AS C
+                   WHERE " . $category . "='" . $searchTerm . "';";
+        $result = $this->connect->query($sqlReq);
+        if ($result->num_rows == 0){
+            echo "No result was found.";
+        }
+        foreach ($result as $row){
             $countiesAndCities [] = $row;
-            }
+        }
         return $this->render(['countiesAndCities' => $countiesAndCities]);
     }
     
