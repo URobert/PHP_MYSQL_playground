@@ -240,13 +240,26 @@ class City extends \TestProject\Controller\BaseController{
     }
     
     public function weatherSearchFilter ($county, $city, $from, $to) {
+        $cityWeatherInfo = [];
         if ( !empty($county) && !empty($city) && !empty($from) && !empty($to) ||
              !empty($city) && !empty($from) && !empty($to)){
             //WHEN FULL SEARCH DETAILS ARE PROVIDED
+            $checkCountyID = "SELECT id FROM county WHERE name = '" . $county . "'";
+            $check1 = $this->connect->query($checkCountyID);
+            $checkCity = "SELECT county_id FROM city_map WHERE name='" . $city . "'";
+            $check2 = $this->connect->query($checkCity);
+                //CHECK IF THE CITY IS IN THAT COUNTY
+                if ($check1 == $check2){
+                    continue;
+                }else{
+                    echo "No such city in that county.";
+                    $cityWeatherInfo = [NULL];
+                    return $cityWeatherInfo;
+                }
             $sqlQuery = "SELECT weather.id, city_map.name, weather.date, weather.temp, weather.min_temp, weather.max_temp, weather.humidity, weather.wind
                          FROM weather
                          JOIN city_map ON city_map.city_id = weather.city_id
-                         WHERE city_map.name = '" . $city . "'
+                         WHERE city_map.name LIKE '" . $city . "%'
                          AND weather.date >= '" . $from . "'
                          AND weather.date <= '" . $to. "';";
             $sqlReturn = $this->connect->query($sqlQuery);
@@ -260,11 +273,13 @@ class City extends \TestProject\Controller\BaseController{
                 $sqlQuery = "SELECT weather.id, city_map.name, weather.date, weather.temp, weather.min_temp, weather.max_temp, weather.humidity, weather.wind
                              FROM weather
                              JOIN city_map ON city_map.city_id = weather.city_id
-                             WHERE city_map.name = '" . $city ."'";
+                             WHERE city_map.name LIKE '" . $city ."%'";
                 $sqlReturn = $this->connect->query($sqlQuery);
-                while ($row = $sqlReturn->fetch_assoc()) {
-                $cityWeatherInfo[] = $row;
-                }
+                if ($sqlReturn){
+                    while ($row = $sqlReturn->fetch_assoc()) {
+                    $cityWeatherInfo[] = $row;
+                    }
+                }       
                 return $cityWeatherInfo;
             }
             //ONLY START DATE
@@ -272,7 +287,7 @@ class City extends \TestProject\Controller\BaseController{
                 $sqlQuery = "SELECT weather.id, city_map.name, weather.date, weather.temp, weather.min_temp, weather.max_temp, weather.humidity, weather.wind
                              FROM weather
                              JOIN city_map ON city_map.city_id = weather.city_id
-                             WHERE city_map.name = '" . $city . "'
+                             WHERE city_map.name LIKE '" . $city . "%'
                              AND weather.date >= '" . $from . "'";
                 $sqlReturn = $this->connect->query($sqlQuery);
                 while ($row = $sqlReturn->fetch_assoc()) {
@@ -285,7 +300,7 @@ class City extends \TestProject\Controller\BaseController{
                 $sqlQuery = "SELECT weather.id, city_map.name, weather.date, weather.temp, weather.min_temp, weather.max_temp, weather.humidity, weather.wind
                              FROM weather
                              JOIN city_map ON city_map.city_id = weather.city_id
-                             WHERE city_map.name = '" . $city . "'
+                             WHERE city_map.name LIKE '" . $city . "%'
                              AND weather.date <= '" . $to. "';";
                 $sqlReturn = $this->connect->query($sqlQuery);
                 while ($row = $sqlReturn->fetch_assoc()) {
