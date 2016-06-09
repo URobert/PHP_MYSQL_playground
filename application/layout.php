@@ -80,7 +80,7 @@
                  <a href="/cities/map" id="mapCounty" class="navTop">Import and go to map</a></div>
               </li>
               <li><div class ="btn-group">
-                <a href="/cities/weatherImport" id="weather" class="navTop">Import Weather Forecast</a></div>
+                <a href="/cities/weather" id="weather" class="navTop">Weather Forecast</a></div>
               </li>
               <li><div class ="btn-group">
                 <a href="/home2/search" id="weather" class="navTop">Search Location</a></div>

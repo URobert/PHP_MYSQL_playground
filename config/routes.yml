@@ -82,6 +82,11 @@
   method: get
   controller: Location\City
   function: weatherForecast
+
+- url: /cities/weather
+  method: post
+  controller: Location\City
+  function: weatherForecast
   
 - url: cities/{id}   
   method: get

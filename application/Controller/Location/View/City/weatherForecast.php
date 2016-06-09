@@ -10,10 +10,28 @@
         max-width:100px;
         background:gray;
     }
+    .myform {
+        margin-top:25px;
+    }
+    #importUpdate{
+        float:right;
+    }
 </style>
 
- <div class ="container">
-        <div class="col-md-10">
+<div class="container containerF">
+    <div class="col-md-12 myform">
+    <form action="/cities/weather" method="post">
+    County:<input type="text" name="county"/>
+    *City:<input type="text" name="city"/>
+    From:<input type="text" name="from" placeholder="YYYY-MM-DD"/>
+    To:<input type="text" name="to" placeholder="YYYY-MM-DD"/>
+    <input type="submit" name="SearchWeather" value="Search" class="btn btn-primary"/>
+    </form>
+    </div>
+</div>    
+
+<div class ="container">
+        <div class="col-md-12">
             <table class="table table-striped">
                 <caption>Show Weather Report</caption>
                 <thead>
@@ -41,5 +59,6 @@
             <?php endforeach ?>
             </table>
         </div>
- </div> <!-- end of container -->
- <a href="/home2" class="button">RETURN TO MAIN PAGE</a>
+</div> <!-- end of container -->
+<a href="/home2" class="button">RETURN TO MAIN PAGE</a>
+<a href="/cities/weatherImport" class="button" id="importUpdate">Import and Update</a></div>
