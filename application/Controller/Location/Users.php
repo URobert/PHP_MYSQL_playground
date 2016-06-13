@@ -29,38 +29,27 @@ class Users extends \TestProject\Controller\BaseController{
     
     public function SeachUsers($username, $email, $status){
         $users = [];
-            //SEACH BY USER
-            if ( !empty($username) && empty($email) && $status == "all"){
-                $sqlReq = "SELECT * FROM user WHERE username LIKE'".  $username . "%'";
-                $sqlReturn = $this->connect->query($sqlReq);
-                while($row = $sqlReturn->fetch_assoc()) {
-                    $users[] = $row;
-                }
-                return $users;
-            }
-            //SEACH BY EMAIL
-            if ( !empty($email) && empty($username) && $status == "all"){
-                $sqlReq = "SELECT * FROM user WHERE email LIKE'".  $email . "%'";
-                $sqlReturn = $this->connect->query($sqlReq);
-                while($row = $sqlReturn->fetch_assoc()) {
-                    $users[] = $row;
-                }
-                return $users;
-            }
-            //SEACH ONLY BY STATUS
-            if ( empty($username) && empty($email) && !empty($status)){
-                #echo $status;
-                if ($status == 'all'){
-                    $sqlReq = "SELECT * FROM user";                   
-                }else{
-                    $sqlReq = "SELECT * FROM user WHERE status LIKE'".  $status . "%'";    
-                }
-                $sqlReturn = $this->connect->query($sqlReq);
-                while($row = $sqlReturn->fetch_assoc()) {
-                    $users[] = $row;
-                }
-                return $users;
-            }
+        $sqlReq = "SELECT * FROM user WHERE 1 ";
+        //SEACH BY USER
+        if ( !empty($username) ){
+            $sqlReq .= " AND username LIKE'".  $username . "%'";
+        }
+        //SEACH BY EMAIL
+        if ( !empty($email)){
+            $sqlReq .= " AND email LIKE'%".  $email . "%'";
+        }
+        //SEACH ONLY BY STATUS
+        if (!empty($status)){
+            $sqlReq .= " AND status='".  $status . "'";    
+        }
+        
+        $sqlReturn = $this->connect->query($sqlReq);
+        while($row = $sqlReturn->fetch_assoc()) {
+            $users[] = $row;
+        }
+        return $users;
+
     }
+
     
 }//end of Users class 

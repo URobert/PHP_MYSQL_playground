@@ -25,11 +25,11 @@
     Email:<input type="text" name="email" value="<?php if (isset($_POST['email'])) echo $_POST['email']; ?>" />
     Status:
     <select name="status">
-        <option value="all">all</option>
-        <option value="active">active</option>
-        <option value="inactive">inactive</option>
+        <option value="">all</option>
+        <option value="1">active</option>
+        <option value="0">inactive</option>
     </select>
-    <input type="submit" name="SearchWeather" value="Search" class="btn btn-primary"/>
+    <input type="submit" name="SeachUser" value="Search" class="btn btn-primary"/>
     </form>
     </div>
 </div>
@@ -41,7 +41,6 @@
                 <thead>
                     <th class="col-md-1">#</th>
                     <th class="col-md-3">User</th>
-                    <th class="col-md-3">Password</th>
                     <th class="col-md-3">Email</th>
                     <th class="col-md-2">Status</th>                         
                 </thead>
@@ -49,9 +48,11 @@
                 <tr>
                     <td class="col-md-1"><?= $i ?></td>
                     <td class="col-md-3"><?= $entry['username'] ?></td>
-                    <td class="col-md-3">********</td> 
                     <td class="col-md-3"><?= $entry['email'] ?></td>
-                    <td class="col-md-2"><?= $entry['status'] ?></td>
+                    <td class="col-md-2">
+                    <?php if ($entry['status']=='1') echo 'active';
+                    else echo 'inactive'
+                    ?></td>
                 </tr>
             <?php $i++; ?>
             <?php endforeach ?>
