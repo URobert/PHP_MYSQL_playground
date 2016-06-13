@@ -83,13 +83,16 @@
                 <a href="/cities/weather" id="weather" class="navTop">Weather Forecast</a></div>
               </li>
               <li><div class ="btn-group">
-                <a href="/home2/search" id="weather" class="navTop">Search Location</a></div>
+                <a href="/home2/search" id="search" class="navTop">Search Location</a></div>
+              </li>
+              <li><div class ="btn-group">
+                <a href="/home2/users" id="users" class="navTop">Users</a></div>
               </li>
               <li><div class ="btn-group">
               <?php if(isset($_SESSION['userId'])): ?>
-                <a href="/home2/logout" id="weather" class="navTop">Logout</a></div>
+                <a href="/home2/logout" id="logut" class="navTop">Logout</a></div>
               <?php else: ?>
-                <a href="/home2/login" id="weather" class="navTop">Login</a></div>
+                <a href="/home2/login" id="login" class="navTop">Login</a></div>
               <?php endif ?>
               </li>
             </ul>

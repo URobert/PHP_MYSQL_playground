@@ -73,7 +73,6 @@ class City extends \TestProject\Controller\BaseController{
                                    VALUES ("' . $request->get('city') . '",' . $id .')';
                     if ($this->connect->query($addNewCity) === TRUE) {
                     #echo "City sucessfuly added:" . $_POST['city'] . "<br>";
-                    
                         echo "<script>
                                alert('City sucessfuly added.');
                               </script>";
@@ -171,13 +170,13 @@ class City extends \TestProject\Controller\BaseController{
     }
     
     public function weatherForecastImportAction($request){
-        //GET LIST OF CITIES FOR WEATHER REPORT
         
+        //GET LIST OF CITIES FOR WEATHER REPORT  
         $result = $this->connect->query("SELECT * FROM city_map");
         foreach ($result as $city){
               $cities [] = ['city_id'=>$city['city_id'], 'name'=>$city['name']];
         }
-          
+        
         //CALLING API
         $appId = "01ffc2b8227e5302ffa7f8555ba7738e";
         $cityWeatherInfo = array ();
@@ -233,26 +232,7 @@ class City extends \TestProject\Controller\BaseController{
             $checkCountyID = "SELECT id FROM county WHERE name = '" . $county . "'";
             $check1 = $this->connect->query($checkCountyID);
             $checkCity = "SELECT county_id FROM city WHERE id = (SELECT city_id FROM city_map WHERE name= '" . $city . "')";
-            $check2 = $this->connect->query($checkCity); 
-//echo $check1->fetch_assoc()['id'];
-//echo $check2->fetch_assoc()['county_id'];
-            
-            //$a = intval($check1->fetch_assoc()['id']);
-            //$b = intval($check2->fetch_assoc()['county_id']);
-            //echo "a=  " . $a; echo "b= " . $b;
-            //if ($a != $b){
-            //    echo "No such city in that county.";
-            //    $cityWeatherInfo = [NULL];
-            //    return $cityWeatherInfo;  
-            //}
-
-            
-            //if (strcmp ($check1->fetch_assoc()['id'], $check2->fetch_assoc()['county_id']) != 0){  
-            //    echo "No such city in that county.";
-            //    $cityWeatherInfo = [NULL];
-            //    return $cityWeatherInfo;
-            //}
-            
+            $check2 = $this->connect->query($checkCity);             
             if ($check1->fetch_assoc()['id'] != $check2->fetch_assoc()['county_id']){
                 echo "No such city in that county.";
                 $cityWeatherInfo = [];
