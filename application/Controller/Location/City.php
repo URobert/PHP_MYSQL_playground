@@ -74,9 +74,9 @@ class City extends \TestProject\Controller\BaseController{
                     if ($this->connect->query($addNewCity) === TRUE) {
                     #echo "City sucessfuly added:" . $_POST['city'] . "<br>";
                     
-                    echo "<script>
-                           alert('City sucessfuly added.');
-                          </script>";
+                        echo "<script>
+                               alert('City sucessfuly added.');
+                              </script>";
                         $cityId = mysqli_insert_id($this->connect);
                     }
                 }

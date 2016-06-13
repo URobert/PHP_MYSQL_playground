@@ -1,5 +1,5 @@
 <?php if(isset($_SESSION['message'])) echo $_SESSION['message']; ?>
-<?php usleep(1000); session_unset(); session_destroy(); ?>
+<?php #usleep(1000); session_unset(); session_destroy(); ?>
 
 <div class ="container container1">
     <div class="row">

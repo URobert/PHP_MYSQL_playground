@@ -84,7 +84,14 @@
               </li>
               <li><div class ="btn-group">
                 <a href="/home2/search" id="weather" class="navTop">Search Location</a></div>
-              </li>              
+              </li>
+              <li><div class ="btn-group">
+              <?php if(isset($_SESSION['userId'])): ?>
+                <a href="/home2/logout" id="weather" class="navTop">Logout</a></div>
+              <?php else: ?>
+                <a href="/home2/login" id="weather" class="navTop">Login</a></div>
+              <?php endif ?>
+              </li>
             </ul>
           </div>
       </nav>
