@@ -21,8 +21,8 @@
 <div class="container containerF">
     <div class="col-md-12 myform">
     <form action="/home2/users" method="post">
-    User:<input type="text" name="username" value="<?php if ($username) echo $username;?>"/>
-    Email:<input type="text" name="email" value="<?php if ($email) echo $email; ?>" />
+    User:<input type="text" name="username" value="<?php echo $username; ?>"/>
+    Email:<input type="text" name="email" value="<?php echo $email; ?>" />
     Status:
     <select name="status">
         <option value="">all</option>

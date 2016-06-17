@@ -1,6 +1,7 @@
-<?php
+<?php 
 namespace TestProject\Controller\Location;
 use Symfony\Component\HttpFoundation\Request;
+
 
 class Users extends \TestProject\Controller\BaseController{
     
@@ -9,20 +10,24 @@ class Users extends \TestProject\Controller\BaseController{
     }
     
     public function ListUsersAction($request){
-        $users = array ();
-        $user = $request->get("username");
-        $email = $request->get("email");
-        $status = $request->get("status");
-        
-        if ($request->getMethod() === "POST"){
-            $users =  $this->SeachUsers($user, $email, $status);
-        }else{
-            $sql = "SELECT * FROM user";
-            $returedList = $this->connect->query($sql);
-            foreach($returedList as $entry){
-                $users [] = $entry;
-            }
+        if(!isset($_SESSION['user_search']))  {
+            $_SESSION['user_search'] = array();
         }
+        $filters = $_SESSION['user_search'];
+        
+        $user = $request->get("username", @$filters['user']);
+        $email = $request->get("email", @$filters['email']);
+        $status = $request->get("status",@$filters['status']);
+           
+        if ($request->getMethod() === "POST"){
+            $filters['user']= $user;
+            $filters['email']= $email;
+            $filters['status']= $status;    
+            $_SESSION['user_search'] = $filters;   
+        }
+        
+        $users =  $this->SeachUsers($user, $email, $status);
+        
         return $this->render(['users'=>$users, 'username'=>$user, 'email'=>$email, 'status'=>$status]);
     }
     
@@ -41,10 +46,18 @@ class Users extends \TestProject\Controller\BaseController{
         if ($status != ""){
             $sqlReq .= " AND status='".  $status . "'";    
         }
+        //LIMIT FOR PAGINATION
+        //$currentPage;
+        //$rowsPerPage;
+        //$totalNrPages;
+        //
+        //$sqlReq .= " LIMIT 2 OFFSET " . $offsetPagination;
         $sqlReturn = $this->connect->query($sqlReq);
         while($row = $sqlReturn->fetch_assoc()) {
             $users[] = $row;
         }
+        //$offsetPagination += 2;
+        //echo $offsetPagination;
         return $users;
     }
 
