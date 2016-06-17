@@ -70,36 +70,37 @@
             </button>
             <h3><a href="/home2" id="R">Romania</a></h3>
           </div>
-    
-          <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <ul class="nav navbar-nav navbar-right">
-              <li><div class ="btn-group">
-                <a href="/counties/AddCounty" id="addCounty" class="navTop" >Add new county</a></div>
-              </li>
-              <li><div class ="btn-group">
-                 <a href="/cities/map" id="mapCounty" class="navTop">Import and go to map</a></div>
-              </li>
-              <li><div class ="btn-group">
-                <a href="/cities/weather" id="weather" class="navTop">Weather Forecast</a></div>
-              </li>
-              <li><div class ="btn-group">
-                <a href="/home2/search" id="search" class="navTop">Search Location</a></div>
-              </li>
-              <li><div class ="btn-group">
-                <a href="/home2/users" id="users" class="navTop">Users</a></div>
-              </li>
-              <li><div class ="btn-group">
-              <?php if(isset($_SESSION['userId'])): ?>
-                <a href="/home2/logout" id="logut" class="navTop">Logout</a></div>
-              <?php else: ?>
-                <a href="/home2/login" id="login" class="navTop">Login</a></div>
-              <?php endif ?>
-              </li>
-            </ul>
-          </div>
+          <?php if($isLoggedIn): ?>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                  <li><div class ="btn-group">
+                    <a href="/counties/AddCounty" id="addCounty" class="navTop" >Add new county</a></div>
+                  </li>
+                  <li><div class ="btn-group">
+                     <a href="/cities/map" id="mapCounty" class="navTop">Import and go to map</a></div>
+                  </li>
+                  <li><div class ="btn-group">
+                    <a href="/cities/weather" id="weather" class="navTop">Weather Forecast</a></div>
+                  </li>
+                  <li><div class ="btn-group">
+                    <a href="/home2/search" id="search" class="navTop">Search Location</a></div>
+                  </li>
+                  <li><div class ="btn-group">
+                    <a href="/home2/users" id="users" class="navTop">Users</a></div>
+                  </li>
+                  <li><div class ="btn-group">
+                  <?php if(isset($_SESSION['userId'])): ?>
+                    <a href="/home2/logout" id="logut" class="navTop">Logout</a></div>
+                  <?php else: ?>
+                    <a href="/home2/login" id="login" class="navTop">Login</a></div>
+                  <?php endif ?>
+                  </li>
+                </ul>
+            </div>
+        <?php endif ?>
       </nav>
        </div> <!-- end of first container | end of navbar-->
-       MAIN_CONTENT
+       <?= $content; ?>
        
     </body>
 </html>

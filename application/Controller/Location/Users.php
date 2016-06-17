@@ -16,15 +16,14 @@ class Users extends \TestProject\Controller\BaseController{
         
         if ($request->getMethod() === "POST"){
             $users =  $this->SeachUsers($user, $email, $status);
-            return $this->render(['users'=>$users]);
         }else{
             $sql = "SELECT * FROM user";
             $returedList = $this->connect->query($sql);
-            foreach($returedList as $user){
-                $users [] = $user;
+            foreach($returedList as $entry){
+                $users [] = $entry;
             }
-            return $this->render(['users'=>$users]);
         }
+        return $this->render(['users'=>$users, 'username'=>$user, 'email'=>$email, 'status'=>$status]);
     }
     
     public function SeachUsers($username, $email, $status){
@@ -39,16 +38,14 @@ class Users extends \TestProject\Controller\BaseController{
             $sqlReq .= " AND email LIKE'%".  $email . "%'";
         }
         //SEACH ONLY BY STATUS
-        if (!empty($status)){
+        if ($status != ""){
             $sqlReq .= " AND status='".  $status . "'";    
         }
-        
         $sqlReturn = $this->connect->query($sqlReq);
         while($row = $sqlReturn->fetch_assoc()) {
             $users[] = $row;
         }
         return $users;
-
     }
 
     

@@ -21,13 +21,13 @@
 <div class="container containerF">
     <div class="col-md-12 myform">
     <form action="/home2/users" method="post">
-    User:<input type="text" name="username" value="<?php if (isset($_POST['username'])) echo $_POST['username']; ?>"/>
-    Email:<input type="text" name="email" value="<?php if (isset($_POST['email'])) echo $_POST['email']; ?>" />
+    User:<input type="text" name="username" value="<?php if ($username) echo $username;?>"/>
+    Email:<input type="text" name="email" value="<?php if ($email) echo $email; ?>" />
     Status:
     <select name="status">
         <option value="">all</option>
-        <option value="1">active</option>
-        <option value="0">inactive</option>
+        <option value="1" <?php if ($status == "1") echo "selected";?>>active</option>
+        <option value="0" <?php if ($status == "0") echo "selected";?>>inactive</option>
     </select>
     <input type="submit" name="SeachUser" value="Search" class="btn btn-primary"/>
     </form>
@@ -51,7 +51,7 @@
                     <td class="col-md-3"><?= $entry['email'] ?></td>
                     <td class="col-md-2">
                     <?php if ($entry['status']=='1') echo 'active';
-                    else echo 'inactive'
+                    else echo 'inactive';
                     ?></td>
                 </tr>
             <?php $i++; ?>

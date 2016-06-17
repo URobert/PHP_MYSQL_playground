@@ -7,7 +7,8 @@ class BaseController {
 
     private $route_entry;
     
-    final public function render($arguments = array()) {        
+    final public function render($arguments = array()) {
+        $isLoggedIn = isset($_SESSION['userId']) && $_SESSION['userId'] == 1;
         ob_start();
         extract($arguments);
         require sprintf(
@@ -19,8 +20,7 @@ class BaseController {
         
         ob_start();
         require('../application/layout.php');
-        $layout = ob_get_clean();
-        return str_replace('MAIN_CONTENT', $content, $layout);
+        return ob_get_clean();
         //
     }
     
