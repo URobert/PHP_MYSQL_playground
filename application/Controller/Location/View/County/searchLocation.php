@@ -2,7 +2,6 @@
     thead{
         background: green;
         color:white;
-        font:bold;
         font-weight: bold;
     }
     
@@ -23,14 +22,14 @@
         <div class="col-md-6 col-md-offset-3">
             <form action="/home2/search" method=post>
                 <select name="SearchBy">
-                    <option value="County">by county</option>
-                    <option value="City">by city</option>
+                    <option value="County" <?php if ($_SESSION['locatioin_search']['category'] == "County") echo "selected";?>>by county</option>
+                    <option value="City" <?php if ($_SESSION['locatioin_search']['category'] == "City") echo "selected";?>>by city</option>
                 </select>
                 <?php if(isset($_POST['submit'])) 
                 $selected_val = $_POST['Search'];
                 ?>
-                <input type="text" name="userSearch" id="userSearch" value="<?php if (isset($_POST['userSearch'])) echo $_POST['userSearch']; ?>"/>
-                <input type="submit" value="Search"/></span>
+                <input type="text" name="userSearch" id="userSearch" value="<?php if (isset($_POST['userSearch'])) echo $_SESSION['locatioin_search']['searchField']; ?>"/>
+                <input type="submit" value="Search" class="btn btn-primary"/></span>
             </form>                    
             <table class="table table-bordered">
                 <thead>

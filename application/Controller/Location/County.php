@@ -121,18 +121,23 @@ class County extends \TestProject\Controller\BaseController {
     }
     
     public function searchLocationAction($request){
+        if(!isset($_SESSION['locatioin_search'])){
+            $_SESSION['location_search'] = array();
+        }
+        $locations = $_SESSION['location_search'];
+        
         if ($request->getMethod() == "POST"){
-            $searchField = $request->get('userSearch');
+            $locations['searchField'] = $request->get('userSearch');
+            
             if ($request->get('SearchBy') == "County"){
-                $category = "County";
-                return $this->searchHelp($searchField, $category);
+                $locations['category']="County";
             }else{
                 //Searching by city
-                if ($request->get('SearchBy') == "City"){
-                    $category = "City";
-                    return $this->searchHelp($searchField, $category);
-                }
+                $request->get('SearchBy') == "City";
+                $locations['category']="City";
             }
+            $_SESSION['locatioin_search'] = $locations;
+            return $this->searchHelp($locations['searchField'], $locations['category']);
         }else{
             $listQuery = "SELECT county.name AS County, city.name AS City,county.id
                           FROM county JOIN city WHERE county.id = city.county_id ORDER BY county.name;";
