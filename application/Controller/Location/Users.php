@@ -14,7 +14,6 @@ class Users extends \TestProject\Controller\BaseController{
             $_SESSION['user_search'] = array();
         }
         $filters = $_SESSION['user_search'];
-        
         $user = $request->get("username", @$filters['user']);
         $email = $request->get("email", @$filters['email']);
         $status = $request->get("status",@$filters['status']);

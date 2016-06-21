@@ -121,23 +121,24 @@ class County extends \TestProject\Controller\BaseController {
     }
     
     public function searchLocationAction($request){
+        
         if(!isset($_SESSION['locatioin_search'])){
             $_SESSION['location_search'] = array();
         }
         $locations = $_SESSION['location_search'];
+        $searchField = $request->get('userSearch' ,@$locations['searchField']);
+        $category = $request->get('SearchBy', @$locations['category']);
         
         if ($request->getMethod() == "POST"){
             $locations['searchField'] = $request->get('userSearch');
-            
             if ($request->get('SearchBy') == "County"){
-                $locations['category']="County";
+               $locations['category'] = "County";
             }else{
-                //Searching by city
-                $request->get('SearchBy') == "City";
-                $locations['category']="City";
+                $locations['category'] ="City";
             }
-            $_SESSION['locatioin_search'] = $locations;
-            return $this->searchHelp($locations['searchField'], $locations['category']);
+            $_SESSION['location_search'] = $locations;
+var_dump($_SESSION['location_search']);
+            return $this->searchHelp($searchField, $category);
         }else{
             $listQuery = "SELECT county.name AS County, city.name AS City,county.id
                           FROM county JOIN city WHERE county.id = city.county_id ORDER BY county.name;";
@@ -146,7 +147,8 @@ class County extends \TestProject\Controller\BaseController {
             foreach ($result as $row){
                 $countiesAndCities [] = $row;
             }
-            return $this->render(['countiesAndCities' => $countiesAndCities]); 
+var_dump($_SESSION['location_search']);
+        return $this->render(['countiesAndCities' => $countiesAndCities, 'searchTerm' => $searchField ,  'category' =>$category]) ;            
         }
     }
     public function searchHelp($searchTerm, $category){
@@ -161,7 +163,7 @@ class County extends \TestProject\Controller\BaseController {
         foreach ($result as $row){
             $countiesAndCities [] = $row;
         }
-        return $this->render(['countiesAndCities' => $countiesAndCities]);
+        return $this->render(['countiesAndCities' => $countiesAndCities, 'searchTerm' => $searchTerm,  'category' =>$category]); 
     }
     
     
