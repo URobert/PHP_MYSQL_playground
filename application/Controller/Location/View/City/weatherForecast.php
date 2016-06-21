@@ -21,10 +21,10 @@
 <div class="container containerF">
     <div class="col-md-12 myform">
     <form action="/cities/weather" method="post">
-    County:<input type="text" name="county" value="<?php if (isset($_POST['county'])) echo $_POST['county']; ?>"/>
-    *City:<input type="text" name="city" value="<?php if (isset($_POST['city'])) echo $_POST['city']; ?>" />
-    From:<input type="text" name="from" placeholder="YYYY-MM-DD" value="<?php if (isset($_POST['from'])) echo $_POST['from']; ?>"/>
-    To:<input type="text" name="to" placeholder="YYYY-MM-DD" value="<?php if (isset($_POST['to'])) echo $_POST['to']; ?>"/>
+    County:<input type="text" name="county" value="<?php if (isset($county)) echo $county; ?>"/>
+    *City:<input type="text" name="city" value="<?php if (isset($city)) echo $city; ?>" />
+    From:<input type="text" name="from" placeholder="YYYY-MM-DD" value="<?php if (isset($dateFrom)) echo $dateFrom; ?>"/>
+    To:<input type="text" name="to" placeholder="YYYY-MM-DD" value="<?php if (isset($dateTo)) echo $dateTo; ?>"/>
     <input type="submit" name="SearchWeather" value="Search" class="btn btn-primary"/>
     </form>
     </div>

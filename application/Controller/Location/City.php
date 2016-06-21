@@ -203,24 +203,32 @@ class City extends \TestProject\Controller\BaseController{
     }
     
     public function weatherForecastAction ($request) {
-        $cityWeatherInfo = array ();
-        
+        if(!isset($_SESSION['weather_info']))  {
+            $_SESSION['weather_info'] = array();
+        }
+            $weatherInfo = $_SESSION['weather_info'] ;
+            $county = $request->get('county', @$weatherInfo['county']);
+            $city = $request->get('city', @$weatherInfo['city']);
+            $dateFrom = $request->get('from', @$weatherInfo['from']);
+            $dateTo = $request->get('to', @$weatherInfo['to']);
+                  
         if ($request->getMethod() === "POST"){ 
             $cityWeatherInfo = [];
-            $county = $request->get('county');
-            $city = $request->get('city');
-            $dateFrom = $request->get('from');
-            $dateTo = $request->get('to');
+            $weatherInfo['county']= $county;
+            $weatherInfo['city']= $city;
+            $weatherInfo['from']= $dateFrom;
+            $weatherInfo['to']= $dateTo;
+            $_SESSION['weather_info'] = $weatherInfo;   
             //EXECUTE SEARCH BY FILTERED INFORMATION
-            $cityWeatherInfo = $this->weatherSearchFilter($county,$city,$dateFrom,$dateTo);
-            return $this->render(['cityWeatherInfo'=>$cityWeatherInfo]);
+            $cityWeatherInfo = $this->weatherSearchFilter($weatherInfo['county'],$weatherInfo['city'],$weatherInfo['from'],$weatherInfo['to']);
+            return $this->render(['cityWeatherInfo'=>$cityWeatherInfo, 'county' =>$county, 'city' => $city, 'dateFrom'=>$dateFrom, 'dateTo' => $dateTo]);
         }else{
             $sqlReturn = $this->connect->query('SELECT weather.id, city_map.name, weather.date, weather.temp, weather.min_temp, weather.max_temp, weather.humidity, weather.wind
                                                 FROM weather JOIN city_map ON city_map.city_id = weather.city_id');
             while ($row = $sqlReturn->fetch_assoc()) {
                 $cityWeatherInfo[] = $row;
             }
-            return $this->render(['cityWeatherInfo'=>$cityWeatherInfo]);
+            return $this->render(['cityWeatherInfo'=>$cityWeatherInfo, 'county' =>$county, 'city' => $city, 'dateFrom'=>$dateFrom, 'dateTo' => $dateTo]);
         }
     }
     
