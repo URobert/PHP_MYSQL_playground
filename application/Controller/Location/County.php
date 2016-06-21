@@ -122,7 +122,7 @@ class County extends \TestProject\Controller\BaseController {
     
     public function searchLocationAction($request){
         
-        if(!isset($_SESSION['locatioin_search'])){
+        if(!isset($_SESSION['location_search'])){
             $_SESSION['location_search'] = array();
         }
         $locations = $_SESSION['location_search'];
@@ -151,6 +151,7 @@ var_dump($_SESSION['location_search']);
         return $this->render(['countiesAndCities' => $countiesAndCities, 'searchTerm' => $searchField ,  'category' =>$category]) ;            
         }
     }
+    
     public function searchHelp($searchTerm, $category){
         $countiesAndCities = [];
         $sqlReq = "SELECT * FROM
