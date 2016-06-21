@@ -1,4 +1,4 @@
-<?="<a href=\"javascript:history.go(-1)\">GO BACK</a>"; ?>
+<?='<a href="javascript:history.go(-1)">GO BACK</a>'; ?>
 
 <style>
 .wrapper{

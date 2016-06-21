@@ -1,7 +1,9 @@
 <?php
+
 namespace TestProject\Controller;
 
-interface ControllerInterface {
+interface ControllerInterface
+{
     public function __construct($app);
-    public function  action ();
+    public function action();
 }

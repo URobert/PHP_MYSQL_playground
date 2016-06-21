@@ -70,7 +70,7 @@
             </button>
             <h3><a href="/home2" id="R">Romania</a></h3>
           </div>
-          <?php if($isLoggedIn): ?>
+          <?php if ($isLoggedIn): ?>
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
                   <li><div class ="btn-group">
@@ -89,7 +89,7 @@
                     <a href="/home2/users" id="users" class="navTop">Users</a></div>
                   </li>
                   <li><div class ="btn-group">
-                  <?php if(isset($_SESSION['userId'])): ?>
+                  <?php if (isset($_SESSION['userId'])): ?>
                     <a href="/home2/logout" id="logut" class="navTop">Logout</a></div>
                   <?php else: ?>
                     <a href="/home2/login" id="login" class="navTop">Login</a></div>

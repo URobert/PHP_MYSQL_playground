@@ -2,15 +2,16 @@
 
 namespace TestProject;
 
-class ControllerBuilder {
-    
+class ControllerBuilder
+{
     protected $app;
-    
-    public function __construct($app) {
+
+    public function __construct($app)
+    {
         $this->app = $app;
     }
-    
-    public function getInstance($route) {
-        
+
+    public function getInstance($route)
+    {
     }
 }

@@ -2,7 +2,7 @@
     <body>      
 <!--        <table class= "counties">
             <thead>Counties in current DB: </thead>
-            <?php foreach($counties as $county): ?>
+            <?php foreach ($counties as $county): ?>
             <tr>
                 <td><?= $county['name'] ?></td>
             </tr>

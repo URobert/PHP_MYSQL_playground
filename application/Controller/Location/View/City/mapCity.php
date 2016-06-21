@@ -31,7 +31,7 @@
                     <td class="col-md-1"><input type='text' value='<?= $entry['city_id']?>' class='city_id' readonly></td>
 <!--                            <td class="col-md-1"><input type='text' value='<?= $entry['source_id']?>' class='source_id' readonly></td>-->
                 </tr>
-            <?php $i++; ?>
+            <?php ++$i; ?>
             <?php endforeach ?>
             </table>
         </div>
