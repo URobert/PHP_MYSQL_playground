@@ -145,25 +145,20 @@ class County extends \TestProject\Controller\BaseController
                 $locations['category'] = 'City';
             }
             $_SESSION['location_search'] = $locations;
-        } else {
-            $listQuery = 'SELECT county.name AS County, city.name AS City,county.id
-                          FROM county JOIN city WHERE county.id = city.county_id ORDER BY county.name;';
-            $result = $this->connect->query($listQuery);
-            $countiesAndCities = array();
-            foreach ($result as $row) {
-                $countiesAndCities [] = $row;
-            }
         }
+        
         return $this->searchHelp($searchField, $category);      
     }
 
     public function searchHelp($searchTerm, $category)
     {
         $countiesAndCities = [];
-        $sqlReq = 'SELECT * FROM
-                  (SELECT county.name AS County, city.name AS City,county.id FROM county JOIN city WHERE county.id =city.county_id ORDER BY county.name) AS C
-                   WHERE '.$category."='".$searchTerm."';";
-        $result = $this->connect->query($sqlReq);
+        $baseQuery = 'SELECT county.name AS County, city.name AS City,county.id FROM county JOIN city ON county.id =city.county_id';
+        if( !is_null($searchTerm) && !is_null($category) ){
+            $baseQuery .= sprintf(" WHERE %s = %s", $categoy, $searchTerm);
+        }
+        $baseQuery .= " ORDER BY county.name";
+        $result = $this->connect->query($baseQuery);
         if ($result->num_rows == 0) {
             echo 'No result was found.';
         }

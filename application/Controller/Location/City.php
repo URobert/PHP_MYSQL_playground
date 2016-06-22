@@ -243,7 +243,7 @@ class City extends \TestProject\Controller\BaseController
             $_SESSION['weather_info'] = $weatherInfo;
         }
         //EXECUTE SEARCH BY FILTERED INFORMATION
-        $cityWeatherInfo = $this->weatherSearchFilter($weatherInfo['county'], $weatherInfo['city'], $weatherInfo['from'], $weatherInfo['to']);
+        $cityWeatherInfo = $this->weatherSearchFilter(@$weatherInfo['county'], @$weatherInfo['city'], @$weatherInfo['from'], @$weatherInfo['to']);
         return $this->render(['cityWeatherInfo' => $cityWeatherInfo, 'county' => $county, 'city' => $city, 'dateFrom' => $dateFrom, 'dateTo' => $dateTo]);
     }
 
