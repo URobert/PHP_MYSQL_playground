@@ -251,8 +251,26 @@ class City extends \TestProject\Controller\BaseController
     public function weatherSearchFilter($county, $city, $from, $to)
     {
         $cityWeatherInfo = [];
-        //WHEN FULL SEARCH DETAILS ARE PROVIDED
-        if (!empty($county) && !empty($city) && !empty($from) && !empty($to)) {
+        //BASE QUERY
+        $sqlQuery = "SELECT weather.id, city_map.name, weather.date, weather.temp, weather.min_temp, weather.max_temp, weather.humidity, weather.wind
+                     FROM weather
+                     JOIN city_map ON city_map.city_id = weather.city_id WHERE 1";
+                     
+        //WHEN ONLY COUNTY IS PROVIDED
+        //if (!empty($county)){
+        //    $countyId = "SELECT id FROM county WHERE name = '".$county."'";
+        //    $sqlReturn = $this->connect->query($countyId);
+        //    $specialCaseQuery = "SELECT weather.id, city_map.name, weather.date, weather.temp, weather.min_temp, weather.max_temp, weather.humidity, weather.wind 
+        //                        FROM   weather 
+        //                        JOIN city_map 
+        //                        ON city_map.city_id = weather.city_id 
+        //                        WHERE  1 
+        //                        AND city_map.city_id ='" . $sqlReturn . "'";
+        //    #var_dump($specialCaseQuery);
+        //}
+        
+        //WHEN CITY AND COUNTY ARE PROVIDED
+        if (!empty($county) && !empty($city)) {
             //CHECK IF THE CITY IS IN THAT COUNTY
             $checkCountyID = "SELECT id FROM county WHERE name = '".$county."'";
             $check1 = $this->connect->query($checkCountyID);
@@ -261,82 +279,104 @@ class City extends \TestProject\Controller\BaseController
             if ($check1->fetch_assoc()['id'] != $check2->fetch_assoc()['county_id']) {
                 echo 'No such city in that county.';
                 $cityWeatherInfo = [];
-
                 return $cityWeatherInfo;
-            }
-            $sqlQuery = "SELECT weather.id, city_map.name, weather.date, weather.temp, weather.min_temp, weather.max_temp, weather.humidity, weather.wind
-                         FROM weather
-                         JOIN city_map ON city_map.city_id = weather.city_id
-                         WHERE city_map.name LIKE '".$city."%'
-                         AND weather.date >= '".$from."'
-                         AND weather.date <= '".$to."';";
-            $sqlReturn = $this->connect->query($sqlQuery);
-            while ($row = $sqlReturn->fetch_assoc()) {
-                $cityWeatherInfo[] = $row;
-            }
-
-            return $cityWeatherInfo;
-        } else {
-            //CITY AND DATE
-            if (!empty($city) && !empty($from) && !empty($to)) {
-                $sqlQuery = "SELECT weather.id, city_map.name, weather.date, weather.temp, weather.min_temp, weather.max_temp, weather.humidity, weather.wind
-                             FROM weather
-                             JOIN city_map ON city_map.city_id = weather.city_id
-                             WHERE city_map.name LIKE '".$city."%'
-                             AND weather.date >= '".$from."'
-                             AND weather.date <= '".$to."';";
-                $sqlReturn = $this->connect->query($sqlQuery);
-                if ($sqlReturn) {
-                    while ($row = $sqlReturn->fetch_assoc()) {
-                        $cityWeatherInfo[] = $row;
-                    }
-                }
-
-                return $cityWeatherInfo;
-            }
-            //NO DATE PROVIDED
-            if (!empty($city) && empty($from) && empty($to)) {
-                $sqlQuery = "SELECT weather.id, city_map.name, weather.date, weather.temp, weather.min_temp, weather.max_temp, weather.humidity, weather.wind
-                             FROM weather
-                             JOIN city_map ON city_map.city_id = weather.city_id
-                             WHERE city_map.name LIKE '".$city."%'";
-                $sqlReturn = $this->connect->query($sqlQuery);
-                if ($sqlReturn) {
-                    while ($row = $sqlReturn->fetch_assoc()) {
-                        $cityWeatherInfo[] = $row;
-                    }
-                }
-
-                return $cityWeatherInfo;
-            }
-            //ONLY START DATE
-            if (!empty($city) && !empty($from) && empty($to)) {
-                $sqlQuery = "SELECT weather.id, city_map.name, weather.date, weather.temp, weather.min_temp, weather.max_temp, weather.humidity, weather.wind
-                             FROM weather
-                             JOIN city_map ON city_map.city_id = weather.city_id
-                             WHERE city_map.name LIKE '".$city."%'
-                             AND weather.date >= '".$from."'";
-                $sqlReturn = $this->connect->query($sqlQuery);
-                while ($row = $sqlReturn->fetch_assoc()) {
-                    $cityWeatherInfo[] = $row;
-                }
-
-                return $cityWeatherInfo;
-            }
-            //ONLY END DATE
-            if (!empty($city) && empty($from) && !empty($to)) {
-                $sqlQuery = "SELECT weather.id, city_map.name, weather.date, weather.temp, weather.min_temp, weather.max_temp, weather.humidity, weather.wind
-                             FROM weather
-                             JOIN city_map ON city_map.city_id = weather.city_id
-                             WHERE city_map.name LIKE '".$city."%'
-                             AND weather.date <= '".$to."';";
-                $sqlReturn = $this->connect->query($sqlQuery);
-                while ($row = $sqlReturn->fetch_assoc()) {
-                    $cityWeatherInfo[] = $row;
-                }
-
-                return $cityWeatherInfo;
-            }
+            }else{
+                $sqlQuery .= " AND city_map.name LIKE '".$city."%'";
+            }         
         }
+        
+        $sqlReturn = $this->connect->query($sqlQuery);
+        while ($row = $sqlReturn->fetch_assoc()) {
+            $cityWeatherInfo[] = $row;
+        }
+        return $cityWeatherInfo;
+            
+        ////WHEN FULL SEARCH DETAILS ARE PROVIDED
+        //if (!empty($county) && !empty($city) && !empty($from) && !empty($to)) {
+        //    //CHECK IF THE CITY IS IN THAT COUNTY
+        //    $checkCountyID = "SELECT id FROM county WHERE name = '".$county."'";
+        //    $check1 = $this->connect->query($checkCountyID);
+        //    $checkCity = "SELECT county_id FROM city WHERE id = (SELECT city_id FROM city_map WHERE name= '".$city."')";
+        //    $check2 = $this->connect->query($checkCity);
+        //    if ($check1->fetch_assoc()['id'] != $check2->fetch_assoc()['county_id']) {
+        //        echo 'No such city in that county.';
+        //        $cityWeatherInfo = [];
+        //
+        //        return $cityWeatherInfo;
+        //    }
+        //    $sqlQuery = "SELECT weather.id, city_map.name, weather.date, weather.temp, weather.min_temp, weather.max_temp, weather.humidity, weather.wind
+        //                 FROM weather
+        //                 JOIN city_map ON city_map.city_id = weather.city_id
+        //                 WHERE city_map.name LIKE '".$city."%'
+        //                 AND weather.date >= '".$from."'
+        //                 AND weather.date <= '".$to."';";
+        //    $sqlReturn = $this->connect->query($sqlQuery);
+        //    while ($row = $sqlReturn->fetch_assoc()) {
+        //        $cityWeatherInfo[] = $row;
+        //    }
+        //
+        //    return $cityWeatherInfo;
+        //} else {
+        //    //CITY AND DATE
+        //    if (!empty($city) && !empty($from) && !empty($to)) {
+        //        $sqlQuery = "SELECT weather.id, city_map.name, weather.date, weather.temp, weather.min_temp, weather.max_temp, weather.humidity, weather.wind
+        //                     FROM weather
+        //                     JOIN city_map ON city_map.city_id = weather.city_id
+        //                     WHERE city_map.name LIKE '".$city."%'
+        //                     AND weather.date >= '".$from."'
+        //                     AND weather.date <= '".$to."';";
+        //        $sqlReturn = $this->connect->query($sqlQuery);
+        //        if ($sqlReturn) {
+        //            while ($row = $sqlReturn->fetch_assoc()) {
+        //                $cityWeatherInfo[] = $row;
+        //            }
+        //        }
+        //
+        //        return $cityWeatherInfo;
+        //    }
+        //    //NO DATE PROVIDED
+        //    if (!empty($city) && empty($from) && empty($to)) {
+        //        $sqlQuery = "SELECT weather.id, city_map.name, weather.date, weather.temp, weather.min_temp, weather.max_temp, weather.humidity, weather.wind
+        //                     FROM weather
+        //                     JOIN city_map ON city_map.city_id = weather.city_id
+        //                     WHERE city_map.name LIKE '".$city."%'";
+        //        $sqlReturn = $this->connect->query($sqlQuery);
+        //        if ($sqlReturn) {
+        //            while ($row = $sqlReturn->fetch_assoc()) {
+        //                $cityWeatherInfo[] = $row;
+        //            }
+        //        }
+        //
+        //        return $cityWeatherInfo;
+        //    }
+        //    //ONLY START DATE
+        //    if (!empty($city) && !empty($from) && empty($to)) {
+        //        $sqlQuery = "SELECT weather.id, city_map.name, weather.date, weather.temp, weather.min_temp, weather.max_temp, weather.humidity, weather.wind
+        //                     FROM weather
+        //                     JOIN city_map ON city_map.city_id = weather.city_id
+        //                     WHERE city_map.name LIKE '".$city."%'
+        //                     AND weather.date >= '".$from."'";
+        //        $sqlReturn = $this->connect->query($sqlQuery);
+        //        while ($row = $sqlReturn->fetch_assoc()) {
+        //            $cityWeatherInfo[] = $row;
+        //        }
+        //
+        //        return $cityWeatherInfo;
+        //    }
+        //    //ONLY END DATE
+        //    if (!empty($city) && empty($from) && !empty($to)) {
+        //        $sqlQuery = "SELECT weather.id, city_map.name, weather.date, weather.temp, weather.min_temp, weather.max_temp, weather.humidity, weather.wind
+        //                     FROM weather
+        //                     JOIN city_map ON city_map.city_id = weather.city_id
+        //                     WHERE city_map.name LIKE '".$city."%'
+        //                     AND weather.date <= '".$to."';";
+        //        $sqlReturn = $this->connect->query($sqlQuery);
+        //        while ($row = $sqlReturn->fetch_assoc()) {
+        //            $cityWeatherInfo[] = $row;
+        //        }
+        //
+        //        return $cityWeatherInfo;
+        //    }
+        //}
     }
 }//end of City class
