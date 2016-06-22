@@ -256,17 +256,27 @@ class City extends \TestProject\Controller\BaseController
                      JOIN city_map ON city_map.city_id = weather.city_id WHERE 1";
                      
         //WHEN ONLY COUNTY IS PROVIDED
-        //if (!empty($county)){
-        //    $countyId = "SELECT id FROM county WHERE name = '".$county."'";
-        //    $sqlReturn = $this->connect->query($countyId);
-        //    $specialCaseQuery = "SELECT weather.id, city_map.name, weather.date, weather.temp, weather.min_temp, weather.max_temp, weather.humidity, weather.wind 
-        //                        FROM   weather 
-        //                        JOIN city_map 
-        //                        ON city_map.city_id = weather.city_id 
-        //                        WHERE  1 
-        //                        AND city_map.city_id ='" . $sqlReturn . "'";
-        //    #var_dump($specialCaseQuery);
-        //}
+        if (!empty($county)){
+            $countyId = "SELECT id FROM county WHERE name = '".$county."'";
+            $sqlReturn = $this->connect->query($countyId);
+            $id = $sqlReturn->fetch_assoc()['id'];
+            $sqlQuery = "SELECT * 
+                         FROM   city, 
+                                (SELECT weather.id, 
+                                       city_map.name, 
+                                       weather.date, 
+                                       weather.temp, 
+                                       weather.min_temp, 
+                                       weather.max_temp, 
+                                       weather.humidity, 
+                                       weather.wind 
+                                FROM   weather 
+                                       JOIN city_map 
+                                         ON city_map.city_id = weather.city_id 
+                                ) AS TMP 
+                         WHERE  TMP.name = city.name 
+                         AND city.county_id = '" . $id . "'"; 
+        }
         
         //WHEN CITY AND COUNTY ARE PROVIDED
         if (!empty($county) && !empty($city)) {
@@ -283,6 +293,8 @@ class City extends \TestProject\Controller\BaseController
                 $sqlQuery .= " AND city_map.name LIKE '".$city."%'";
             }         
         }
+        
+        
         
         $sqlReturn = $this->connect->query($sqlQuery);
         while ($row = $sqlReturn->fetch_assoc()) {
