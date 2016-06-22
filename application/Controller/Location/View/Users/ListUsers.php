@@ -26,12 +26,8 @@
     Status:
     <select name="status">
         <option value="">all</option>
-        <option value="1" <?php if ($status == '1') {
-    echo 'selected';
-}?>>active</option>
-        <option value="0" <?php if ($status == '0') {
-    echo 'selected';
-}?>>inactive</option>
+        <option value="1" <?php if ($status == '1') {echo 'selected';}?>>active</option>
+        <option value="0" <?php if ($status == '0') {echo 'selected';}?>>inactive</option>
     </select>
     <input type="submit" name="SeachUser" value="Search" class="btn btn-primary"/>
     </form>
@@ -54,15 +50,13 @@
                     <td class="col-md-3"><?= $entry['username'] ?></td>
                     <td class="col-md-3"><?= $entry['email'] ?></td>
                     <td class="col-md-2">
-                    <?php if ($entry['status'] == '1') {
-    echo 'active';
-} else {
-    echo 'inactive';
-}
-                    ?></td>
+             <?php if ($entry['status'] == '1') { echo 'active';} else { echo 'inactive'; }?></td>
                 </tr>
             <?php ++$i; ?>
             <?php endforeach ?>
             </table>
+        <h2><?= $textline1; ?></h2>
+        <p><?= $textline2; ?></p>
+        <div id="pagination_controls"><?php echo $paginationCtrls; ?></div>
         </div>
 </div> <!-- end of container -->
