@@ -145,9 +145,6 @@ class County extends \TestProject\Controller\BaseController
                 $locations['category'] = 'City';
             }
             $_SESSION['location_search'] = $locations;
-            var_dump($_SESSION['location_search']);
-
-            return $this->searchHelp($searchField, $category);
         } else {
             $listQuery = 'SELECT county.name AS County, city.name AS City,county.id
                           FROM county JOIN city WHERE county.id = city.county_id ORDER BY county.name;';
@@ -156,10 +153,8 @@ class County extends \TestProject\Controller\BaseController
             foreach ($result as $row) {
                 $countiesAndCities [] = $row;
             }
-            var_dump($_SESSION['location_search']);
-
-            return $this->render(['countiesAndCities' => $countiesAndCities, 'searchTerm' => $searchField,  'category' => $category]);
         }
+        return $this->searchHelp($searchField, $category);      
     }
 
     public function searchHelp($searchTerm, $category)
@@ -175,7 +170,6 @@ class County extends \TestProject\Controller\BaseController
         foreach ($result as $row) {
             $countiesAndCities [] = $row;
         }
-
         return $this->render(['countiesAndCities' => $countiesAndCities, 'searchTerm' => $searchTerm,  'category' => $category]);
     }
 }//end of countyList class

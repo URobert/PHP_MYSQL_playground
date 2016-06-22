@@ -27,7 +27,6 @@ class Users extends \TestProject\Controller\BaseController
         }
 
         $users = $this->SeachUsers($user, $email, $status);
-
         return $this->render(['users' => $users, 'username' => $user, 'email' => $email, 'status' => $status]);
     }
 
