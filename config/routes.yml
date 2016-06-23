@@ -11,18 +11,33 @@
 - url: /home2/logout
   method: get
   controller: Location\Login
-  function: LogoutPage  
+  function: LogoutPage
+  
+- url: /home2/users
+  method: post
+  controller: Location\Users
+  function: ListUsers
 
 - url: /home2/users
   method: get
   controller: Location\Users
   function: ListUsers
 
-- url: /home2/users
-  method: post
+- url: /home2/users/
+  method: get
+  controller: Location\Users
+  function: ListUsers  
+
+- url: /home2/users/{pn}
+  method: get
   controller: Location\Users
   function: ListUsers
 
+- url: /home2/users/
+  method: post
+  controller: Location\Users
+  function: ListUsers
+  
 - url: /home2
   method: get
   controller: Location\County

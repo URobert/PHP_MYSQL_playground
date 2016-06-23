@@ -77,7 +77,6 @@ class County extends \TestProject\Controller\BaseController
     public function editCountyAction($request)
     {
         $id = $request->get('id');
-        #print_r(count($_GET));
         if ($request->getMethod() == 'GET') {
             return $this->render(['county' => $this->getCounty($id)]);
         } else {
@@ -85,10 +84,6 @@ class County extends \TestProject\Controller\BaseController
             $name = $request->get('name');
             $sqlUpdate = 'UPDATE county SET name="'.$name.'"WHERE id='.$id;
             if ($this->connect->query($sqlUpdate) === true) {
-                //echo "County successfully updated." . "<br>";
-                //echo "New name: " . $name . "<br>";
-                //echo "<a href='/../../home'>Go back</a>";
-                //exit();
                 echo "<script>
                  alert('County successfully updated.');
                  window.location.href='/home2';
@@ -110,7 +105,6 @@ class County extends \TestProject\Controller\BaseController
         $citiesResult = $this->connect->query($cities);
 
         if (mysqli_fetch_row($citiesResult)[1]) {
-            #echo $cName . " could not be deteled. Only empty (without registred cities) counties can be deleted. ";
             echo "<script>
              alert('That county can not be deteled. Only empty (without registred cities) counties can be deleted.');
              window.location.href='/home2';
