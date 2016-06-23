@@ -55,7 +55,6 @@ class County extends \TestProject\Controller\BaseController
                  foreach ($resultCounty as $county) {
                      $countyId = $county['id'];
                  }
-                #echo "County ". $county['name'] . " already exists in DB.";
                 echo "<script>alert('County already exists in DB.')</script>";
              } else {
                  $addNewCounty = 'INSERT INTO county (name) VALUES ('
@@ -65,7 +64,7 @@ class County extends \TestProject\Controller\BaseController
                     echo "<script>
                           window.location.href='/home2';
                           </script>";
-                     $_SESSION['message'] = 'County successfully added.';
+                     #$_SESSION['message'] = 'County successfully added.';
                      $countyId = mysqli_insert_id($this->connect);
                  }
              }

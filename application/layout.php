@@ -74,9 +74,6 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
                   <li><div class ="btn-group">
-                    <a href="/counties/AddCounty" id="addCounty" class="navTop" >Add new county</a></div>
-                  </li>
-                  <li><div class ="btn-group">
                      <a href="/cities/map" id="mapCounty" class="navTop">Import and go to map</a></div>
                   </li>
                   <li><div class ="btn-group">

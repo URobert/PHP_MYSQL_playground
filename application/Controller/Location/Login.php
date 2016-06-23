@@ -20,7 +20,9 @@ class Login extends \TestProject\Controller\BaseController
         if ($request->getMethod() === 'POST') {
             $user = $request->get('Username');
             $password = $request->get('Password');
-            if ('admin' == $user && 'admin' == $password) {
+            $verifyLogIn =  "SELECT * FROM user WHERE username ='$user' AND password = '$password' AND status = 1";
+            $checkResult = $this->connect->query($verifyLogIn);
+            if ($checkResult->num_rows > 0){
                 $_SESSION['userId'] = 1;
                 header('Location: /home2');
                 exit;

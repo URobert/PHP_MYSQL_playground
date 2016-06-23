@@ -5,6 +5,7 @@
 
 <div class ="container container1">
     <div class="row">
+        <div class="col-md-6 col-md-offset-5"><a href="/counties/AddCounty" id="addCounty" class="btn btn-primary">Add new county</a></div>
         <div class="col-md-6 col-md-offset-3">
             <table class="table table-bordered">
             <?php foreach ($countylist as $county): ?>
@@ -19,6 +20,11 @@
     </div>
 </div> <!-- end of container -->
 
+<style>
+    #addCounty{
+        margin-bottom: 20px;
+    }
+</style>
 
 
 
