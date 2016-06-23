@@ -20,10 +20,13 @@ class Login extends \TestProject\Controller\BaseController
         if ($request->getMethod() === 'POST') {
             $user = $request->get('Username');
             $password = $request->get('Password');
-            $verifyLogIn =  "SELECT * FROM user WHERE username ='$user' AND password = '$password' AND status = 1";
-            $checkResult = $this->connect->query($verifyLogIn);
-            if ($checkResult->num_rows > 0){
-                $_SESSION['userId'] = 1;
+            $dbUser= \ORM::for_table('user')
+                ->where('username', $user)
+                ->where('password', $password)
+                ->where('status', 1)
+                ->find_one();
+            if ($dbUser){
+                $_SESSION['userId'] = $dbUser->id;
                 header('Location: /home2');
                 exit;
             }

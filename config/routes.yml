@@ -38,6 +38,16 @@
   controller: Location\Users
   function: ListUsers
   
+- url: /home2/signup
+  method: post
+  controller: Location\SignUp
+  function: ListUsers
+  
+- url: /home2/signup
+  method: get
+  controller: Location\SignUp
+  function: ListUsers   
+  
 - url: /home2
   method: get
   controller: Location\County

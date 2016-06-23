@@ -5,6 +5,11 @@ require_once __DIR__.'/../vendor/autoload.php';
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 
+
+ORM::configure('mysql:host=localhost;dbname=test1');
+ORM::configure('username', 'root');
+ORM::configure('password', 'cozacu');
+
 $connect = mysqli_connect('localhost','root','cozacu','test1');
 
     if (!$connect){
