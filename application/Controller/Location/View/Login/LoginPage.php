@@ -9,6 +9,11 @@
     </form>
 </div>
 
+<div id="signUp">
+    <h4>You don't have an account yet? You can sign up and create an account for free.</h4>
+    <a href= "/home2/signUp" class="btn btn-info">Sign Up</a>
+</div>
+
 <style>
     .loginContainer{
         text-align: center;
@@ -17,5 +22,9 @@
     
     #logIN{
         
+    }
+    
+    #signUp{
+        text-align: center;
     }
 </style>

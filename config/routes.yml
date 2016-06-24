@@ -7,6 +7,16 @@
   method: post
   controller: Location\Login
   function: LoginPage
+
+- url: /home2/signUp
+  method: get
+  controller: Location\SignUp
+  function: SignUpForm
+  
+- url: /home2/signUp
+  method: post
+  controller: Location\SignUp
+  function: SignUpForm 
   
 - url: /home2/logout
   method: get

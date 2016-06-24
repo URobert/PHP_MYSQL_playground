@@ -24,7 +24,8 @@ $parser = new Symfony\Component\Yaml\Parser();
 $routes = $parser->parse(file_get_contents(__DIR__.'/../config/routes.yml'));
 
 $app->before(function(Request $request, Silex\Application $app) {
-    if (!isset($_SESSION['userId']) && ($request->getPathInfo() !== '/home2/login'))
+    if (!isset($_SESSION['userId']) && ($request->getPathInfo() !== '/home2/login')
+        && ($request->getPathInfo() !== '/home2/signUp'))
     {
         return $app->redirect('/home2/login');
     }
