@@ -17,10 +17,9 @@ class County extends \TestProject\Controller\BaseController
     public function getCountyList()
     {
         $counties = array();
-        $requestCountyList = 'SELECT * FROM county';
-        $returedList = $this->connect->query($requestCountyList);
-        #var_dump($returedList);
-        foreach ($returedList as $county) {
+        $requestCountyList = \ORM::for_table('county')
+            ->find_many();
+        foreach ($requestCountyList as $county) {
             $counties [] = array('id' => $county['id'], 'name' => $county['name']);
         }
 
@@ -29,9 +28,10 @@ class County extends \TestProject\Controller\BaseController
 
     public function getCounty($id)
     {
-        $sqlRequest = 'SELECT * FROM county WHERE id='.$id;
-        $result = $this->connect->query($sqlRequest);
-        foreach ($result as $element) {
+        $sqlRequest = \ORM::for_table('county')
+            ->where('id', $id)
+            ->find_many();
+        foreach ($sqlRequest as $element) {
             $county [] = array('id' => $element['id'], 'name' => $element['name']);
         }
 
@@ -44,29 +44,23 @@ class County extends \TestProject\Controller\BaseController
             $county = $request->get('county');
         // TEST FIELDS FOR NON-EMPTY AND LENGTH
          if (!$county) {
-             echo '<script language="javascript">';
-             echo 'alert("County filed can not be empty.")';
-             echo '</script>';
+             echo '<script language="javascript">alert("County filed can not be empty.")</script>';
          } else {
              // REFACTOR INSERT QUERIES
-            $checkCounty = 'SELECT * FROM county WHERE name='."'".$county."'".' limit 1';
-             $resultCounty = $this->connect->query($checkCounty);
-             if ($resultCounty->num_rows) {
-                 foreach ($resultCounty as $county) {
+             $checkCounty = \ORM::for_table('county')
+                ->where('name', $county)
+                ->find_one();
+             if ($checkCounty) {
+                 foreach ($checkCounty as $county) {
                      $countyId = $county['id'];
                  }
-                echo "<script>alert('County already exists in DB.')</script>";
+                 echo "<script>alert('County already exists in DB.')</script>";
              } else {
-                 $addNewCounty = 'INSERT INTO county (name) VALUES ('
-                 ."'".$_POST['county']."'".')';
-                 if ($this->connect->query($addNewCounty) === true) {
-                     #echo "County successfully added:" . $_POST['county'] . "<br>";
-                    echo "<script>
-                          window.location.href='/home2';
-                          </script>";
-                     #$_SESSION['message'] = 'County successfully added.';
-                     $countyId = mysqli_insert_id($this->connect);
-                 }
+                 $addNewCounty = \ORM::for_table('county')->create();
+                 $addNewCounty->set('name', $request->get('county'))->save();
+                 echo "<script>window.location.href='/home2'</script>";
+
+                 $countyId = $addNewCounty->id;
              }
          }
         }//end of POST method check
@@ -97,28 +91,28 @@ class County extends \TestProject\Controller\BaseController
     public function deleteCountyAction($request)
     {
         $id = $request->get('id');
-        $county = 'SELECT name FROM county WHERE id='.$id;
-        $cities = 'SELECT * FROM city WHERE county_id='.$id;
-        $result = $this->connect->query($county);
-        $cName = mysqli_fetch_row($result)[0];
-        $citiesResult = $this->connect->query($cities);
-
-        if (mysqli_fetch_row($citiesResult)[1]) {
+        $county = \ORM::for_table('county')
+            ->where('id', $id)
+            ->find_one();
+        $cities = \ORM::for_table('city')
+            ->where('county_id', $id)
+            ->find_one();
+        if ($cities['id']) {
             echo "<script>
-             alert('That county can not be deteled. Only empty (without registred cities) counties can be deleted.');
-             window.location.href='/home2';
-             </script>";
+ alert('That county can not be deteled. Only empty (without registred cities) counties can be deleted.');
+ window.location.href='/home2';
+ </script>";
         } else {
-            $deleteQuery = 'DELETE FROM county WHERE id='.$id;
-            if ($this->connect->query($deleteQuery) === true) {
-                echo "<script>
-             alert('County deleted.');
-             window.location.href='/home2';
-             </script>";
-            }
+            $deleteQuery = \ORM::for_table('county')
+                ->where('id', $id)
+                ->delete_many();
+            echo "<script>
+ alert('County deleted.');
+ window.location.href='/home2';
+ </script>";
         }
 
-        return $this->render(['id' => $id, 'countyName' => $cName]);
+        return $this->render(['id' => $county['id'], 'countyName' => $county['name']]);
     }
 
     public function searchLocationAction($request)
@@ -133,31 +127,36 @@ class County extends \TestProject\Controller\BaseController
         if ($request->getMethod() == 'POST') {
             $locations['searchField'] = $request->get('userSearch');
             if ($request->get('SearchBy') == 'County') {
-                $locations['category'] = 'County';
+                $locations['category'] = 'county';
             } else {
-                $locations['category'] = 'City';
+                $locations['category'] = 'city';
             }
             $_SESSION['location_search'] = $locations;
         }
-        
-        return $this->searchHelp($searchField, $category);      
+
+        return $this->searchHelp($searchField, $category);
     }
 
     public function searchHelp($searchTerm, $category)
     {
         $countiesAndCities = [];
-        $baseQuery = 'SELECT county.name AS County, city.name AS City,county.id FROM county JOIN city ON county.id =city.county_id';
-        if( !is_null($searchTerm) && !is_null($category) ){
-            $baseQuery .= sprintf(" WHERE %s = %s", $categoy, $searchTerm);
+        $baseQuery = \ORM::for_table('county')
+            ->join('city', 'county.id = city.county_id')
+            ->order_by_asc('county.name')
+            ->select('county.name', 'county')
+            ->select('city.name', 'city');
+
+        if (!empty($searchTerm) && !is_null($category)) {
+            $baseQuery->where("$category.name", $searchTerm);
         }
-        $baseQuery .= " ORDER BY county.name";
-        $result = $this->connect->query($baseQuery);
-        if ($result->num_rows == 0) {
+        $results = $baseQuery->find_many();
+        if (!$results) {
             echo 'No result was found.';
         }
-        foreach ($result as $row) {
+        foreach ($results as $row) {
             $countiesAndCities [] = $row;
         }
+
         return $this->render(['countiesAndCities' => $countiesAndCities, 'searchTerm' => $searchTerm,  'category' => $category]);
     }
 }//end of countyList class

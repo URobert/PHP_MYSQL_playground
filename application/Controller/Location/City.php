@@ -15,7 +15,7 @@ class City extends \TestProject\Controller\BaseController
     {
         $id = $request->get('id');
 
-        return $this->render(['cityList' => $this->getCityList($id), 'countyId' => $id, ]);
+        return $this->render(['cityList' => $this->getCityList($id), 'countyId' => $id]);
     }
 
     public function getCityList($id)
@@ -23,22 +23,22 @@ class City extends \TestProject\Controller\BaseController
         $cities = array();
         $requestCityList = \ORM::for_table('city')
                     ->where('county_id', $id)
-                    ->find_many();        
-        foreach ($requestCityList as $city){
+                    ->find_many();
+        foreach ($requestCityList as $city) {
             $cities [] = array('id' => $city['id'], 'name' => $city['name']);
         }
-        
+
         return $cities;
     }
-    
+
     public function getCounty($id)
     {
         $countyName = array();
         $requesCounty = \ORM::for_table('county')
                     ->where('id', $id)
-                    ->find_one();  
+                    ->find_one();
         $countyName [] = array('name' => $requesCounty['name']);
-        
+
         return $countyName;
     }
 
@@ -61,15 +61,15 @@ class City extends \TestProject\Controller\BaseController
                     ->where('county_id', $id)
                     ->find_one();
                 if ($checkCity) {
-                        $cityId = $checkCity->id;
-echo "<script>
+                    $cityId = $checkCity->id;
+                    echo "<script>
        alert('This city already exists in this county.');
       </script>";
                 } else {
                     $addNewCity = 'INSERT INTO city (name,county_id)
                                    VALUES ("'.$request->get('city').'",'.$id.')';
                     if ($this->connect->query($addNewCity) === true) {
-echo "<script>
+                        echo "<script>
        alert('City sucessfuly added.');
       </script>";
                         $cityId = mysqli_insert_id($this->connect);
@@ -85,20 +85,19 @@ echo "<script>
     public function deleteCityAction($request)
     {
         $id = $request->get('id');
-        $cities = \ORM::for_table('city')
-            ->where('id',$id)
-            ->delete_many();
-echo "<script>
+        $cities = \ORM::for_table('city')->find_one($id);
+        $cities->delete();
+        echo "<script>
        alert('City deleted');
        window.location.href='/home2';
      </script>";
-     
+
         return $this->render(['id' => $id]);
     }
 
     public function mapCityAction($request)
     {
-        $listofCities [] = ['Oradea', 'Beius', 'Alesd', 'Nucet', 'Brasov', 'Bucuresti', 'London','Timisoara'];
+        $listofCities [] = ['Oradea', 'Beius', 'Alesd', 'Nucet', 'Brasov', 'Bucuresti', 'London', 'Timisoara'];
         $appId = '01ffc2b8227e5302ffa7f8555ba7738e';
         $cityAndTemp = array();
 
@@ -112,9 +111,9 @@ echo "<script>
         $diffToImport = array_diff($listofCities[0], $listInDB);
         foreach ($diffToImport as $city) {
             $sqlInsertCities = "INSERT INTO city_map (name, source_id) VALUES ('".$city."', 1)";
-            $this->connect->query($sqlInsertCities); 
+            $this->connect->query($sqlInsertCities);
         }
-        
+
         $completeList = \ORM::for_table('city_map')
             ->order_by_asc('name')
             ->find_many();
@@ -124,7 +123,7 @@ echo "<script>
         foreach ($allCities as $city) {
             $responseJson = file_get_contents('http://api.openweathermap.org/data/2.5/weather?q='.$city['name'].'&APPID='.$appId.'&units=metric');
             $response = json_decode($responseJson);
-            if ($response->cod == 200){ 
+            if ($response->cod == 200) {
                 $cityAndTemp [] = ['city' => $response->name, 'temp' => $response->main->temp, 'source_id' => $city['source_id'], 'id' => $city['id'], 'city_id' => $city['city_id']];
             }
         }
@@ -140,17 +139,17 @@ echo "<script>
             $data = array();
             $query = \ORM::for_table('city')
                 ->select_many(array(
-                    'label'=>'name',
-                    'value'=>'id' 
+                    'label' => 'name',
+                    'value' => 'id',
                     ))
-                ->where_like('name',$searchTerm)
+                ->where_like('name', $searchTerm)
                 ->order_by_asc('name');
-            foreach ($query as $row){
+            foreach ($query as $row) {
                 $data = $row;
             }
             //return json data
             $dbCityList = json_encode($data);
-            
+
             return $dbCityList;
         } else {
             return $this->render();
@@ -165,9 +164,9 @@ echo "<script>
                 ->select_many('id', 'name')
                 ->where_like('name', $request->get('userSearch'))
                 ->find_many();
-                foreach ($realCitites as $city){
-                    $listInDB [] = $city;
-                }
+            foreach ($realCitites as $city) {
+                $listInDB [] = $city;
+            }
         }
 
         return $this->render(['mapid' => $request->get('mapid'), 'realCityList' => $listInDB]);
@@ -177,12 +176,11 @@ echo "<script>
     {
         $mapid = $request->get('mapid');
         $targetid = $request->get('targetid');
-        $updateDB = $this->connect->query('UPDATE city_map SET city_id='.$targetid.' WHERE id='.$mapid);
-        //$updateDB = \ORM::for_table('city_map')
-        //    ->set('city_id',$targetid)
-        //    ->where('id', $mapid)
-        //    ->find_one();
-        //$updateDB->save();
+        #$updateDB = $this->connect->query('UPDATE city_map SET city_id='.$targetid.' WHERE id='.$mapid);
+        $updateDB = \ORM::for_table('city_map')->find_one($mapid);
+        $updateDB
+            ->set('city_id', $targetid)
+            ->save();
         header('Location: http://example.local/cities/map');
         exit;
         #return $this->render();
@@ -194,7 +192,7 @@ echo "<script>
         //GET LIST OF CITIES FOR WEATHER REPORT  
         $result = \ORM::for_table('city_map')
             ->find_many();
-        foreach ($result as $city){
+        foreach ($result as $city) {
             $cities [] = ['city_id' => $city['city_id'], 'name' => $city['name']];
         }
         //CALLING API
@@ -244,12 +242,12 @@ echo "<script>
         }
         //EXECUTE SEARCH BY FILTERED INFORMATION
         $cityWeatherInfo = $this->weatherSearchFilter(@$weatherInfo['county'], @$weatherInfo['city'], @$weatherInfo['from'], @$weatherInfo['to']);
+
         return $this->render(['cityWeatherInfo' => $cityWeatherInfo, 'county' => $county, 'city' => $city, 'dateFrom' => $dateFrom, 'dateTo' => $dateTo]);
     }
 
     public function weatherSearchFilter($county, $city, $from, $to)
     {
-        
         $baseQuery = \ORM::for_table('weather')
             ->join('city_map', ['city_map.city_id', '=', 'weather.city_id'])
             ->join('city', ['city_map.city_id', '=', 'city.id'])
@@ -264,24 +262,23 @@ echo "<script>
                 'weather.humidity',
                 'weather.wind'
             );
-        
+
         if ($county) {
             $baseQuery->where_like('county.name', "$county%");
         }
-        
+
         if ($city) {
             $baseQuery->where_like('city.name', "$city%");
         }
-        
+
         if ($from) {
             $baseQuery->where_gte('date', $from);
         }
-        
+
         if ($to) {
             $baseQuery->where_lte('date', $to);
         }
-        
+
         return $baseQuery->find_many();
-        
     }//end of weatherSearchFilter function 
 }//end of City class

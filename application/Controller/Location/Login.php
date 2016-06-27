@@ -19,18 +19,19 @@ class Login extends \TestProject\Controller\BaseController
 //var_dump($_POST);
         if ($request->getMethod() === 'POST') {
             $user = $request->get('Username');
-            $password = password_verify($request->get('Password'),PASSWORD_BCRYPT)  ;
-            $dbUser= \ORM::for_table('user')
+            $password = password_verify($request->get('Password'), PASSWORD_BCRYPT);
+            $dbUser = \ORM::for_table('user')
                 ->where('username', $user)
                 ->where('password', $password)
                 ->where('status', 1)
                 ->find_one();
-            if ($dbUser){
+            if ($dbUser) {
                 $_SESSION['userId'] = $dbUser->id;
                 header('Location: /home2');
                 exit;
             }
         }
+
         return $this->render();
     }
 

@@ -22,10 +22,10 @@
         <div class="col-md-6 col-md-offset-3">
             <form action="/home2/search" method=post>
                 <select name="SearchBy">
-                    <option value="County" <?php if (isset($category) && $category == 'County') {
+                    <option value="county" <?php if (isset($category) && $category == 'county') {
     echo 'selected';
 }?>>by county</option>
-                    <option value="City" <?php if (isset($category) && $category == 'City') {
+                    <option value="city" <?php if (isset($category) && $category == 'city') {
     echo 'selected';
 }?>>by city</option>
                 </select>
@@ -52,13 +52,13 @@
             ?>
             <?php foreach ($countiesAndCities as $row): ?>
                 <tr>
-                    <td class="col-md-4 inner"><a href="/counties/edit/<?= $row['id'] ?>" id='<?php $row['id']?>'>
-                    <?php $county[$i] = $row['County']; if ($row['County'] != $county[$i - 1]) {
-     echo $row['County'];
+                    <td class="col-md-4 inner"><a href="/counties/edit/<?= $row->id ?>" id='<?php $row->id?>'>
+                    <?php $county[$i] = $row->county; if ($row->county != $county[$i - 1]) {
+     echo $row->county;
  } else {
      echo '';
  } $i += 1; ?></a>
-                    <td class="col-md-4 inner"><a href="/cities/<?= $row['id'] ?>" id='<?php $row   ['id']?>'><?= $row['City']?></a></td>
+                    <td class="col-md-4 inner"><a href="/cities/<?= $row->id?>" id='<?php $row->id?>'><?= $row->city?></a></td>
                 </tr>
             <?php endforeach ?>
             </table>
