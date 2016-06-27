@@ -138,13 +138,19 @@ echo "<script>
         if ($searchTerm) {
             //get matched data from skills table
             $data = array();
-            $query = $this->connect->query("SELECT name as label, id as value FROM city WHERE name LIKE '".$searchTerm."%' ORDER BY name ASC");
-            while ($row = $query->fetch_assoc()) {
-                $data[] = $row;
+            $query = \ORM::for_table('city')
+                ->select_many(array(
+                    'label'=>'name',
+                    'value'=>'id' 
+                    ))
+                ->where_like('name',$searchTerm)
+                ->order_by_asc('name');
+            foreach ($query as $row){
+                $data = $row;
             }
             //return json data
             $dbCityList = json_encode($data);
-
+            
             return $dbCityList;
         } else {
             return $this->render();
@@ -155,11 +161,13 @@ echo "<script>
     {
         $listInDB = array();
         if (!null == $request->get('userSearch')) {
-            $realCities = "Select id, name FROM city WHERE name LIKE '".$request->get('userSearch')."%'";
-            $result = $this->connect->query($realCities);
-            foreach ($result as $city) {
-                $listInDB [] = $city;
-            }
+            $realCitites = \ORM::for_table('city')
+                ->select_many('id', 'name')
+                ->where_like('name', $request->get('userSearch'))
+                ->find_many();
+                foreach ($realCitites as $city){
+                    $listInDB [] = $city;
+                }
         }
 
         return $this->render(['mapid' => $request->get('mapid'), 'realCityList' => $listInDB]);
@@ -170,6 +178,11 @@ echo "<script>
         $mapid = $request->get('mapid');
         $targetid = $request->get('targetid');
         $updateDB = $this->connect->query('UPDATE city_map SET city_id='.$targetid.' WHERE id='.$mapid);
+        //$updateDB = \ORM::for_table('city_map')
+        //    ->set('city_id',$targetid)
+        //    ->where('id', $mapid)
+        //    ->find_one();
+        //$updateDB->save();
         header('Location: http://example.local/cities/map');
         exit;
         #return $this->render();
@@ -179,11 +192,11 @@ echo "<script>
     {
 
         //GET LIST OF CITIES FOR WEATHER REPORT  
-        $result = $this->connect->query('SELECT * FROM city_map');
-        foreach ($result as $city) {
+        $result = \ORM::for_table('city_map')
+            ->find_many();
+        foreach ($result as $city){
             $cities [] = ['city_id' => $city['city_id'], 'name' => $city['name']];
         }
-
         //CALLING API
         $appId = '01ffc2b8227e5302ffa7f8555ba7738e';
         $cityWeatherInfo = array();
