@@ -12,9 +12,9 @@ class SignUp extends \TestProject\Controller\BaseController
         public function SignUpFormAction($request)
         {
                 if ($request->getMethod()== "POST"){
-                        if ($_POST['password'] === $_POST['passwordVerify']){
+                        if ($_POST['password'] === $_POST['passwordVerify'] && strlen($_POST['password'] >= 4)){
                                 $username = $_POST['username'];
-                                $password = $_POST['password'];
+                                $password = password_hash($_POST['password'],PASSWORD_BCRYPT);
                                 $email = $_POST['emailAddress'];
                                 if ($_POST['status'] == 'active'){
                                         $status = 1;
@@ -28,12 +28,21 @@ class SignUp extends \TestProject\Controller\BaseController
                                 $result = $this->connect->query($getId);
                                 $id = $result->fetch_assoc()['id'];
                                 $_SESSION['userId'] = $id;
-                                header('Location: /home2');
-                                exit;
+                                        if ($status == 1){
+                                                header('Location: /home2');
+                                                exit;                                                
+                                        }else{
+                                           $_SESSION['userId'] = "";
+                                                header('Location: /home2/logout');
+                                                exit;       
+                                        }
                                 }
-                                
                         }else{
-                                echo "Passwords do not match.";
+                                if ( strlen($_POST['password'] <= 4) ){
+                                echo ("Password is too short. Please retry.");
+                                }else{
+                                echo "Passwords do not match.";                                        
+                                }
                         }
                 }
                 return $this->render();
