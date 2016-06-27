@@ -16,7 +16,7 @@ class SignUp extends \TestProject\Controller\BaseController
                                 $username = $_POST['username'];
                                 $password = $_POST['password'];
                                 $email = $_POST['emailAddress'];
-                                if ($_POST['status'] = 'active'){
+                                if ($_POST['status'] == 'active'){
                                         $status = 1;
                                 }else{
                                         $status = 0;
@@ -24,12 +24,12 @@ class SignUp extends \TestProject\Controller\BaseController
                                 $addUser = "INSERT INTO user (username,password,email,status)
                                 VALUES ('$username','$password', '$email', $status)";
                                 if ($this->connect->query($addUser) === TRUE){
-echo "User was added.";
                                 $getId = "SELECT id from user where username='$username'";
                                 $result = $this->connect->query($getId);
                                 $id = $result->fetch_assoc()['id'];
-                                echo $id;
                                 $_SESSION['userId'] = $id;
+                                header('Location: /home2');
+                                exit;
                                 }
                                 
                         }else{

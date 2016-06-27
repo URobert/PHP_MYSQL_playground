@@ -8,7 +8,7 @@ class BaseController
 
     final public function render($arguments = array())
     {
-        $isLoggedIn = isset($_SESSION['userId']) && $_SESSION['userId'] == 1;
+        $isLoggedIn = isset($_SESSION['userId']) && $_SESSION['userId'] >= 1;
         ob_start();
         extract($arguments);
         require sprintf(
