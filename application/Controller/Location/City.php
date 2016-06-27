@@ -15,43 +15,30 @@ class City extends \TestProject\Controller\BaseController
     {
         $id = $request->get('id');
 
-        return $this->render(['cityList' => $this->getCityList($id),
-                                            'countyId' => $id, ]);
+        return $this->render(['cityList' => $this->getCityList($id), 'countyId' => $id, ]);
     }
 
     public function getCityList($id)
     {
         $cities = array();
-        $requestCityList = 'SELECT * FROM city WHERE county_id='.$id;
-        $returedList = $this->connect->query($requestCityList);
-        foreach ($returedList as $city) {
+        $requestCityList = \ORM::for_table('city')
+                    ->where('county_id', $id)
+                    ->find_many();        
+        foreach ($requestCityList as $city){
             $cities [] = array('id' => $city['id'], 'name' => $city['name']);
         }
-
+        
         return $cities;
     }
-
-    public function getCity($id)
-    {
-        $cities = array();
-        $requestCityList = 'SELECT * FROM city WHERE county_id='.$id;
-        $returedList = $this->connect->query($requestCityList);
-        foreach ($returedList as $city) {
-            $cities [] = array('id' => $city['id'], 'name' => $city['name']);
-        }
-
-        return $cities;
-    }
-
+    
     public function getCounty($id)
     {
         $countyName = array();
-        $requesCounty = 'SELECT name FROM county WHERE id='.$id;
-        $return = $this->connect->query($requesCounty);
-        foreach ($return as $county) {
-            $countyName [] = array('name' => $county['name']);
-        }
-
+        $requesCounty = \ORM::for_table('county')
+                    ->where('id', $id)
+                    ->find_one();  
+        $countyName [] = array('name' => $requesCounty['name']);
+        
         return $countyName;
     }
 
@@ -69,71 +56,69 @@ class City extends \TestProject\Controller\BaseController
                 echo '</script>';
             } else {
                 // REFACTOR INSERT QUERIES`
-                $checkCity = 'SELECT * FROM city WHERE name="'.$_POST['city'].'" AND county_id='.
-                $id.' limit 1';
-                $result = $this->connect->query($checkCity);
-                if ($result->num_rows) {
-                    foreach ($result as $city) {
-                        $cityId = $city['id'];
-                    }
-                    #echo "City ". $city['name'] . " already exists in this county.";
-                    echo "<script>
-                           alert('This city already exists in this county.');
-                          </script>";
+                $checkCity = \ORM::for_table('city')
+                    ->where('name', $_POST['city'])
+                    ->where('county_id', $id)
+                    ->find_one();
+                if ($checkCity) {
+                        $cityId = $checkCity->id;
+echo "<script>
+       alert('This city already exists in this county.');
+      </script>";
                 } else {
                     $addNewCity = 'INSERT INTO city (name,county_id)
                                    VALUES ("'.$request->get('city').'",'.$id.')';
                     if ($this->connect->query($addNewCity) === true) {
-                        #echo "City sucessfuly added:" . $_POST['city'] . "<br>";
-                        echo "<script>
-                               alert('City sucessfuly added.');
-                              </script>";
+echo "<script>
+       alert('City sucessfuly added.');
+      </script>";
                         $cityId = mysqli_insert_id($this->connect);
                     }
                 }
             }
         }//end of POST method check
-        return $this->render(['cities' => $this->getCity($id),
-                                            'countyId' => $id,
-                                            'countyName' => $this->getCounty($id), ]);
+        return $this->render(['cities' => $this->getCityList($id),
+                              'countyId' => $id,
+                              'countyName' => $this->getCounty($id), ]);
     }
 
     public function deleteCityAction($request)
     {
         $id = $request->get('id');
-        $cities = 'DELETE FROM city WHERE id='.$id;
-        $result = $this->connect->query($cities);
-        echo "<script>
-               alert('City deleted');
-               window.location.href='/home2';
-             </script>";
-
+        $cities = \ORM::for_table('city')
+            ->where('id',$id)
+            ->delete_many();
+echo "<script>
+       alert('City deleted');
+       window.location.href='/home2';
+     </script>";
+     
         return $this->render(['id' => $id]);
     }
 
     public function mapCityAction($request)
     {
-        $listofCities [] = ['Oradea', 'Beius', 'Alesd', 'Nucet', 'Brasov', 'Bucuresti', 'London'];
+        $listofCities [] = ['Oradea', 'Beius', 'Alesd', 'Nucet', 'Brasov', 'Bucuresti', 'London','Timisoara'];
         $appId = '01ffc2b8227e5302ffa7f8555ba7738e';
         $cityAndTemp = array();
 
         //Getting DB cities and obtaining differences between request and db cities
-        $citiesInDB = 'Select name FROM city_map';
-        $result = $this->connect->query($citiesInDB);
-        foreach ($result as $row) {
+        $citiesInDB = \ORM::for_table('city_map')
+            ->select('name')
+            ->find_many();
+        foreach ($citiesInDB as $row) {
             $listInDB [] = $row['name'];
         }
         $diffToImport = array_diff($listofCities[0], $listInDB);
-        #$list = implode("','",$diffToImport);
         foreach ($diffToImport as $city) {
             $sqlInsertCities = "INSERT INTO city_map (name, source_id) VALUES ('".$city."', 1)";
-            if ($this->connect->query($sqlInsertCities) === true) {
-            }
+            $this->connect->query($sqlInsertCities); 
         }
-
-        $completeList = 'SELECT * FROM city_map ORDER BY name';
-        $result = $this->connect->query($completeList);
-        foreach ($result as $city) {
+        
+        $completeList = \ORM::for_table('city_map')
+            ->order_by_asc('name')
+            ->find_many();
+        foreach ($completeList as $city) {
             $allCities [] = ['name' => $city['name'], 'source_id' => $city['source_id'], 'id' => $city['id'], 'city_id' => $city['city_id']];
         }
         foreach ($allCities as $city) {
