@@ -63,8 +63,24 @@
             <?php ++$i; ?>
             <?php endforeach ?>
             </table>
-        <h2><?= $textline1; ?></h2>
-        <p><?= $textline2; ?></p>
-        <div id="pagination_controls"><?php echo $paginationCtrls; ?></div>
+            
+        <h2>Users: (<?= $pagination['total'] ?>)</h2>
+        <div>
+            <?php if (!$pagination['is_first_page']): ?>
+                <a href="<?= changePage("/home2/users", $pagination['current_page'] - 1) ?>">Previous</a>
+            <?php endif; ?>
+            
+            <?php foreach(range(1, $pagination['pages']) as $i): ?>
+                <?php if ($i == $pagination['current_page']): ?>
+                    <?= $i ?>
+                <?php else: ?>
+                    <a href="<?= changePage("/home2/users", $i) ?>"><?= $i ?></a>
+                <?php endif; ?>
+            <?php endforeach; ?>
+            
+            <?php if (!$pagination['is_last_page']): ?>
+                <a href="<?= changePage("/home2/users", $pagination['current_page'] + 1) ?>">Next</a>
+            <?php endif; ?>
+        </div>
         </div>
 </div> <!-- end of container -->

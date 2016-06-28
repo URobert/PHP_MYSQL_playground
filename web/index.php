@@ -16,6 +16,16 @@ $connect = mysqli_connect('localhost','root','cozacu','test1');
         throw new Exception('Failed to connect.' . mysql_error());
     };
 
+function changeQueryString($name, $value) {
+    parse_str($_SERVER['QUERY_STRING'], $temporary);
+    $temporary[$name] = $value;
+    return http_build_query($temporary);
+}
+
+function changePage($base, $target_page) {
+    return $base . "?" . changeQueryString('pn', $target_page);
+}
+
 $app = new Silex\Application();
 $app['debug'] = true;
 $app['connect'] = $connect;
