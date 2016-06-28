@@ -36,24 +36,30 @@ class Users extends \TestProject\Controller\BaseController
     public function SeachUsers($username, $email, $status)
     {
         $users = [];
-        $sqlReq = 'SELECT * FROM user WHERE 1 ';
+        #$sqlReq = 'SELECT * FROM user WHERE 1 ';
+        $sqlReq  = \ORM::for_table('user');
+        
+        
+        //SEACH ONLY BY STATUS
+        if ($status != '') {
+            #$sqlReq .= " AND status='".$status."'";
+            $sqlReq->where('status', $status);
+        }
+        
         //SEACH BY USER
         if (!empty($username)) {
-            $sqlReq .= " AND username LIKE'".$username."%'";
+            #$sqlReq .= " AND username LIKE'".$username."%'";
+            $sqlReq->where_like('username', "$username%");
         }
         //SEACH BY EMAIL
         if (!empty($email)) {
-            $sqlReq .= " AND email LIKE'%".$email."%'";
-        }
-        //SEACH ONLY BY STATUS
-        if ($status != '') {
-            $sqlReq .= " AND status='".$status."'";
+            #$sqlReq .= " AND email LIKE'%".$email."%'";
+            $sqlReq->where_like('email', "%$email%");
         }
 
         //LIMIT FOR PAGINATION
-        $count = "SELECT count(*) from ($sqlReq) AS T";
-        $sqlReturn = $this->connect->query($count);
-        $rows = $sqlReturn->fetch_assoc()['count(*)']; #total number of rows resulted
+        $count = count($sqlReq);
+        $rows = $count; #total number of rows resulted
         $page_rows = 2; #nr of rows that will be displayed by page
         $last = ceil($rows / $page_rows); #the last page
 
@@ -74,8 +80,8 @@ class Users extends \TestProject\Controller\BaseController
             $pagenum = $last;
         }
         //set the range of rows to query for the chosen $pagenum
-        $limit = ' LIMIT '.($pagenum - 1) * $page_rows.','.$page_rows;
-        $sqlReq .= $limit;
+        #$limit = ' LIMIT '.($pagenum - 1) * $page_rows.','.$page_rows;
+        $sqlReq->limit($page_rows)->offset(($pagenum - 1) * $page_rows);
         //showing the user what page they are on
         $textline1 = "Users: (<b>$rows</b>)";
         $textline2 = "Page <b>$pagenum</b> of <b>$last</b>";
@@ -108,17 +114,16 @@ class Users extends \TestProject\Controller\BaseController
                     $paginationCtrls .= ' &nbsp; &nbsp; <a href="'.'/home2/users/'.'?pn='.$next.'">Next</a>';
                 }
         }
-        $sqlReturn = $this->connect->query($sqlReq);
-        while ($row = $sqlReturn->fetch_assoc()) {
-            $users[] = $row;
-        }
-
-        return ['users' => $users, 'textline1' => $textline1, 'textline2' => $textline2, 'paginationCtrls' => $paginationCtrls, 'rows' => $rows];
-
         //$sqlReturn = $this->connect->query($sqlReq);
         //while ($row = $sqlReturn->fetch_assoc()) {
         //    $users[] = $row;
         //}
-        //return $users;
+        $result = $sqlReq->find_many();
+        
+        foreach ($result as $entry){
+            $users [] = $entry;
+        }
+
+        return ['users' => $users, 'textline1' => $textline1, 'textline2' => $textline2, 'paginationCtrls' => $paginationCtrls, 'rows' => $rows];
     }
 }//end of Users class 
