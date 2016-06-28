@@ -15,8 +15,7 @@ class Login extends \TestProject\Controller\BaseController
             header('Location: /home2');
             exit;
         }
-//var_dump($_SESSION);
-//var_dump($_POST);
+
         if ($request->getMethod() === 'POST') {
             $user = $request->get('Username');
             $password = password_verify($request->get('Password'), PASSWORD_BCRYPT);
@@ -27,6 +26,15 @@ class Login extends \TestProject\Controller\BaseController
                 ->find_one();
             if ($dbUser) {
                 $_SESSION['userId'] = $dbUser->id;
+                //SAVING SESSION INFO INTO DB AS WELL
+                #1. Check for session info in DB
+                $checkSession = \ORM::for_table('user_sessions')->find_one();
+                if (!$checkSession){
+                    $userInfo = \ORM::for_table('user_sessions')->create();
+                    $userInfo
+                        ->set('user_id',$dbUser->id)
+                        ->save();
+                }
                 header('Location: /home2');
                 exit;
             }

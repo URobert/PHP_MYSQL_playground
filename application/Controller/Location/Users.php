@@ -14,18 +14,37 @@ class Users extends \TestProject\Controller\BaseController
         if (!isset($_SESSION['user_search'])) {
             $_SESSION['user_search'] = array();
         }
-        $filters = $_SESSION['user_search'];
-        $user = $request->get('username', @$filters['user']);
-        $email = $request->get('email', @$filters['email']);
-        $status = $request->get('status', @$filters['status']);
-
+        //BRING IN SESSION INFO FROM DB
+        $savedSession = \ORM::for_table('user_sessions');
+        $session = $savedSession->find_one($_SESSION['userId']);
+        $decoded = json_decode($session['session_info']);
+        
+        if($decoded->user != "" || $decoded->email != "" || $decoded->status != ""){
+            $user = $request->get('username', $decoded->user);
+            $email = $request->get('email',$decoded->email);
+            $status = $request->get('status',$decoded->status);
+        } else {
+            $filters = $_SESSION['user_search'];
+            $user = $request->get('username', @$filters['user']);
+            $email = $request->get('email', @$filters['email']);
+            $status = $request->get('status', @$filters['status']);
+        }
+        
         if ($request->getMethod() == 'GET') {
             $filters['user'] = $user;
             $filters['email'] = $email;
             $filters['status'] = $status;
             $_SESSION['user_search'] = $filters;
         }
-
+        
+        //SAVING SESSION INFO INTO DB AS WELL
+        $userSession = \ORM::for_table('user_sessions');
+        $result = $userSession->find_one($_SESSION['userId']);
+        $result
+           ->set('session_info',json_encode($filters))
+           ->save();
+        //----------------------------------
+        
         $usersAndPages = $this->SeachUsers($user, $email, $status);
 
         return $this->render(['users' => $usersAndPages['users'], 

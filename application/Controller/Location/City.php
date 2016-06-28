@@ -199,6 +199,12 @@ class City extends \TestProject\Controller\BaseController
         foreach ($cities as $city) {
             $response = file_get_contents('http://api.openweathermap.org/data/2.5/forecast/daily?q='.$city['name'].'&mode=json&units=metric&cnt=7'.'&APPID='.$appId.'&units=metric');
             $response = json_decode($response, true);
+            
+            //$checkDB = \ORM::for_table('weather');
+            //$reply = $checkDB->find_many();
+            //var_dump($reply);
+            #$wipeDB = \ORM::for_table('weather')->delete_many();
+            
             for ($i = 0; $i < 7; ++$i) {
                 $sqlRequest = \ORM::for_table('weather')->create();
                 $sqlRequest
