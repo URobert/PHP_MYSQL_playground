@@ -59,7 +59,6 @@ class County extends \TestProject\Controller\BaseController
                  $addNewCounty = \ORM::for_table('county')->create();
                  $addNewCounty->set('name', $request->get('county'))->save();
                  echo "<script>window.location.href='/home2'</script>";
-
                  $countyId = $addNewCounty->id;
              }
          }
@@ -75,16 +74,15 @@ class County extends \TestProject\Controller\BaseController
         } else {
             $countyid = $request->get('countyid');
             $name = $request->get('name');
-            $sqlUpdate = 'UPDATE county SET name="'.$name.'"WHERE id='.$id;
-            if ($this->connect->query($sqlUpdate) === true) {
+            #$sqlUpdate = 'UPDATE county SET name="'.$name.'"WHERE id='.$id;
+            $sqlUpdate = \ORM::for_table('county')->find_one($id);
+            $sqlUpdate
+                ->set('name',$name)
+                ->save();
                 echo "<script>
                  alert('County successfully updated.');
                  window.location.href='/home2';
                  </script>";
-            } else {
-                echo 'Error updating record: '.$this->connect->error;
-                exit();
-            }
         }
     }
 
@@ -99,17 +97,17 @@ class County extends \TestProject\Controller\BaseController
             ->find_one();
         if ($cities['id']) {
             echo "<script>
- alert('That county can not be deteled. Only empty (without registred cities) counties can be deleted.');
- window.location.href='/home2';
- </script>";
+                alert('That county can not be deteled. Only empty (without registred cities) counties can be deleted.');
+                window.location.href='/home2';
+                </script>";
         } else {
             $deleteQuery = \ORM::for_table('county')
                 ->where('id', $id)
                 ->delete_many();
             echo "<script>
- alert('County deleted.');
- window.location.href='/home2';
- </script>";
+                alert('County deleted.');
+                window.location.href='/home2';
+                </script>";
         }
 
         return $this->render(['id' => $county['id'], 'countyName' => $county['name']]);
