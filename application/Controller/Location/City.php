@@ -45,7 +45,6 @@ class City extends \TestProject\Controller\BaseController
     public function addCityAction($request)
     {
         $id = $request->get('id');
-
         if ($request->getMethod() === 'POST') {
 
             // TEST FIELDS FOR NON-EMPTY AND LENGTH
@@ -63,17 +62,16 @@ class City extends \TestProject\Controller\BaseController
                 if ($checkCity) {
                     $cityId = $checkCity->id;
                     echo "<script>
-       alert('This city already exists in this county.');
-      </script>";
+                    alert('This city already exists in this county.');
+                   </script>";
                 } else {
-                    $addNewCity = 'INSERT INTO city (name,county_id)
-                                   VALUES ("'.$request->get('city').'",'.$id.')';
-                    if ($this->connect->query($addNewCity) === true) {
-                        echo "<script>
-       alert('City sucessfuly added.');
-      </script>";
-                        $cityId = mysqli_insert_id($this->connect);
-                    }
+                    $addNewCity = \ORM::for_table('city')->create();
+                    $addNewCity->set('name',$request->get('city'))->set('county_id',$id)->save();
+                    
+                    echo "<script>
+                    alert('City sucessfuly added.');
+                    </script>";
+                    $cityId = $addNewCity->id;
                 }
             }
         }//end of POST method check
@@ -110,8 +108,8 @@ class City extends \TestProject\Controller\BaseController
         }
         $diffToImport = array_diff($listofCities[0], $listInDB);
         foreach ($diffToImport as $city) {
-            $sqlInsertCities = "INSERT INTO city_map (name, source_id) VALUES ('".$city."', 1)";
-            $this->connect->query($sqlInsertCities);
+            $sqlInsertCities = \ORM::for_table('city')->create();
+            $sqlInsertCities->set('name',$city)->set('source_id',1)->save();
         }
 
         $completeList = \ORM::for_table('city_map')
@@ -176,7 +174,6 @@ class City extends \TestProject\Controller\BaseController
     {
         $mapid = $request->get('mapid');
         $targetid = $request->get('targetid');
-        #$updateDB = $this->connect->query('UPDATE city_map SET city_id='.$targetid.' WHERE id='.$mapid);
         $updateDB = \ORM::for_table('city_map')->find_one($mapid);
         $updateDB
             ->set('city_id', $targetid)
@@ -203,18 +200,16 @@ class City extends \TestProject\Controller\BaseController
             $response = file_get_contents('http://api.openweathermap.org/data/2.5/forecast/daily?q='.$city['name'].'&mode=json&units=metric&cnt=7'.'&APPID='.$appId.'&units=metric');
             $response = json_decode($response, true);
             for ($i = 0; $i < 7; ++$i) {
-                $sqlRequest = 'INSERT INTO weather
-            (city_id,date,temp,min_temp,max_temp,humidity,wind)
-            VALUES ('
-            .$city['city_id'].
-            ',FROM_UNIXTIME('
-            .$response['list'][$i]['dt'].'),'
-            .$response['list'][$i]['temp']['day'].','
-            .$response['list'][$i]['temp']['min'].','
-            .$response['list'][$i]['temp']['max'].','
-            .$response['list'][$i]['humidity'].','
-            .$response['list'][$i]['speed'].')';
-                $this->connect->query($sqlRequest);
+                $sqlRequest = \ORM::for_table('weather')->create();
+                $sqlRequest
+                    ->set('city_id', $city['city_id'])
+                    ->set('date', gmdate("Y-m-d",$response['list'][$i]['dt']) )
+                    ->set('temp', $response['list'][$i]['temp']['day'] )
+                    ->set('min_temp', $response['list'][$i]['temp']['min'] )
+                    ->set('max_temp', $response['list'][$i]['temp']['max'] )
+                    ->set('humidity', $response['list'][$i]['humidity'] )
+                    ->set('wind', $response['list'][$i]['speed'])
+                    ->save();
             }
         }
 
