@@ -12,33 +12,34 @@ class SignUp extends \TestProject\Controller\BaseController
     public function SignUpFormAction($request)
     {
         if ($request->getMethod() == 'POST') {
-            if ($_POST['password'] === $_POST['passwordVerify'] && strlen($_POST['password'] >= 4)) {
-                $username = $_POST['username'];
-                $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
-                $email = $_POST['emailAddress'];
-                if ($_POST['status'] == 'active') {
+            if ($request->get('password') === $request->get('passwordVerify') && strlen($request->get('password')) >= 4) {
+                $username = $request->get('username');
+                $password = password_hash($request->get('password'), PASSWORD_BCRYPT);
+                $email = $request->get('emailAddress');
+                if ($request->get('status') == 'active') {
                     $status = 1;
                 } else {
                     $status = 0;
                 }
-                $addUser = "INSERT INTO user (username,password,email,status)
-                                VALUES ('$username','$password', '$email', $status)";
-                if ($this->connect->query($addUser) === true) {
-                    $getId = "SELECT id from user where username='$username'";
-                    $result = $this->connect->query($getId);
-                    $id = $result->fetch_assoc()['id'];
-                    $_SESSION['userId'] = $id;
-                    if ($status == 1) {
-                        header('Location: /home2');
-                        exit;
-                    } else {
-                        $_SESSION['userId'] = '';
-                        header('Location: /home2/logout');
-                        exit;
-                    }
+                $addUser = \ORM::for_table('user')->create();
+                $addUser
+                    ->set('username', $username )
+                    ->set('password', $password )
+                    ->set('email', $email)
+                    ->set('status', $status)
+                    ->save();
+                $_SESSION['userId'] = $addUser->id;
+                if ($status == 1) {
+                    header('Location: /home2');
+                    exit;
+                } else {
+                    $_SESSION['userId'] = '';
+                    header('Location: /home2/logout');
+                    exit;
                 }
+                
             } else {
-                if (strlen($_POST['password'] <= 4)) {
+                if (strlen($request->get('password')) <= 3) {
                     echo 'Password is too short. Please retry.';
                 } else {
                     echo 'Passwords do not match.';
