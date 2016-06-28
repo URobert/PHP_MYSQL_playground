@@ -1,0 +1,236 @@
+Recently created files (starting April 29th):
+
+1)==========filtered_import.php (EUGEN)==========
+    - add new counties from csv into DB.
+    - check initial db values
+    - don't add duplicates
+    // DONE 
+
+7)==========filtered_import_version2 (EUGEN)==========
+    - lista de Orase is Judete in csv, populare county,city and county_id (no repeat);
+    - connect to DB / read csv per line
+    - check for county in DB, import county, save county_id
+    - check for city in DB, import city with correct county_id;
+    // DONE *(note- could change file_get_contents and explode with *read_file)
+    
+    
+2)==========testingRegEx.php (MAX)==========
+    - get contents from wiki url
+    - get all download urls
+    - write script to download all files to mounted local server storage
+    // DONE 
+    
+3)==========importWiki.php (MAX)==========
+    - create new wikidata table (SQL);
+    - connect to DB
+    - format downloaded file
+    - write script to import formated file data into SQL DB
+    //DONE  
+
+
+4)==========importWiki2.php (MAX)==========
+    - clone importWiki.php
+    - incapsulate into a function the file formating and DB writting
+    - use directory iterator to get all the filenames
+    - call execution function on all files
+    - use  $argc =  0 && $argv[0] to determine content;//
+    - $TARGET_DIRECTORY = $ARGV[1];//
+    // DONE
+    
+    
+5)========== mostPopularAlfa.php (MAX)==========
+    - Write query that will display the MOST POPULAR PAGE  / DOMAIN
+    - group domain, main ...SUM (clicks);
+    //FOR IMPROVED VERSION (one QUERY) check mostPoopularBeta.php
+    //DONE.
+    
+    
+6)========== H_B_Usage.php (MAX) ==========
+    - Write query display for Biggest Bandwith Usage 
+    - size * clicks per MAIN PAGE ... show MB/GB
+    - domain/pages most be grouped so the result shows the highest bandwidth usage for a domain,
+    for multiple days
+    //DONE.
+
+
+7)======== sqlQuerys.txt (EUGEN)============
+    - Write sqlQuery that displays Date/MaxTEMP/city_ID
+    - Write sqlQuery that displays County/City/Date/MaxTemp;
+     //DONE.
+     
+8)======== sqlQuerys.txt/V4.0 (EUGEN) =========
+    - nr total orase in fiecare judet
+    - orase cu judete neasignate
+    - judete fara orase;
+    - judete cu mai mult de 3 localitati
+    //DONE
+    
+9)======= SQL H_B_USAGE.php (MAX) ==========
+    - optimize H_B_Usages to improve query result time from currect response time to legendary 0.01.
+    - indexing was done directly in sql from command line
+     //DONE (using CREATE INDEX)
+
+
+10) ========= mod on H_B_Usage.php (MAX) =======
+    - the query must return only one size column where the highest (>0)
+    value is displayed.
+    - HINT: switch,case;
+    //DONE
+    
+11) ========== gitTutorial from Code School (MAX) ======
+    - Part 1 //DONE
+    - Part 2 // The rest require payment
+    - Part 3
+    - Part 4
+    
+    
+12) ======== install Composer (MAX) ========
+    - install
+    - basic usage, monolog ex, composer.json, composer.lock
+    // DONE
+    
+13)========== Autoloader (MAX) ============
+    - study autoloader.
+    - create own autoloader.
+    //DONE.
+
+14)============ index.php under Silex with composer (MAX)========= 
+    - add remaing scripts to index.php from project (steps 7-8);
+    (TestProject, don't forget to commit)
+    - try to solve puzzle for templating using OB_START(), OB_END(), EXTRACT() and include.
+    (access will be on example.local/...) // DONE with Max
+    //DONE
+15)================== Create first template (template1.php) (MAX) ===============
+    - //DONE
+    
+16)=================== Create templates for all actions $app->$get ===============
+        -build template files
+        -REMAINING MAX TEMP PER CITY
+        -REMAINING COUNTIES AND CITIES
+        //DONE
+        
+17)====================== Integerate Boostrap for the projects/finish Git docs ============
+    -integreate boostrap        //DONE
+    -fix sql query issue        //DONE - sort of
+    -read MAXs git documentation from google drive //DONE
+    //DONE
+    
+18)====================== More Git
+    - Git course from Code Academy //Done
+    - Git course (3h) from Free Code Camp // Done (last month)
+
+19)====================== MVC and creating controllers with Silex=======================================
+    - transform current index.php from TestProject to use controllers //DONE
+    
+20)===================== Get started to work with php reflections =====================================
+   - What is up with all those implements ?!
+   - clasa de templating !? (layout)
+   - clasa intermediara care se ocupa de instantiere... si sa instantieze doar cate o casa pentru momentul in care e accesat. //DONE
+   - create manual add county & city and delete city from /counties/add  and /counties/delete
+   - implement autocomplete drop down for county list //DONE 
+   - make options work 
+   - hide county add column and make it available only on Other selection
+   - ------------------------------
+   - fix delete
+   - make the county list page that redirects to each county
+   - each county page should list the names of all the cities in each county
+   - (for this I should first fix how to call different functions beside action in index.php)
+===================
+
+
+22) DELETE CURRENT MASTER
+    RENAME PHP REFLECTION TO MASTER
+    CREATE NEW BRANCH
+    DELETE UNUSED CONTROLLERS AND TEMPLATES
+    MERGE NEWBRANCH TO MASTER
+    > DONE
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!21)CRUD  = CREATE READ UPDATE DELETE
+Steps :
+        - restructure to home, and slightly improve home page  - WWill be improved at the end
+        a) Create add new county that will allow only adding a new county to the db
+        //DONE 
+        b) Create a form that will allow you to modify each db county entry when you click son on
+        //DONE
+        c) Clicking on cities next to a county, will bring up the list of cities in that county.
+        //DONE
+        d) On the redirectect cities page, you will have the option to add a new city to that county;
+        //DONE 
+        e) On the main page, you have the option to delete a county. Deleting will be possible only if there are no cities in that county.
+        //DONE
+        e+) Restructure code with multiple functions in one controller
+        //DONE
+        e++) Rebuild the template function, remove not necessary parameters. Use basecontroller.
+        //DONE
+        e+++) Integrate bootstrap for all pages. Make use of a layout. 
+        // DONE
+        e++++)Study sessions and implement flash messages.
+        // DONE (PARTIALLY) (no flash but standard message is displayed and deleted on update)
+        f-) Implement county_map - that will import from an API a list of counties. 
+        //DONE
+        f--)Create MAPING option for imported cities to city table from DB>
+        //DONE
+        f---)IMPORT API weathere forecast info for cities from city_map
+        //DONE
+        f-----) Create autocomplete for rename function for county and when searching for location.
+        > DONE
+        f) Bring up a new page that has the list of all the counties and the list of cities next to them.
+        > DONE
+        g) On this page there is an option to serach by either counties or cities;
+        > DONE
+        h) New temperature filter/search by county, city, date (from and to);
+        > DONE
+        i) Add search field completion after submit for weather forecast filter.
+        >DONE
+        j)City in county still has to be checked for weather forecast
+        >DONE
+        
+        - study session
+            >DONE
+        - login page for admin
+            >DONE
+        - limit from index.php to show only login page when no user is loged in.
+            > DONE
+        - db for username and password and email, active status.
+            >DONE
+        - update DB with user;
+            >DONE   
+        - create search page for users, search should be available by user, email and status (all, active, inactive);
+            >DONE
+        - modify users active status display in browser. update some email addresses
+            >DONE
+        - modify username and password recomplete input field to stop using $_POST
+            >DONE   
+        - make select drop down keep value after form submit
+            >DONE
+        - remove nav bag buttons when user is not logged in
+            >DONE
+        - keep last searched value in session
+            -for users >DONE    
+            -for location >DONE
+            -for weather forecast (rebuild the search function from the controller, start rebuilding the condition for search only by county;)
+            >DONE      
+        - paginare cu limit de 2 pentru user list
+            >DONE
+        - update login to permit user access
+            -user and password information must be provided from DB
+            >DONE
+        - move add new county button from layout
+            >DONE button moved to home (county listing);
+        - use crypt and salts to improve passwords stored in the db
+            >Changed (using password hash)
+        - add option to add user from users page, new passwords should be saved as hashed passwords;
+            - create SIGNUP form view > DONE
+            - save "posted" signup values into DB and redirect to home and change session to loggedin status; >DONE
+            - permit navigation for all users
+            >DONE
+        - use  Idiorm to convert  all mySQL requests (from all controllers);
+            >DONE    
+        - keep session state after update after login and logout (tabel separat)
+            
+        - update weather forecast import to work properly for updates
+        
+        - improve pagination, I could use pagination for other pages as well
+        
+        - drastically improve the UI / (add functionallity to get the forecast for any Country/City - someday/maybe)
+    
