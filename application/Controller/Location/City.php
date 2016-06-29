@@ -180,7 +180,6 @@ class City extends \TestProject\Controller\BaseController
             ->save();
         header('Location: http://example.local/cities/map');
         exit;
-        #return $this->render();
     }
 
     public function weatherForecastImportAction($request)
@@ -189,9 +188,25 @@ class City extends \TestProject\Controller\BaseController
         //GET LIST OF CITIES FOR WEATHER REPORT  
         $result = \ORM::for_table('city_map')
             ->find_many();
+        $lastDateinDB =  date('Y-m-d',strtotime("+6 day"));
         foreach ($result as $city) {
-            $cities [] = ['city_id' => $city['city_id'], 'name' => $city['name']];
+            $checkEntry =  \ORM::for_table('city_map')
+                ->join('weather', ['city_map.city_id', '=', 'weather.city_id'])
+                ->where('city_map.name',$city['name'])
+                ->where('weather.date', "'$lastDateinDB'");
+                
+            $checkResult = $checkEntry->find_one();
+            if ($checkResult){
+                //skipping this particular city
+            }else{
+                $wipeUnupdatedRecords = \ORM::for_table('weather')
+                    ->where('city_id', $city['city_id'])
+                    ->delete_many();
+                //add to city list that will be called by the API
+                $cities [] = ['city_id' => $city['city_id'], 'name' => $city['name']];    
+            }
         }
+                
         //CALLING API
         $appId = '01ffc2b8227e5302ffa7f8555ba7738e';
         $cityWeatherInfo = array();
@@ -199,11 +214,6 @@ class City extends \TestProject\Controller\BaseController
         foreach ($cities as $city) {
             $response = file_get_contents('http://api.openweathermap.org/data/2.5/forecast/daily?q='.$city['name'].'&mode=json&units=metric&cnt=7'.'&APPID='.$appId.'&units=metric');
             $response = json_decode($response, true);
-            
-            //$checkDB = \ORM::for_table('weather');
-            //$reply = $checkDB->find_many();
-            //var_dump($reply);
-            #$wipeDB = \ORM::for_table('weather')->delete_many();
             
             for ($i = 0; $i < 7; ++$i) {
                 $sqlRequest = \ORM::for_table('weather')->create();
