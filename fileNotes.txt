@@ -232,5 +232,10 @@ Steps :
             
         - improve pagination, I could use pagination for other pages as well
             ->DONE (MAX refactoring)
-        - drastically improve the UI / (add functionallity to get the forecast for any Country/City - someday/maybe)
+            
+            
+            
+            
+            
+        - drastically improve the UI / (add functionallity to get the forecast for any Country/City)
     
