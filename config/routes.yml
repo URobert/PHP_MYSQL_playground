@@ -1,0 +1,185 @@
+- url: /home2/login
+  method: get
+  controller: Location\Login
+  function: LoginPage
+  
+- url: /home2/login
+  method: post
+  controller: Location\Login
+  function: LoginPage
+
+- url: /home2/signUp
+  method: get
+  controller: Location\SignUp
+  function: SignUpForm
+  
+- url: /home2/signUp
+  method: post
+  controller: Location\SignUp
+  function: SignUpForm 
+  
+- url: /home2/logout
+  method: get
+  controller: Location\Login
+  function: LogoutPage
+  
+- url: /home2/users
+  method: post
+  controller: Location\Users
+  function: ListUsers
+
+- url: /home2/users
+  method: get
+  controller: Location\Users
+  function: ListUsers
+
+- url: /home2/users/
+  method: get
+  controller: Location\Users
+  function: ListUsers  
+
+- url: /home2/users/{pn}
+  method: get
+  controller: Location\Users
+  function: ListUsers
+
+- url: /home2/users/
+  method: post
+  controller: Location\Users
+  function: ListUsers
+  
+- url: /home2/signup
+  method: post
+  controller: Location\SignUp
+  function: ListUsers
+  
+- url: /home2/signup
+  method: get
+  controller: Location\SignUp
+  function: ListUsers   
+  
+- url: /home2
+  method: get
+  controller: Location\County
+  function: home
+
+- url: /counties/AddCounty
+  method: get
+  controller: Location\County
+  function: addCounty
+  
+- url: /counties/AddCounty
+  method: post
+  controller: Location\County
+  function: addCounty
+
+- url: /counties/edit/{id}
+  method: get
+  controller: Location\County
+  function: editCounty
+  
+- url: /counties/edit/{id}
+  method: post
+  controller: Location\County
+  function: editCounty  
+  
+- url: counties/delete/{id}
+  method: get
+  controller: Location\County
+  function: deleteCounty
+  
+- url: cities/map
+  method: get
+  controller: Location\City
+  function: mapCity
+  
+- url: cities/map
+  method: post
+  controller: Location\City
+  function: mapCity
+  
+- url: cities/map/search
+  method: get
+  controller: Location\City
+  function: searchCity
+
+- url: cities/map/search
+  method: post
+  controller: Location\City
+  function: searchCity
+
+- url: cities/map/search2
+  method: get
+  controller: Location\City
+  function: searchCity2
+
+- url: cities/map/search2
+  method: post
+  controller: Location\City
+  function: searchCity2
+  
+- url: /cities/map/search2?{id}
+  method: get
+  controller: Location\City
+  function: searchCity2
+  
+- url: /cities/map/search2?{id}
+  method: post
+  controller: Location\City
+  function: searchCity2
+  
+- url: /cities/map/success
+  method: get
+  controller: Location\City
+  function: mapNewCity
+
+- url: /cities/weatherImport
+  method: get
+  controller: Location\City
+  function: weatherForecastImport
+  
+- url: /cities/weather
+  method: get
+  controller: Location\City
+  function: weatherForecast
+
+- url: /cities/weather
+  method: post
+  controller: Location\City
+  function: weatherForecast
+  
+- url: cities/{id}   
+  method: get
+  controller: Location\City
+  function: cityList
+  
+- url: /cities/{id}/AddCity
+  method: post
+  controller: Location\City
+  function: addCity
+  
+- url: /cities/{id}/AddCity
+  method: get
+  controller: Location\City
+  function: addCity
+    
+- url: /cities/delete/{id}    
+  method: get
+  controller: Location\City
+  function: deleteCity
+
+- url: /home2/search
+  method: get
+  controller: Location\County
+  function: searchLocation
+
+- url: /home2/search
+  method: post
+  controller: Location\County
+  function: searchLocation
+  
+
+
+
+  
+  
