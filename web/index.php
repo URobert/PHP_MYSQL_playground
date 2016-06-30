@@ -6,11 +6,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 
-ORM::configure('mysql:host=localhost;dbname=test1');
+ORM::configure('mysql:host=localhost;dbname=myDB');
 ORM::configure('username', 'root');
-ORM::configure('password', 'cozacu');
+ORM::configure('password', 'IamGroot');
 
-$connect = mysqli_connect('localhost','root','cozacu','test1');
+$connect = mysqli_connect('localhost','root','IamGroot','myDB');
 
     if (!$connect){
         throw new Exception('Failed to connect.' . mysql_error());

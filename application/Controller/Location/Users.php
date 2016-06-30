@@ -75,7 +75,7 @@ class Users extends \TestProject\Controller\BaseController
             $sqlReq->where_like('email', "%$email%");
         }
         
-        $number_per_page = 2;
+        $number_per_page = 3;
         $current_page = isset($_GET['pn']) ? $_GET['pn'] : 1;
         
         $total = $sqlReq->count();
