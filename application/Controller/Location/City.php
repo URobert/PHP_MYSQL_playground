@@ -188,6 +188,7 @@ class City extends \TestProject\Controller\BaseController
         //GET LIST OF CITIES FOR WEATHER REPORT  
         $result = \ORM::for_table('city_map')
             ->find_many();
+            
         $lastDateinDB =  date('Y-m-d',strtotime("+6 day"));
         foreach ($result as $city) {
             $checkEntry =  \ORM::for_table('city_map')
