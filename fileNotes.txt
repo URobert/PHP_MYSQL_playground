@@ -229,13 +229,9 @@ Steps :
         - keep session state after update after login and logout (tabel separat)
             >DONE (session values saved for searches on the Users page);
         - update weather forecast import to work properly for updates
-            
+            >DONE
         - improve pagination, I could use pagination for other pages as well
             ->DONE (MAX refactoring)
-            
-            
-            
-            
             
         - drastically improve the UI / (add functionallity to get the forecast for any Country/City)
     
