@@ -188,7 +188,7 @@ class City extends \TestProject\Controller\BaseController
         //GET LIST OF CITIES FOR WEATHER REPORT  
         $result = \ORM::for_table('city_map')
             ->find_many();
-            
+        date_default_timezone_set('Europe/Bucharest');    
         $lastDateinDB =  date('Y-m-d',strtotime("+6 day"));
         foreach ($result as $city) {
             $checkEntry =  \ORM::for_table('city_map')
@@ -292,5 +292,9 @@ class City extends \TestProject\Controller\BaseController
         }
 
         return $baseQuery->find_many();
-    }//end of weatherSearchFilter function 
+    }//end of weatherSearchFilter function
+    
+    public function currentWeatherAction ($request){
+        return $this->render();
+    }
 }//end of City class

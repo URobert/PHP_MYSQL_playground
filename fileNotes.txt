@@ -232,6 +232,10 @@ Steps :
             >DONE
         - improve pagination, I could use pagination for other pages as well
             ->DONE (MAX refactoring)
-            
+        - reinstall Mac OS, update, install mySQL, php, phpmyadmin. Migrate DB. Migrate project files. Config. apache. Install dev tools Mac
+            ->DONE
+        - solve mySQL start problem on MAC
+            ->DONE
+        
         - drastically improve the UI / (add functionallity to get the forecast for any Country/City)
     

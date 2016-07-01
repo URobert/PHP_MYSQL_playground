@@ -50,6 +50,7 @@
         a{
             color:black;
             font: 400 20px/1.3 'Bree Serif', Georgia, serif;
+            text-decoration: none !important;
         }
         
         .inner{
@@ -73,6 +74,9 @@
           <?php if ($isLoggedIn): ?>
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
+                  <li><div class = "btn-group"</li>
+                    <a href="/localWeather" id="localW" class="navTop">Current Local Weather</a>  
+                  </li>
                   <li><div class ="btn-group">
                      <a href="/cities/map" id="mapCounty" class="navTop">Import and go to map</a></div>
                   </li>

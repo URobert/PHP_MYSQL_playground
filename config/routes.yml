@@ -23,6 +23,11 @@
   controller: Location\Login
   function: LogoutPage
   
+- url: /localWeather
+  method: get
+  controller: Location\City
+  function: currentWeather
+  
 - url: /home2/users
   method: post
   controller: Location\Users
