@@ -21,7 +21,7 @@
 <script language=javascript>
 $( "#target" ).submit(function( event ) {
      var rename = $( " #rename" ).val();
-     if (rename == "") {
+     if (rename === "") {
         alert( "None of the fields can be empty." );
         event.preventDefault();
      }

@@ -1,13 +1,6 @@
 <html>
-    <body>      
-<!--        <table class= "counties">
-            <thead>Counties in current DB: </thead>
-            <?php foreach ($counties as $county): ?>
-            <tr>
-                <td><?= $county['name'] ?></td>
-            </tr>
-            <?php endforeach ?>
-        </table>-->
+    <body>
+        
         <form action="/counties/AddCounty" method="post">
         <p>Add new county:</p>
         <input type="text" name="county" id="county" class="countyField">
